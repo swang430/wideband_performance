@@ -1,0 +1,33 @@
+2026-01-10 19:33:16 - root - INFO - 正在初始化终端宽带标准信道验证系统...
+2026-01-10 19:33:16 - root - WARNING - 运行在模拟模式下 - 不会尝试连接真实硬件
+2026-01-10 19:33:16 - ConfigLoader - INFO - 正在从 /Users/Simon/Tools/终端宽带标准信道验证系统/config.yaml 加载配置
+2026-01-10 19:33:16 - Sequencer - INFO - 开始测试序列
+2026-01-10 19:33:16 - 仪器.VNA - INFO - [模拟] 已连接到 VNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
+2026-01-10 19:33:16 - 仪器.VSG - INFO - [模拟] 已连接到 VSG，地址: TCPIP0::192.168.1.101::inst0::INSTR
+2026-01-10 19:33:16 - 仪器.ChanEm - INFO - [模拟] 已连接到 ChanEm，地址: TCPIP0::192.168.1.102::inst0::INSTR
+2026-01-10 19:33:16 - 仪器.IntegratedTester - INFO - [模拟] 已连接到 IntegratedTester，地址: TCPIP0::192.168.1.103::inst0::INSTR
+2026-01-10 19:33:16 - DUT.Android - DEBUG - [模拟] ADB 执行: adb devices
+2026-01-10 19:33:16 - DUT.Android - INFO - DUT 已通过 ADB 连接
+2026-01-10 19:33:16 - Sequencer - INFO - === 运行测试用例: throughput_test_5g ===
+2026-01-10 19:33:16 - 仪器.ChanEm - DEBUG - [模拟] 写入 ChanEm: MEM:LOAD:MODEL 'Urban_Macro.scn'
+2026-01-10 19:33:16 - 仪器.ChanEm - INFO - 已加载信道模型: Urban_Macro.scn
+2026-01-10 19:33:16 - Sequencer - INFO - 测试频率: 2400e6 Hz
+2026-01-10 19:33:16 - 仪器.VSG - DEBUG - [模拟] 写入 VSG: FREQ 2400e6
+2026-01-10 19:33:16 - 仪器.VSG - INFO - 设置 VSG 频率: 2400e6 Hz
+2026-01-10 19:33:16 - 仪器.VSG - DEBUG - [模拟] 写入 VSG: OUTP ON
+2026-01-10 19:33:16 - 仪器.VSG - INFO - VSG 射频输出: ON
+2026-01-10 19:33:16 - Sequencer - INFO - 模拟流量 2 秒...
+2026-01-10 19:33:17 - Sequencer - INFO -   >> 流量测试进行中... 剩余 1.0 秒
+2026-01-10 19:33:18 - Sequencer - INFO -   >> 流量测试进行中... 剩余 0.0 秒
+2026-01-10 19:33:18 - Sequencer - INFO - 完成测试 2400e6 Hz
+2026-01-10 19:33:18 - Sequencer - INFO - 测试频率: 5000e6 Hz
+2026-01-10 19:33:18 - 仪器.VSG - DEBUG - [模拟] 写入 VSG: FREQ 5000e6
+2026-01-10 19:33:18 - 仪器.VSG - INFO - 设置 VSG 频率: 5000e6 Hz
+2026-01-10 19:33:18 - 仪器.VSG - DEBUG - [模拟] 写入 VSG: OUTP ON
+2026-01-10 19:33:18 - 仪器.VSG - INFO - VSG 射频输出: ON
+2026-01-10 19:33:18 - Sequencer - INFO - 模拟流量 2 秒...
+2026-01-10 19:33:19 - Sequencer - INFO -   >> 流量测试进行中... 剩余 1.0 秒
+2026-01-10 19:33:20 - Sequencer - INFO -   >> 流量测试进行中... 剩余 0.0 秒
+2026-01-10 19:33:20 - Sequencer - INFO - 完成测试 5000e6 Hz
+2026-01-10 19:33:20 - Sequencer - INFO - 正在清理...
+2026-01-10 19:33:20 - Sequencer - INFO - 测试序列完成

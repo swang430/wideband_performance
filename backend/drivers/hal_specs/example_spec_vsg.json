@@ -1,0 +1,63 @@
+{
+  "instrument_type": "signal_generator",
+  "vendor": "Keysight",
+  "series": "MXG",
+  "description": "SCPI command specification for Keysight MXG Signal Generators",
+  "commands": {
+    "frequency": {
+      "set": {
+        "syntax": "FREQ:CW <value>",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "float",
+            "unit": "Hz",
+            "range": [100000, 6000000000]
+          }
+        ],
+        "description": "Sets the RF output frequency."
+      },
+      "query": {
+        "syntax": "FREQ:CW?",
+        "return_type": "float"
+      }
+    },
+    "power": {
+      "set": {
+        "syntax": "POW:AMPL <value>",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "float",
+            "unit": "dBm",
+            "range": [-110, 20]
+          }
+        ],
+        "description": "Sets the RF output power amplitude."
+      },
+      "query": {
+        "syntax": "POW:AMPL?",
+        "return_type": "float"
+      }
+    },
+    "output_state": {
+      "set": {
+        "syntax": "OUTP:STAT <state>",
+        "parameters": [
+          {
+            "name": "state",
+            "type": "boolean",
+            "mapping": {
+              "True": "ON",
+              "False": "OFF"
+            }
+          }
+        ]
+      },
+      "query": {
+        "syntax": "OUTP:STAT?",
+        "return_type": "boolean"
+      }
+    }
+  }
+}

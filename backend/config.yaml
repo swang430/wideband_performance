@@ -1,0 +1,24 @@
+instruments:
+  vna:
+    address: "TCPIP0::192.168.1.100::inst0::INSTR"
+    timeout: 5000
+    reset: true
+  vsg:
+    address: "TCPIP0::192.168.1.101::inst0::INSTR"
+  channel_emulator:
+    address: "TCPIP0::192.168.1.102::inst0::INSTR"
+  integrated_tester:
+    address: "TCPIP0::192.168.1.103::inst0::INSTR"
+  spectrum_analyzer:
+    address: "TCPIP0::192.168.1.104::inst0::INSTR"
+
+dut:
+  device_id: null # 自动检测
+  wifi_interface: "wlan0"
+
+test_cases:
+  - name: "throughput_test_5g"
+    type: "throughput"
+    duration: 2
+    frequencies: [2400e6, 5000e6]
+    channel_model: "Urban_Macro.scn"

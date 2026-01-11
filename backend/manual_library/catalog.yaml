@@ -1,0 +1,173 @@
+spectrum_analyzer:
+- vendor: Keysight
+  series: X-Series
+  models:
+  - N9020B
+  - N9010B
+  - N9030B
+  manuals:
+  - title: X-Series Signal Analyzer User and Programmer Reference (IQ Analyzer Mode)
+    type: programming_manual
+    url: https://www.keysight.com/us/en/assets/9018-04533/user-manuals/9018-04533.pdf
+    notes: 包含 IQ Analyzer 模式下的 SCPI 命令
+  - title: X-Series Signal Analyzer Getting Started Guide
+    type: user_guide
+    url: https://www.keysight.com/us/en/assets/9018-03823/user-manuals/9018-03823.pdf
+  - title: X-Series Signal Analyzer Getting Started Guide 9018-03823
+    type: user_manual_local
+    url: X-Series Signal Analyzer Getting Started Guide_9018-03823.pdf
+    notes: Automatically detected local file
+  - title: X-Series Signal Analyzer User and Programmer Reference IQ Analyzer Mode
+      9018-04533
+    type: user_manual_local
+    url: X-Series Signal Analyzer User and Programmer Reference IQ Analyzer Mode_9018-04533.pdf
+    notes: Automatically detected local file
+- vendor: Rohde & Schwarz
+  series: FSW
+  models:
+  - FSW8
+  - FSW26
+  - FSW43
+  manuals:
+  - title: FSW Signal and Spectrum Analyzer User Manual
+    type: user_manual
+    url: https://www.rohde-schwarz.com/webhelp/fsw_html_usermanual_en/Content/FSW_UserManual.htm
+    notes: 包含完整的远程控制 (SCPI) 参考
+  - title: FSW Signal and Spectrum Analyzer User Manual FSW UserManual
+    type: user_manual_local
+    url: FSW Signal and Spectrum Analyzer User Manual_FSW_UserManual.htm
+    notes: Automatically detected local file
+    is_local: true
+signal_generator:
+- vendor: Keysight
+  series: MXG
+  models:
+  - N5182B
+  - N5181B
+  manuals:
+  - title: X-Series Signal Generators SCPI Command Reference
+    type: scpi_reference
+    url: https://www.keysight.com/us/en/assets/9018-04210/programming-guides/9018-04210.pdf
+  - title: X-Series Signal Generators SCPI Command Reference 9018-04210
+    type: user_manual_local
+    url: X-Series Signal Generators SCPI Command Reference_9018-04210.pdf
+    notes: Automatically detected local file
+- vendor: Rohde & Schwarz
+  series: SMW200A
+  models:
+  - SMW200A
+  manuals:
+  - title: SMW200A Vector Signal Generator User Manual
+    type: user_manual
+    url: https://www.rohde-schwarz.com/webhelp/smw_html_usermanual_en/Content/SMW_UserManual.htm
+  - title: SMW200A Vector Signal Generator User Manual SMW UserManual
+    type: user_manual_local
+    url: SMW200A Vector Signal Generator User Manual_SMW_UserManual.htm
+    notes: Automatically detected local file
+    is_local: true
+integrated_tester:
+- vendor: Rohde & Schwarz
+  series: CMW
+  models:
+  - CMW500
+  manuals:
+  - title: CMW500 Wideband Radio Communication Tester Programming Manual
+    type: programming_manual
+    url: https://www.rohde-schwarz.com/products/test-and-measurement/wideband-radio-communication-testers/rs-cmw500-wideband-radio-communication-tester_63493-9658.html
+    notes: 需手动下载 (Manual download required). Requires login.
+  - title: Remote Control SCPI GettingStarted en 04
+    type: user_manual_local
+    url: Remote_Control_SCPI_GettingStarted_en_04.pdf
+    notes: Automatically detected local file
+    is_local: true
+- vendor: Anritsu
+  series: MT8000A
+  models:
+  - MT8000A
+  manuals:
+  - title: MT8000A Operation Manual (Overview)
+    type: user_manual
+    url: https://www.anritsu.com/en-us/test-measurement/products/mt8000a
+    notes: 完整 SCPI 手册随设备 DVD 提供或需官网登录 (Login required)
+vna:
+- vendor: Keysight
+  series: ENA
+  models:
+  - E5071C
+  manuals:
+  - title: E5071C ENA Network Analyzer Programmer's Guide
+    type: programming_manual
+    url: https://www.keysight.com/us/en/assets/9018-01309/programming-guides/9018-01309.pdf
+  - title: E5071C ENA Network Analyzer Programmers Guide 9018-01309
+    type: user_manual_local
+    url: E5071C ENA Network Analyzer Programmers Guide_9018-01309.pdf
+    notes: Automatically detected local file
+- vendor: Keysight
+  series: PNA
+  models:
+  - N5224A
+  - N5225A
+  - N5245B
+  manuals:
+  - title: PNA Series Network Analyzer Help (PDF)
+    type: programming_manual
+    url: https://www.keysight.com/us/en/support/N5224A/pna-microwave-network-analyzer-135-ghz
+    notes: 请在 Support 页面下载对应固件版本的 Programming Guide
+- vendor: Rohde & Schwarz
+  series: ZNA
+  models:
+  - ZNA26
+  - ZNA43
+  manuals:
+  - title: ZNA Vector Network Analyzer User Manual
+    type: user_manual
+    url: https://www.rohde-schwarz.com/webhelp/zna_html_usermanual_en/Content/ZNA_UserManual.htm
+    notes: 含远程控制章节
+  - title: ZNA Vector Network Analyzer User Manual ZNA UserManual
+    type: user_manual_local
+    url: ZNA Vector Network Analyzer User Manual_ZNA_UserManual.htm
+    notes: Automatically detected local file
+    is_local: true
+channel_emulator:
+- vendor: Spirent
+  series: Vertex
+  models:
+  - Vertex
+  manuals:
+  - title: Vertex Channel Emulator User Guide
+    type: user_guide
+    url: unavailable - contact vendor
+    notes: 需联系 Spirent 获取专用 API 文档
+  - title: VertexUsersGuide
+    type: user_manual_local
+    url: VertexUsersGuide.pdf
+    notes: Automatically detected local file
+    is_local: true
+  - title: RPI CommandRef
+    type: user_manual_local
+    url: RPI_CommandRef.pdf
+    notes: Automatically detected local file
+    is_local: true
+- vendor: Keysight
+  series: PROPSIM
+  models:
+  - F64
+  manuals:
+  - title: PROPSIM F64 User Manual
+    type: user_manual
+    url: https://www.keysight.com/us/en/products/emulator/channel-emulators/propsim-f64-channel-emulation-solution.html
+    notes: 完整文档需登录 Keysight 账户下载
+  - title: Propsim User Reference
+    type: user_manual_local
+    url: Propsim User Reference.pdf
+    notes: Automatically detected local file
+  - title: Channel Studio GCM User Guide
+    type: user_manual_local
+    url: Channel Studio GCM User Guide.pdf
+    notes: Automatically detected local file
+    is_local: true
+  - title: Propsim ATE environment and practices AN
+    type: user_manual_local
+    url: Propsim ATE environment and practices AN.pdf
+    notes: Automatically detected local file
+    is_local: true
