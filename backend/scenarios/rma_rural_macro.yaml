@@ -1,0 +1,69 @@
+# 农村宏站覆盖测试 (RMa - Rural Macro)
+# 模拟远距离低密度覆盖场景
+
+metadata:
+  id: "RMA_COVERAGE"
+  name: "农村远距离覆盖测试"
+  version: "1.0"
+  description: "模拟农村环境 5-15 km 远距离覆盖"
+
+config:
+  type: "dynamic_scenario"
+  total_duration: 90
+
+  channel:
+    model: "RMa_LOS"
+    velocity_kmh: 60
+
+  timeline:
+    - time: 0
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "RMa_LOS"
+
+    - time: 0
+      target: channel_emulator
+      action: set_distance
+      params:
+        km: 5
+      comment: "初始距离 5km"
+
+    - time: 0
+      target: channel_emulator
+      action: set_velocity
+      params:
+        kmh: 60
+
+    - time: 30
+      target: channel_emulator
+      action: set_distance
+      params:
+        km: 8
+      comment: "距离拉远 8km"
+
+    - time: 50
+      target: channel_emulator
+      action: set_distance
+      params:
+        km: 12
+      comment: "距离继续拉远 12km"
+
+    - time: 70
+      target: channel_emulator
+      action: set_distance
+      params:
+        km: 15
+      comment: "极限距离 15km"
+
+  metrics:
+    interval: 1.0
+    collect:
+      - throughput_mbps
+      - bler
+      - rsrp
+      - timing_advance
+
+  limits:
+    min_throughput_mbps: 10
+    max_bler: 0.1

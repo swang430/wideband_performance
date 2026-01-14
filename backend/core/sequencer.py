@@ -16,18 +16,21 @@ class TestSequencer:
     编排测试执行的核心逻辑 (Asyncio Version).
     支持 Timeline Strategy (动态场景) 和 Algorithm Strategy (灵敏度/阻塞)。
     """
-    def __init__(self, config: Dict[str, Any], simulation_mode: bool = False, log_callback: Optional[Callable[[str], None]] = None):
+    def __init__(self, config: Dict[str, Any], simulation_mode: bool = False, 
+                 log_callback: Optional[Callable[[str], None]] = None,
+                 metrics_callback: Optional[Callable[[Dict[str, Any]], None]] = None):
         self.config = config
         self.simulation_mode = simulation_mode
         self.logger = logging.getLogger("Sequencer")
         self.instruments = {}
         self.dut = None
         self.log_callback = log_callback
+        self.metrics_callback = metrics_callback  # 新增: 实时指标推送回调
         
         self._running = False
         self._start_time: Optional[float] = None
         self._elapsed_time = 0.0
-        self.current_scenario: Optional[Dict[str, Any]] = None # 当前加载的场景
+        self.current_scenario: Optional[Dict[str, Any]] = None
         self.metrics_history = []
 
     def _log(self, message: str, level: str = "INFO"):
@@ -101,6 +104,7 @@ class TestSequencer:
         """
         self._log(">>> 开始阻塞干扰测试 (Blocking) <<<")
         self._running = True
+        self._start_time = asyncio.get_event_loop().time()  # 初始化起始时间
         
         self._log(f"当前可用仪表: {list(self.instruments.keys())}")
         
@@ -136,9 +140,8 @@ class TestSequencer:
         for offset in offsets:
             if not self._running: break
             
-            # 计算干扰频率
-            center_freq = main_sig.get('freq_hz', 3500e6)
-            interferer_freq = center_freq + (offset * 1e6)
+            # 计算干扰频率 (复用已转换的 center_freq，确保类型安全)
+            interferer_freq = center_freq + (float(offset) * 1e6)
             self._log(f"=== 测试干扰频偏: {offset} MHz (Freq: {interferer_freq/1e6} MHz) ===")
             
             if 'vsg' in self.instruments:
@@ -154,10 +157,24 @@ class TestSequencer:
                 
                 await asyncio.sleep(0.5) # 测量等待
                 
-                # 模拟 BLER: 功率越高，BLER 越高
+                # 模拟 BLER 和吞吐量: 功率越高，BLER 越高，吞吐量越低
                 sim_bler = 0.0
-                if self.simulation_mode and current_p > -40:
-                    sim_bler = (current_p + 40) * 0.05
+                sim_throughput = 200.0  # 基准吞吐量 Mbps
+                if self.simulation_mode:
+                    if current_p > -40:
+                        sim_bler = (current_p + 40) * 0.05
+                        sim_throughput = max(0, 200 - (current_p + 40) * 10)
+                
+                # 推送实时指标到前端
+                if self.metrics_callback:
+                    self._elapsed_time = asyncio.get_event_loop().time() - (self._start_time or asyncio.get_event_loop().time())
+                    self.metrics_callback({
+                        "throughput_mbps": round(sim_throughput, 2),
+                        "bler": round(sim_bler, 4),
+                        "interferer_power_dbm": current_p,
+                        "freq_offset_mhz": offset,
+                        "elapsed_time": round(self._elapsed_time, 2)
+                    })
                 
                 if sim_bler > limit_bler:
                     self._log(f"!!! 阻塞失效点: {current_p} dBm (BLER {sim_bler*100:.1f}%) !!!", level="WARNING")
@@ -174,6 +191,7 @@ class TestSequencer:
         """
         灵敏度搜索测试 (闭环反馈控制)。
         """
+        import random
         start_power = test_case.get('start_power', -70.0)
         end_power = test_case.get('end_power', -110.0)
         step = test_case.get('step', 1.0)
@@ -192,11 +210,23 @@ class TestSequencer:
             
             await asyncio.sleep(0.5)
             
-            # 模拟 BLER
+            # 模拟 BLER 和吞吐量
             if self.simulation_mode:
                 current_bler = 0.0 if current_power > -100 else 0.1 * ((-100 - current_power))
+                # 模拟吞吐量: 基准 200Mbps，随功率下降而降低
+                sim_throughput = max(0, 200 - abs(current_power + 70) * 2 + random.uniform(-5, 5))
             else:
                 current_bler = 0.0 
+                sim_throughput = 0.0
+            
+            # 推送实时指标
+            if self.metrics_callback:
+                self.metrics_callback({
+                    "throughput_mbps": round(sim_throughput, 2),
+                    "bler": round(current_bler, 4),
+                    "power_dbm": current_power,
+                    "elapsed_time": self._elapsed_time
+                })
             
             self._log(f"   当前 BLER: {current_bler*100:.2f}%")
             
@@ -211,9 +241,11 @@ class TestSequencer:
 
     async def run_dynamic_scenario(self, scenario_config: Dict[str, Any]):
         """执行基于时间轴的动态场景"""
+        import random
         name = scenario_config.get('name', '未命名场景')
         total_duration = scenario_config.get('total_duration', 30)
         timeline = scenario_config.get('timeline', [])
+        metrics_interval = scenario_config.get('metrics', {}).get('interval', 0.5)
         
         # 按时间排序事件
         events = sorted(timeline, key=lambda x: x['time'])
@@ -223,6 +255,8 @@ class TestSequencer:
         self._running = True
         
         event_idx = 0
+        last_metrics_time = 0.0
+        
         while self._elapsed_time < total_duration and self._running:
             # 更新已流逝时间
             self._elapsed_time = asyncio.get_event_loop().time() - self._start_time
@@ -233,7 +267,19 @@ class TestSequencer:
                 await self._execute_event(event)
                 event_idx += 1
             
-            await asyncio.sleep(0.1) # Tick 精度 100ms
+            # 定期采样并推送指标
+            if self.metrics_callback and (self._elapsed_time - last_metrics_time) >= metrics_interval:
+                # 模拟指标数据
+                sim_throughput = 180 + random.uniform(-20, 20)
+                sim_bler = 0.01 + random.uniform(0, 0.02)
+                self.metrics_callback({
+                    "throughput_mbps": round(sim_throughput, 2),
+                    "bler": round(sim_bler, 4),
+                    "elapsed_time": round(self._elapsed_time, 2)
+                })
+                last_metrics_time = self._elapsed_time
+            
+            await asyncio.sleep(0.1)  # Tick 精度 100ms
 
         self._log(">>> 场景执行流结束 <<<")
         self._running = False

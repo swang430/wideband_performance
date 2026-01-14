@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Box, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { Dashboard as DashboardIcon, LibraryBooks as LibraryIcon } from '@mui/icons-material';
+import { Dashboard as DashboardIcon, LibraryBooks as LibraryIcon, History as HistoryIcon, Settings as SettingsIcon } from '@mui/icons-material';
 
 import Dashboard from './pages/Dashboard';
 import Manuals from './pages/Manuals';
+import History from './pages/History';
+import ConfigEditor from './pages/ConfigEditor';
 import theme from './theme'; // 导入统一的主题定义
 
 /**
@@ -30,18 +32,34 @@ function App() {
               
               {/* 导航菜单区域 */}
               <Box sx={{ display: 'flex', gap: 2 }}>
-                <Button 
-                  color="inherit" 
-                  component={Link} 
-                  to="/" 
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/"
                   startIcon={<DashboardIcon />}
                 >
                   仪表监控
                 </Button>
-                <Button 
-                  color="inherit" 
-                  component={Link} 
-                  to="/manuals" 
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/history"
+                  startIcon={<HistoryIcon />}
+                >
+                  历史记录
+                </Button>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/config"
+                  startIcon={<SettingsIcon />}
+                >
+                  配置
+                </Button>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/manuals"
                   startIcon={<LibraryIcon />}
                 >
                   手册库
@@ -54,6 +72,10 @@ function App() {
           <Routes>
             {/* 默认首页: 仪表状态监控仪表盘 */}
             <Route path="/" element={<Dashboard />} />
+            {/* 测试历史记录页面 */}
+            <Route path="/history" element={<History />} />
+            {/* 配置编辑器页面 */}
+            <Route path="/config" element={<ConfigEditor />} />
             {/* 仪表手册库页面 */}
             <Route path="/manuals" element={<Manuals />} />
           </Routes>

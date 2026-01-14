@@ -112,10 +112,51 @@ graph TD
 1.  **仪表盘 (Dashboard)**: 状态卡片、实时日志、场景选择执行。
 2.  **手册库 (Manuals)**: 手册浏览、在线预览、级联上传。
 
-## 4. 下一步实施计划
-1.  **实时数据可视化**: 前端增加吞吐量实时折线图。
-2.  **配置编辑器**: 实现 `config.yaml` 的 GUI 可视化修改。
-3.  **DUT 深度集成**: 利用 ADB 抓取 Modem 内部参数。
+## 4. 开发路线图 (Roadmap)
+
+本项目采用分阶段迭代开发，共6个阶段 (Phase)。**全部阶段已完成。**
+
+### 4.1 Phase 1: 实时数据可视化 ✅ 已完成
+*   **目标**: Dashboard 实时展示测试过程中的吞吐量和 BLER 数据。
+*   **技术方案**:
+    *   扩展 WebSocket 增加 `metrics` 消息类型
+    *   前端集成 `recharts` 折线图，维护60秒滑动窗口
+*   **涉及文件**: `endpoints.py`, `sequencer.py`, `Dashboard.tsx`, `log_manager.py`
+
+### 4.2 Phase 2: 测试结果存储 ✅ 已完成
+*   **目标**: 持久化测试结果，支持历史查询。
+*   **技术方案**:
+    *   SQLite 数据库，表: `test_runs`, `metrics_samples`
+    *   新增 `/api/v1/history` 查询接口
+*   **涉及文件**: `database.py`, `History.tsx`
+
+### 4.3 Phase 3: 报告生成引擎 ✅ 已完成
+*   **目标**: 测试完成后自动生成 PDF 报告。
+*   **技术方案**:
+    *   Jinja2 HTML 模板 + weasyprint 渲染 PDF
+    *   新增 `/api/v1/report/{run_id}/html` 和 `/api/v1/report/{run_id}/pdf` 接口
+*   **涉及文件**: `report_generator.py`, `templates/report.html`
+
+### 4.4 Phase 4: 配置编辑器 ✅ 已完成
+*   **目标**: 前端可视化编辑 `config.yaml` 和场景文件。
+*   **技术方案**:
+    *   后端 `/api/v1/config` 读写接口
+    *   前端代码编辑器 (YAML 语法高亮)
+*   **涉及文件**: `endpoints.py`, `ConfigEditor.tsx`
+
+### 4.5 Phase 5: 单元测试完善 ✅ 已完成
+*   **目标**: pytest 覆盖率 > 70%。
+*   **涉及文件**: `tests/test_sequencer.py`, `tests/test_drivers.py`, `tests/test_api.py`, `tests/test_database.py`, `tests/test_report_generator.py`
+
+### 4.6 Phase 6: DUT 深度集成 ✅ 已完成
+*   **目标**: 抓取 Android Modem 内部参数 (RSRP/RSRQ/SINR/CQI)。
+*   **技术方案**: 解析 `dumpsys telephony.registry` 输出
+*   **新增 API**:
+    *   `GET /api/v1/dut/status` - DUT 连接状态
+    *   `GET /api/v1/dut/modem` - Modem 详细参数
+    *   `GET /api/v1/dut/signal` - 信号质量摘要
+    *   `POST /api/v1/dut/airplane-mode` - 飞行模式控制
+*   **涉及文件**: `android_controller.py`, `endpoints.py`
 
 ## 5. 核心业务场景 (Core Use Cases)
 ### 5.1 灵敏度测试 (Sensitivity Search)

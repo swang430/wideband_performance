@@ -1,0 +1,81 @@
+# 城市宏站移动性测试 (UMa - Urban Macro)
+# 模拟城市环境中穿过建筑物遮挡、LOS/NLOS 切换的场景
+
+metadata:
+  id: "UMA_MOBILITY"
+  name: "城市宏站移动性测试"
+  version: "1.0"
+  description: "模拟城市环境中 30-60 km/h 移动与建筑遮挡"
+
+config:
+  type: "dynamic_scenario"
+  total_duration: 90
+
+  channel:
+    model: "UMa_NLOS"
+    velocity_kmh: 30
+
+  timeline:
+    - time: 0
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "UMa_NLOS"
+      comment: "初始 NLOS 条件"
+
+    - time: 0
+      target: channel_emulator
+      action: set_velocity
+      params:
+        kmh: 30
+      comment: "城市车速"
+
+    # 模拟穿过建筑物遮挡
+    - time: 20
+      target: channel_emulator
+      action: set_fading_profile
+      params:
+        profile: "deep_fade"
+        duration_ms: 500
+      comment: "深衰落事件"
+
+    - time: 40
+      target: channel_emulator
+      action: set_velocity
+      params:
+        kmh: 60
+      comment: "加速行驶"
+
+    - time: 50
+      target: channel_emulator
+      action: set_fading_profile
+      params:
+        profile: "deep_fade"
+        duration_ms: 300
+      comment: "第二次遮挡"
+
+    # 进入 LOS 区域
+    - time: 60
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "UMa_LOS"
+      comment: "进入视距条件"
+
+    - time: 60
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 80
+      comment: "LOS 路损降低"
+
+  metrics:
+    interval: 0.5
+    collect:
+      - throughput_mbps
+      - bler
+      - sinr
+
+  limits:
+    min_throughput_mbps: 100
+    max_bler: 0.05

@@ -7,6 +7,7 @@ class AppState:
     """
     sequencer: Optional[TestSequencer] = None
     is_running: bool = False
+    current_run_id: Optional[int] = None  # 当前测试运行的数据库 ID
 
 # 全局实例
 state = AppState()

@@ -1,0 +1,105 @@
+# 高铁场景性能测试 (HST - High Speed Train)
+# 模拟高速列车沿线覆盖，包含小区边缘进入、接近基站、小区切换、远离基站四个阶段
+
+metadata:
+  id: "HST_PERFORMANCE"
+  name: "高铁场景性能测试"
+  version: "1.0"
+  description: "模拟 300km/h 高速移动场景下的无线性能"
+
+config:
+  type: "dynamic_scenario"
+  total_duration: 120  # 秒
+  
+  # 初始信道配置
+  channel:
+    model: "HST_300kmh"
+    velocity_kmh: 300
+    doppler_hz: 1400
+  
+  timeline:
+    # === 阶段1: 小区边缘进入 (0-30s) ===
+    - time: 0
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "HST_300kmh"
+      comment: "加载高铁信道模型"
+
+    - time: 0
+      target: channel_emulator
+      action: set_velocity
+      params:
+        kmh: 300
+      comment: "设置移动速度 300 km/h"
+
+    - time: 0
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 130
+      comment: "小区边缘，高路损"
+
+    # === 阶段2: 接近基站 (30-60s) ===
+    - time: 30
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 100
+      comment: "接近基站，信号变强"
+
+    - time: 45
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 85
+      comment: "基站附近，信号最强"
+
+    # === 阶段3: 小区切换 (60-70s) ===
+    - time: 60
+      target: channel_emulator
+      action: trigger_handover
+      params:
+        target_cell: 2
+      comment: "触发小区切换"
+
+    - time: 65
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 95
+      comment: "切换后新小区信号"
+
+    # === 阶段4: 远离基站 (70-120s) ===
+    - time: 70
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 110
+
+    - time: 90
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 125
+
+    - time: 110
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 135
+      comment: "小区边缘，信号减弱"
+
+  metrics:
+    interval: 0.5
+    collect:
+      - throughput_mbps
+      - bler
+      - rsrp
+      - handover_latency_ms
+
+  # 判定标准
+  limits:
+    min_throughput_mbps: 50
+    max_bler: 0.1
+    max_handover_latency_ms: 100

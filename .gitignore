@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.log
+backend/backend.log
+backend/test_results.db
+*.db
+
+# Node
+node_modules/
+npm-debug.log
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml

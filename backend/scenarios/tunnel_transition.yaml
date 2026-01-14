@@ -1,0 +1,91 @@
+# 隧道进出过渡测试 (Tunnel)
+# 模拟隧道进出时的信号急剧变化
+
+metadata:
+  id: "TUNNEL_TRANSITION"
+  name: "隧道进出过渡测试"
+  version: "1.0"
+  description: "模拟隧道进入、内部漏缆、离开的信号变化"
+
+config:
+  type: "dynamic_scenario"
+  total_duration: 60
+
+  channel:
+    model: "UMa_LOS"
+    velocity_kmh: 120
+
+  timeline:
+    # 隧道外 - 正常信号
+    - time: 0
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "UMa_LOS"
+
+    - time: 0
+      target: channel_emulator
+      action: set_velocity
+      params:
+        kmh: 120
+
+    - time: 0
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 90
+
+    # 进入隧道 - 信号急剧衰落
+    - time: 15
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "Tunnel_Entry"
+      comment: "隧道入口"
+
+    - time: 15
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 140
+      comment: "信号急剧衰落"
+
+    # 隧道内漏缆覆盖区
+    - time: 25
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "Tunnel_Leaky_Coax"
+      comment: "漏缆覆盖"
+
+    - time: 25
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 85
+      comment: "漏缆信号稳定"
+
+    # 离开隧道
+    - time: 45
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "UMa_LOS"
+      comment: "离开隧道"
+
+    - time: 45
+      target: channel_emulator
+      action: set_path_loss
+      params:
+        db: 90
+
+  metrics:
+    interval: 0.5
+    collect:
+      - throughput_mbps
+      - bler
+      - connection_drop_count
+
+  limits:
+    max_connection_drops: 0
+    max_bler: 0.1

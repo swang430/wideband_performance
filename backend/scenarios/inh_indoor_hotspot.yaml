@@ -1,0 +1,82 @@
+# 室内热点容量测试 (InH - Indoor Hotspot)
+# 模拟高用户密度室内环境，逐步增加干扰
+
+metadata:
+  id: "INH_CAPACITY"
+  name: "室内热点容量测试"
+  version: "1.0"
+  description: "模拟室内办公环境，渐进式干扰增加"
+
+config:
+  type: "dynamic_scenario"
+  total_duration: 60
+
+  channel:
+    model: "InH_Office"
+    velocity_kmh: 3
+
+  timeline:
+    - time: 0
+      target: channel_emulator
+      action: load_channel_model
+      params:
+        model: "InH_Office"
+
+    - time: 0
+      target: channel_emulator
+      action: set_velocity
+      params:
+        kmh: 3
+      comment: "步行速度"
+
+    # 模拟用户密度增加 (干扰增加)
+    - time: 20
+      target: vsg
+      action: set_frequency
+      params:
+        hz: 3500000000
+      comment: "干扰频率设置"
+
+    - time: 20
+      target: vsg
+      action: set_power
+      params:
+        dbm: -80
+      comment: "低干扰"
+
+    - time: 20
+      target: vsg
+      action: enable_output
+      params:
+        enable: true
+
+    - time: 35
+      target: vsg
+      action: set_power
+      params:
+        dbm: -70
+      comment: "中等干扰"
+
+    - time: 50
+      target: vsg
+      action: set_power
+      params:
+        dbm: -60
+      comment: "高干扰"
+
+    - time: 58
+      target: vsg
+      action: enable_output
+      params:
+        enable: false
+
+  metrics:
+    interval: 0.5
+    collect:
+      - throughput_mbps
+      - bler
+      - interference_level_dbm
+
+  limits:
+    min_throughput_mbps: 200
+    max_bler: 0.02

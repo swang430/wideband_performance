@@ -61,5 +61,23 @@ class ChannelEmulator:
     def rf_off(self):
         self._check(); self._driver.rf_off()
 
+    # === 场景测试扩展方法 ===
+
+    def set_path_loss(self, db: float):
+        """设置路径损耗 (dB)"""
+        self._check(); self._driver.set_path_loss(db)
+
+    def set_distance(self, km: float):
+        """设置模拟距离 (km)"""
+        self._check(); self._driver.set_distance(km)
+
+    def set_fading_profile(self, profile: str, duration_ms: int = 0):
+        """设置衰落配置 (用于深衰落事件模拟)"""
+        self._check(); self._driver.set_fading_profile(profile, duration_ms)
+
+    def trigger_handover(self, target_cell: int):
+        """触发小区切换"""
+        self._check(); self._driver.trigger_handover(target_cell)
+
     def _check(self):
         if not self._driver: raise ConnectionError("Channel Emulator 尚未连接")

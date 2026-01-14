@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>测试报告 #{{ run_info.id }} - {{ run_info.scenario_name }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        body {
+            font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #1976d2;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1976d2;
+            margin: 0;
+            font-size: 24pt;
+        }
+
+        .header .subtitle {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            color: #1976d2;
+            font-size: 14pt;
+            border-left: 4px solid #1976d2;
+            padding-left: 10px;
+            margin-bottom: 15px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .info-table th {
+            background-color: #f5f5f5;
+            width: 30%;
+            font-weight: bold;
+        }
+
+        .status-completed { color: #4caf50; font-weight: bold; }
+        .status-failed { color: #f44336; font-weight: bold; }
+        .status-stopped { color: #ff9800; font-weight: bold; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .stat-card .label {
+            font-size: 9pt;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 6px 8px;
+            text-align: center;
+        }
+
+        .data-table th {
+            background-color: #1976d2;
+            color: white;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .chart-placeholder {
+            background: #f5f5f5;
+            border: 1px dashed #ccc;
+            padding: 40px;
+            text-align: center;
+            color: #999;
+            margin: 20px 0;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 9pt;
+            color: #666;
+            text-align: center;
+        }
+
+        .conclusion {
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .conclusion.pass {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+
+        .conclusion.fail {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>终端宽带标准信道验证测试报告</h1>
+        <div class="subtitle">报告编号: #{{ run_info.id }} | 生成时间: {{ generated_at }}</div>
+    </div>
+
+    <div class="section">
+        <h2>1. 测试基本信息</h2>
+        <table class="info-table">
+            <tr>
+                <th>场景名称</th>
+                <td>{{ run_info.scenario_name }}</td>
+            </tr>
+            <tr>
+                <th>场景ID</th>
+                <td>{{ run_info.scenario_id }}</td>
+            </tr>
+            <tr>
+                <th>测试类型</th>
+                <td>{{ run_info.test_type }}</td>
+            </tr>
+            <tr>
+                <th>执行状态</th>
+                <td class="status-{{ run_info.status }}">{{ run_info.status | upper }}</td>
+            </tr>
+            <tr>
+                <th>开始时间</th>
+                <td>{{ run_info.start_time or '-' }}</td>
+            </tr>
+            <tr>
+                <th>结束时间</th>
+                <td>{{ run_info.end_time or '-' }}</td>
+            </tr>
+            <tr>
+                <th>测试结果摘要</th>
+                <td>{{ run_info.result_summary or '无' }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>2. 性能统计摘要</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value">{{ statistics.sample_count or 0 }}</div>
+                <div class="label">采样点数</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ "%.2f"|format(statistics.avg_throughput or 0) }}</div>
+                <div class="label">平均吞吐量 (Mbps)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ "%.3f"|format((statistics.avg_bler or 0) * 100) }}%</div>
+                <div class="label">平均 BLER</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ "%.2f"|format(statistics.max_throughput or 0) }}</div>
+                <div class="label">最大吞吐量 (Mbps)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ "%.2f"|format(statistics.min_throughput or 0) }}</div>
+                <div class="label">最小吞吐量 (Mbps)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ "%.3f"|format((statistics.max_bler or 0) * 100) }}%</div>
+                <div class="label">最大 BLER</div>
+            </div>
+        </div>
+    </div>
+
+    {% if metrics and metrics|length > 0 %}
+    <div class="section">
+        <h2>3. 详细测试数据</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>时间 (s)</th>
+                    <th>吞吐量 (Mbps)</th>
+                    <th>BLER (%)</th>
+                    <th>功率 (dBm)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in metrics[:50] %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ "%.2f"|format(m.elapsed_time) }}</td>
+                    <td>{{ "%.2f"|format(m.throughput_mbps or 0) }}</td>
+                    <td>{{ "%.3f"|format((m.bler or 0) * 100) }}</td>
+                    <td>{{ m.power_dbm if m.power_dbm else '-' }}</td>
+                </tr>
+                {% endfor %}
+                {% if metrics|length > 50 %}
+                <tr>
+                    <td colspan="5" style="text-align: center; font-style: italic;">
+                        ... 共 {{ metrics|length }} 条记录，仅显示前 50 条 ...
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <h2>4. 测试结论</h2>
+        {% if run_info.status == 'completed' %}
+        <div class="conclusion pass">
+            <strong>测试完成</strong><br>
+            测试已按预期完成所有步骤。根据采集的 {{ statistics.sample_count or 0 }} 个数据点，
+            平均吞吐量为 {{ "%.2f"|format(statistics.avg_throughput or 0) }} Mbps，
+            平均 BLER 为 {{ "%.3f"|format((statistics.avg_bler or 0) * 100) }}%。
+        </div>
+        {% elif run_info.status == 'failed' %}
+        <div class="conclusion fail">
+            <strong>测试失败</strong><br>
+            测试执行过程中发生异常。{{ run_info.result_summary or '请检查系统日志获取详细信息。' }}
+        </div>
+        {% else %}
+        <div class="conclusion">
+            <strong>测试状态: {{ run_info.status }}</strong><br>
+            {{ run_info.result_summary or '测试未正常完成。' }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <p>本报告由 <strong>终端宽带标准信道验证系统</strong> 自动生成</p>
+        <p>Generated at {{ generated_at }} | Report ID: {{ run_info.id }}</p>
+    </div>
+</body>
+</html>

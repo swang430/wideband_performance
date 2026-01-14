@@ -54,5 +54,39 @@ class IntegratedTester:
         if self._driver: return self._driver.get_driver_info()
         return {"status": "Not Connected", "proxy": "Tester_Proxy"}
 
+    # === 场景测试扩展方法 ===
+
+    def start_signaling(self, tech: str = "NR"):
+        """启动信令连接"""
+        self._check(); self._driver.start_signaling(tech)
+
+    def stop_signaling(self):
+        """停止信令连接"""
+        self._check(); self._driver.stop_signaling()
+
+    def get_throughput(self) -> float:
+        """获取当前吞吐量 (Mbps)"""
+        self._check(); return self._driver.get_throughput()
+
+    def get_bler(self) -> float:
+        """获取当前 BLER"""
+        self._check(); return self._driver.get_bler()
+
+    def get_rsrp(self) -> float:
+        """获取 RSRP (dBm)"""
+        self._check(); return self._driver.get_rsrp()
+
+    def get_sinr(self) -> float:
+        """获取 SINR (dB)"""
+        self._check(); return self._driver.get_sinr()
+
+    def configure_cell(self, freq_hz: float, bandwidth_mhz: float, power_dbm: float):
+        """配置小区参数"""
+        self._check(); self._driver.configure_cell(freq_hz, bandwidth_mhz, power_dbm)
+
+    def trigger_handover(self, target_config: dict):
+        """触发小区切换"""
+        self._check(); self._driver.trigger_handover(target_config)
+
     def _check(self):
         if not self._driver: raise ConnectionError("Tester 尚未连接")

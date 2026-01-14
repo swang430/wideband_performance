@@ -5,6 +5,11 @@ numpy
 pure-python-adb
 pyyaml
 pytest
+pytest-asyncio
+httpx
 fastapi
 uvicorn[standard]
-websocketspython-multipart
+websockets
+python-multipart
+jinja2
+weasyprint
