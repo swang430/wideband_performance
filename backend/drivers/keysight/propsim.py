@@ -22,6 +22,16 @@ class PROPSIM_Driver(GenericChannelEmulator):
         if "0," not in err:
             self.logger.error(f"PROPSIM 加载模型报错: {err}")
 
+    def set_velocity(self, velocity_kmh: float):
+        """
+        设置移动速度 (km/h)。
+        Ref: Propsim User Reference (ATE Commands)
+        Command: DIAGnostic:SIMUlation:MOBilespeed:MANual:CH <ch>, <speed>
+        """
+        self.logger.info(f"PROPSIM 设置速度: {velocity_kmh} km/h")
+        # 对通道 1 设置速度
+        self.write(f"DIAGnostic:SIMUlation:MOBilespeed:MANual:CH 1,{velocity_kmh}")
+
     def rf_on(self):
         """
         开始仿真并开启发射。

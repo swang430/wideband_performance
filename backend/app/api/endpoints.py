@@ -204,27 +204,75 @@ async def run_sequencer_task():
     state.is_running = False
     manager.sync_broadcast("测试任务已结束")
 
+class ScenarioInfo(BaseModel):
+    filename: str
+    id: str
+    name: str
+    version: str
+
+@router.get("/scenarios", response_model=List[ScenarioInfo])
+async def list_scenarios():
+    """
+    扫描并列出所有可用的测试场景文件。
+    """
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    scenarios_dir = os.path.join(base_dir, "scenarios")
+    
+    results = []
+    if not os.path.exists(scenarios_dir):
+        return []
+        
+    for f in os.listdir(scenarios_dir):
+        if f.endswith(".yaml") or f.endswith(".yml"):
+            try:
+                with open(os.path.join(scenarios_dir, f), 'r', encoding='utf-8') as file:
+                    data = yaml.safe_load(file)
+                    meta = data.get('metadata', {})
+                    results.append(ScenarioInfo(
+                        filename=f,
+                        id=meta.get('id', 'unknown'),
+                        name=meta.get('name', f),
+                        version=meta.get('version', '1.0')
+                    ))
+            except Exception as e:
+                print(f"Error loading scenario {f}: {e}")
+    
+    return results
+
 @router.post("/test/start", response_model=TestControlResponse)
-async def start_test(background_tasks: BackgroundTasks):
+async def start_test(background_tasks: BackgroundTasks, filename: Optional[str] = None):
     if state.is_running:
         return {"message": "Test is already running", "running": True}
 
-    config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "config.yaml")
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    config_path = os.path.join(base_dir, "config.yaml")
     loader = ConfigLoader(config_path)
-    config = loader.load()
+    base_config = loader.load()
 
+    # 如果指定了场景文件，加载它
+    target_scenario = None
+    if filename:
+        scenario_path = os.path.join(base_dir, "scenarios", filename)
+        if os.path.exists(scenario_path):
+            with open(scenario_path, 'r', encoding='utf-8') as f:
+                target_scenario = yaml.safe_load(f)
+    
     # 初始化全局 Sequencer
     state.sequencer = TestSequencer(
-        config, 
-        simulation_mode=True, # 默认模拟，实际应从 Config 或 Request 读取
+        base_config, 
+        simulation_mode=True,
         log_callback=manager.sync_broadcast
     )
     state.is_running = True
     
-    # 后台运行
+    # 如果有特定场景，将它传递给 Sequencer (我们需要修改 run_sequencer_task 来支持参数)
+    # 这里为了简单，我们将 target_scenario 注入到 sequencer 的某个属性中，或者修改 run 方法
+    if target_scenario:
+        state.sequencer.current_scenario = target_scenario
+
     background_tasks.add_task(run_sequencer_task)
     
-    return {"message": "Test started", "running": True}
+    return {"message": f"Test started ({filename if filename else 'Default'})", "running": True}
 
 @router.post("/test/stop", response_model=TestControlResponse)
 async def stop_test():

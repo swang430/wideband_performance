@@ -28,6 +28,16 @@ class Vertex_Driver(GenericChannelEmulator):
         else:
             self.logger.info("Vertex 场景加载成功")
 
+    def set_velocity(self, velocity_kmh: float):
+        """
+        设置移动速度 (km/h)。
+        Ref: Vertex User Guide, p.69 (MSVelocity parameter)
+        Command: CHM1:GCM:PATH1:MSVelocity <val>
+        """
+        self.logger.info(f"Vertex 设置速度: {velocity_kmh} km/h (Target: CH1/Path1)")
+        # 假设当前模型处于 GCM 模式，或者 Vertex 能智能识别
+        self.write(f"CHM1:GCM:PATH1:MSVelocity {velocity_kmh}")
+
     def rf_on(self):
         """
         开始播放场景。

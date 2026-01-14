@@ -1,110 +1,192 @@
-INFO:     Started server process [93856]
+INFO:     Started server process [43378]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-2026-01-11 22:47:07,012 - INFO - 正在从 /Users/Simon/Tools/终端宽带标准信道验证系统/backend/config.yaml 加载配置
-2026-01-11 22:47:07,018 - INFO - 正在初始化仪器连接...
-2026-01-11 22:47:07,018 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
-2026-01-11 22:47:07,018 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
-2026-01-11 22:47:07,019 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
-2026-01-11 22:47:07,019 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
-2026-01-11 22:47:07,019 - INFO - ✅ VNA 连接成功
-2026-01-11 22:47:07,019 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
-2026-01-11 22:47:07,019 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
-2026-01-11 22:47:07,019 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
-2026-01-11 22:47:07,019 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
-2026-01-11 22:47:07,019 - INFO - ✅ VSG 连接成功
-2026-01-11 22:47:07,019 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
-2026-01-11 22:47:07,020 - INFO - [模拟] 识别到 IDN: Spirent,Vertex,Simulated,1.0
-2026-01-11 22:47:07,020 - INFO - 识别到仪表 (Vertex)，加载驱动: Vertex_Driver
-2026-01-11 22:47:07,020 - INFO - [模拟] 已连接到 Vertex，地址: TCPIP0::192.168.1.102::inst0::INSTR
-2026-01-11 22:47:07,020 - INFO - ✅ ChanEm 连接成功
-2026-01-11 22:47:07,020 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
-2026-01-11 22:47:07,020 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
-2026-01-11 22:47:07,020 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
-2026-01-11 22:47:07,020 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
-2026-01-11 22:47:07,020 - INFO - ✅ Tester 连接成功
-2026-01-11 22:47:07,020 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
-2026-01-11 22:47:07,020 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
-2026-01-11 22:47:07,020 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
-2026-01-11 22:47:07,020 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
-2026-01-11 22:47:07,020 - INFO - ✅ SpecAn 连接成功
-INFO:     127.0.0.1:64306 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64307 - "WebSocket /api/v1/ws/logs" [accepted]
-2026-01-11 22:47:07,042 - INFO - 正在从 /Users/Simon/Tools/终端宽带标准信道验证系统/backend/config.yaml 加载配置
-2026-01-11 22:47:07,043 - INFO - 正在初始化仪器连接...
-2026-01-11 22:47:07,044 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
-2026-01-11 22:47:07,044 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
-2026-01-11 22:47:07,044 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
-2026-01-11 22:47:07,044 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
-2026-01-11 22:47:07,044 - INFO - ✅ VNA 连接成功
-2026-01-11 22:47:07,044 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
-2026-01-11 22:47:07,044 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
-2026-01-11 22:47:07,044 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
-2026-01-11 22:47:07,044 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
-2026-01-11 22:47:07,044 - INFO - ✅ VSG 连接成功
-2026-01-11 22:47:07,044 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
-2026-01-11 22:47:07,044 - INFO - [模拟] 识别到 IDN: Spirent,Vertex,Simulated,1.0
-2026-01-11 22:47:07,044 - INFO - 识别到仪表 (Vertex)，加载驱动: Vertex_Driver
-2026-01-11 22:47:07,044 - INFO - [模拟] 已连接到 Vertex，地址: TCPIP0::192.168.1.102::inst0::INSTR
-2026-01-11 22:47:07,044 - INFO - ✅ ChanEm 连接成功
-2026-01-11 22:47:07,044 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
-2026-01-11 22:47:07,044 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
-2026-01-11 22:47:07,044 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
-2026-01-11 22:47:07,044 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
-2026-01-11 22:47:07,044 - INFO - ✅ Tester 连接成功
-2026-01-11 22:47:07,044 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
-2026-01-11 22:47:07,044 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
-2026-01-11 22:47:07,044 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
-2026-01-11 22:47:07,044 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
-2026-01-11 22:47:07,044 - INFO - ✅ SpecAn 连接成功
-INFO:     127.0.0.1:64306 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     connection closed
-INFO:     127.0.0.1:64308 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     127.0.0.1:62507 - "WebSocket /api/v1/ws/logs" [accepted]
+2026-01-13 22:52:00,225 - INFO - 正在从 /Users/Simon/Tools/终端宽带标准信道验证系统/backend/config.yaml 加载配置
+2026-01-13 22:52:00,229 - INFO - 正在初始化仪器连接...
+2026-01-13 22:52:00,229 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
+2026-01-13 22:52:00,229 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
+2026-01-13 22:52:00,229 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
+2026-01-13 22:52:00,229 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
+2026-01-13 22:52:00,229 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
+2026-01-13 22:52:00,229 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,229 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,229 - INFO - ✅ VNA 连接成功
+2026-01-13 22:52:00,229 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
+2026-01-13 22:52:00,230 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
+2026-01-13 22:52:00,230 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
+2026-01-13 22:52:00,230 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
+2026-01-13 22:52:00,230 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
+2026-01-13 22:52:00,230 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,230 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,230 - INFO - ✅ VSG 连接成功
+2026-01-13 22:52:00,230 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
+2026-01-13 22:52:00,230 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
+2026-01-13 22:52:00,230 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
+2026-01-13 22:52:00,230 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
+2026-01-13 22:52:00,230 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
+2026-01-13 22:52:00,230 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,230 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,230 - INFO - ✅ ChanEm 连接成功
+2026-01-13 22:52:00,230 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
+2026-01-13 22:52:00,230 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
+2026-01-13 22:52:00,230 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
+2026-01-13 22:52:00,230 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
+2026-01-13 22:52:00,230 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
+2026-01-13 22:52:00,230 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,230 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,230 - INFO - ✅ Tester 连接成功
+2026-01-13 22:52:00,230 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
+2026-01-13 22:52:00,230 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
+2026-01-13 22:52:00,230 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
+2026-01-13 22:52:00,230 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
+2026-01-13 22:52:00,230 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
+2026-01-13 22:52:00,230 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,230 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,230 - INFO - ✅ SpecAn 连接成功
+INFO:     127.0.0.1:62508 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
 INFO:     connection open
-2026-01-11 22:47:09,713 - INFO - 正在从 /Users/Simon/Tools/终端宽带标准信道验证系统/backend/config.yaml 加载配置
-INFO:     127.0.0.1:64306 - "POST /api/v1/test/start HTTP/1.1" 200 OK
-2026-01-11 22:47:09,717 - INFO - === 测试序列启动 ===
-2026-01-11 22:47:09,717 - INFO - 正在初始化仪器连接...
-2026-01-11 22:47:09,717 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
-2026-01-11 22:47:09,717 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
-2026-01-11 22:47:09,717 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
-2026-01-11 22:47:09,717 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
-2026-01-11 22:47:09,717 - INFO - ✅ VNA 连接成功
-2026-01-11 22:47:09,717 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
-2026-01-11 22:47:09,717 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
-2026-01-11 22:47:09,717 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
-2026-01-11 22:47:09,717 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
-2026-01-11 22:47:09,717 - INFO - ✅ VSG 连接成功
-2026-01-11 22:47:09,717 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
-2026-01-11 22:47:09,717 - INFO - [模拟] 识别到 IDN: Spirent,Vertex,Simulated,1.0
-2026-01-11 22:47:09,718 - INFO - 识别到仪表 (Vertex)，加载驱动: Vertex_Driver
-2026-01-11 22:47:09,718 - INFO - [模拟] 已连接到 Vertex，地址: TCPIP0::192.168.1.102::inst0::INSTR
-2026-01-11 22:47:09,718 - INFO - ✅ ChanEm 连接成功
-2026-01-11 22:47:09,718 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
-2026-01-11 22:47:09,718 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
-2026-01-11 22:47:09,718 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
-2026-01-11 22:47:09,718 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
-2026-01-11 22:47:09,718 - INFO - ✅ Tester 连接成功
-2026-01-11 22:47:09,718 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
-2026-01-11 22:47:09,718 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
-2026-01-11 22:47:09,718 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
-2026-01-11 22:47:09,718 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
-2026-01-11 22:47:09,718 - INFO - ✅ SpecAn 连接成功
-2026-01-11 22:47:09,718 - INFO - 正在初始化 DUT...
-2026-01-11 22:47:09,718 - INFO - DUT 已通过 ADB 连接
-2026-01-11 22:47:09,718 - INFO - ✅ DUT 连接成功
-2026-01-11 22:47:09,718 - INFO - --- 开始执行用例: throughput_test_5g ---
-2026-01-11 22:47:09,718 - INFO - -> 切换测试频率: 2400.0 MHz
-2026-01-11 22:47:09,719 - INFO - 设置频率: 2400000000.0 Hz
-2026-01-11 22:47:09,719 - INFO - 射频输出: ON
-2026-01-11 22:47:09,719 - INFO -    开始打流 (持续 2s)...
-2026-01-11 22:47:11,721 - INFO -    频率 2400.0 MHz 测试完成
-2026-01-11 22:47:11,721 - INFO - -> 切换测试频率: 5000.0 MHz
-2026-01-11 22:47:11,722 - INFO - 设置频率: 5000000000.0 Hz
-2026-01-11 22:47:11,722 - INFO - 射频输出: ON
-2026-01-11 22:47:11,722 - INFO -    开始打流 (持续 2s)...
-2026-01-11 22:47:13,722 - INFO -    频率 5000.0 MHz 测试完成
-2026-01-11 22:47:13,722 - INFO - 射频输出: OFF
-2026-01-11 22:47:13,722 - INFO - 正在断开所有仪器连接...
-2026-01-11 22:47:13,722 - INFO - === 测试序列结束 ===
+INFO:     127.0.0.1:62509 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+2026-01-13 22:52:00,255 - INFO - 正在从 /Users/Simon/Tools/终端宽带标准信道验证系统/backend/config.yaml 加载配置
+2026-01-13 22:52:00,256 - INFO - 正在初始化仪器连接...
+2026-01-13 22:52:00,257 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
+2026-01-13 22:52:00,257 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
+2026-01-13 22:52:00,257 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
+2026-01-13 22:52:00,257 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
+2026-01-13 22:52:00,257 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
+2026-01-13 22:52:00,257 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,257 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,257 - INFO - ✅ VNA 连接成功
+2026-01-13 22:52:00,257 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
+2026-01-13 22:52:00,257 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
+2026-01-13 22:52:00,257 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
+2026-01-13 22:52:00,257 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
+2026-01-13 22:52:00,258 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
+2026-01-13 22:52:00,258 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,258 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,258 - INFO - ✅ VSG 连接成功
+2026-01-13 22:52:00,258 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
+2026-01-13 22:52:00,258 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
+2026-01-13 22:52:00,258 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
+2026-01-13 22:52:00,258 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
+2026-01-13 22:52:00,259 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
+2026-01-13 22:52:00,259 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,259 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,259 - INFO - ✅ ChanEm 连接成功
+2026-01-13 22:52:00,259 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
+2026-01-13 22:52:00,259 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
+2026-01-13 22:52:00,259 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
+2026-01-13 22:52:00,259 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
+2026-01-13 22:52:00,259 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
+2026-01-13 22:52:00,259 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,259 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,259 - INFO - ✅ Tester 连接成功
+2026-01-13 22:52:00,259 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
+2026-01-13 22:52:00,259 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
+2026-01-13 22:52:00,259 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
+2026-01-13 22:52:00,259 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
+2026-01-13 22:52:00,259 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
+2026-01-13 22:52:00,259 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:00,259 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:00,259 - INFO - ✅ SpecAn 连接成功
+INFO:     127.0.0.1:62508 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62509 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62510 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     connection open
+INFO:     connection closed
+2026-01-13 22:52:04,964 - INFO - 正在从 /Users/Simon/Tools/终端宽带标准信道验证系统/backend/config.yaml 加载配置
+INFO:     127.0.0.1:62509 - "POST /api/v1/test/start?filename=dynamic_high_speed_train.yaml HTTP/1.1" 200 OK
+2026-01-13 22:52:04,973 - INFO - Config Keys: ['instruments', 'dut', 'test_cases']
+2026-01-13 22:52:04,973 - INFO - 正在初始化仪器连接...
+2026-01-13 22:52:04,973 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
+2026-01-13 22:52:04,973 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
+2026-01-13 22:52:04,973 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
+2026-01-13 22:52:04,973 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
+2026-01-13 22:52:04,973 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
+2026-01-13 22:52:04,973 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:04,973 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:04,973 - INFO - ✅ VNA 连接成功
+2026-01-13 22:52:04,973 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
+2026-01-13 22:52:04,974 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
+2026-01-13 22:52:04,974 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
+2026-01-13 22:52:04,974 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
+2026-01-13 22:52:04,974 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
+2026-01-13 22:52:04,974 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:04,974 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:04,974 - INFO - ✅ VSG 连接成功
+2026-01-13 22:52:04,974 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
+2026-01-13 22:52:04,974 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
+2026-01-13 22:52:04,974 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
+2026-01-13 22:52:04,974 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
+2026-01-13 22:52:04,974 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
+2026-01-13 22:52:04,974 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:04,974 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:04,974 - INFO - ✅ ChanEm 连接成功
+2026-01-13 22:52:04,974 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
+2026-01-13 22:52:04,974 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
+2026-01-13 22:52:04,974 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
+2026-01-13 22:52:04,974 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
+2026-01-13 22:52:04,974 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
+2026-01-13 22:52:04,974 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:04,974 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:04,974 - INFO - ✅ Tester 连接成功
+2026-01-13 22:52:04,974 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
+2026-01-13 22:52:04,974 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
+2026-01-13 22:52:04,974 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
+2026-01-13 22:52:04,974 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
+2026-01-13 22:52:04,974 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
+2026-01-13 22:52:04,974 - INFO - 执行复位 (*RST)...
+2026-01-13 22:52:04,974 - INFO - 错误队列已清除 (*CLS)
+2026-01-13 22:52:04,974 - INFO - ✅ SpecAn 连接成功
+2026-01-13 22:52:04,974 - INFO - 正在初始化 DUT...
+2026-01-13 22:52:04,974 - INFO - DUT 已通过 ADB 连接
+2026-01-13 22:52:04,974 - INFO - ✅ DUT 连接成功
+2026-01-13 22:52:04,974 - INFO - 加载场景文件: 高铁 350km/h 移动性测试
+2026-01-13 22:52:04,974 - INFO - >>> 开始场景: 未命名场景 (预计耗时 60s) <<<
+2026-01-13 22:52:04,974 - INFO - 执行事件: [channel_emulator] load_channel_model {'model_name': '3GPP_HST_SCENARIO.scn'} # 加载 3GPP HST 信道模型
+2026-01-13 22:52:04,975 - INFO - PROPSIM 加载模型: 3GPP_HST_SCENARIO.scn
+2026-01-13 22:52:04,975 - ERROR - PROPSIM 加载模型报错: SIM_DATA
+2026-01-13 22:52:06,995 - INFO - 执行事件: [channel_emulator] rf_on {} 
+2026-01-13 22:52:06,995 - INFO - PROPSIM: 仿真已启动
+2026-01-13 22:52:10,026 - INFO - 执行事件: [channel_emulator] set_velocity {'velocity_kmh': 50} # 列车启动: 50 km/h
+2026-01-13 22:52:10,026 - INFO - PROPSIM 设置速度: 50 km/h
+2026-01-13 22:52:20,026 - INFO - 执行事件: [channel_emulator] set_velocity {'velocity_kmh': 350} # 达到最高速: 350 km/h
+2026-01-13 22:52:20,027 - INFO - PROPSIM 设置速度: 350 km/h
+2026-01-13 22:52:49,997 - INFO - 执行事件: [channel_emulator] set_velocity {'velocity_kmh': 100} # 减速进站: 100 km/h
+2026-01-13 22:52:50,000 - INFO - PROPSIM 设置速度: 100 km/h
+2026-01-13 22:52:59,995 - INFO - 执行事件: [channel_emulator] set_velocity {'velocity_kmh': 0} # 停车
+2026-01-13 22:52:59,996 - INFO - PROPSIM 设置速度: 0 km/h
+2026-01-13 22:53:05,050 - INFO - 执行事件: [channel_emulator] rf_off {} 
+2026-01-13 22:53:05,056 - INFO - PROPSIM: 所有射频输出已关闭
+2026-01-13 22:53:05,157 - INFO - >>> 场景执行流结束 <<<
+2026-01-13 22:53:05,157 - INFO - 正在断开所有仪器连接...
+2026-01-13 22:53:05,157 - INFO - === 测试序列关闭 ===
+INFO:     127.0.0.1:62711 - "POST /api/v1/test/stop HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:51497 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51498 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51497 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51499 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     127.0.0.1:51498 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:51500 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:57000 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57001 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57000 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57002 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     127.0.0.1:57001 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:57003 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:61453 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61454 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61453 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61455 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     127.0.0.1:61454 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:61456 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     connection open

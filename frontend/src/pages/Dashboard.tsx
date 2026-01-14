@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { 
-  Typography, Container, Grid, Card, CardContent, CardActions, Button, Chip, Box, CircularProgress, Alert, Paper
+  Typography, Container, Grid, Card, CardContent, CardActions, Button, Chip, Box, CircularProgress, Alert, Paper,
+  FormControl, InputLabel, Select, MenuItem
 } from '@mui/material';
 import { 
   Refresh as RefreshIcon, 
@@ -33,6 +34,16 @@ interface InstrumentStatus {
 }
 
 /**
+ * 场景信息接口
+ */
+interface ScenarioInfo {
+  filename: string;
+  id: string;
+  name: string;
+  version: string;
+}
+
+/**
  * 根据仪表 ID 返回对应的 Material Icon
  * @param id 仪表标识符
  */
@@ -49,11 +60,14 @@ const getIcon = (id: string) => {
  * 展示所有已配置仪表的实时连接状态和基本信息
  */
 export default function Dashboard() {
+  // 状态管理
   const [instruments, setInstruments] = useState<InstrumentStatus[]>([]);
+  const [scenarios, setScenarios] = useState<ScenarioInfo[]>([]);
+  const [selectedScenario, setSelectedScenario] = useState<string>('');
+  
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   
-  // 测试控制状态
   const [isRunning, setIsRunning] = useState(false);
   const [logs, setLogs] = useState<string[]>([]);
   const logEndRef = useRef<HTMLDivElement>(null);
@@ -75,14 +89,30 @@ export default function Dashboard() {
     }
   };
 
-  // 组件加载时自动获取一次状态
+  /**
+   * 获取可用测试场景列表
+   */
+  const fetchScenarios = async () => {
+    try {
+      const res = await axios.get<ScenarioInfo[]>('http://127.0.0.1:8000/api/v1/scenarios');
+      setScenarios(res.data);
+      // 默认选中第一个
+      if (res.data.length > 0) {
+        setSelectedScenario(res.data[0].filename);
+      }
+    } catch (err) {
+      console.error("Failed to load scenarios", err);
+    }
+  };
+
+  // 组件加载时初始化
   useEffect(() => {
     fetchStatus();
+    fetchScenarios();
   }, []);
 
   // WebSocket 日志连接
   useEffect(() => {
-    // 注意：路由前缀是 /api/v1
     const ws = new WebSocket('ws://127.0.0.1:8000/api/v1/ws/logs');
     
     ws.onopen = () => {
@@ -91,7 +121,6 @@ export default function Dashboard() {
 
     ws.onmessage = (event) => {
       setLogs(prev => {
-        // 限制日志长度，防止内存溢出
         const newLogs = [...prev, event.data];
         if (newLogs.length > 500) return newLogs.slice(-500);
         return newLogs;
@@ -115,9 +144,14 @@ export default function Dashboard() {
   // 开始测试
   const handleStart = async () => {
     try {
-      await axios.post('http://127.0.0.1:8000/api/v1/test/start');
+      // 构造请求 URL，带上 filename 参数
+      const url = selectedScenario 
+        ? `http://127.0.0.1:8000/api/v1/test/start?filename=${selectedScenario}`
+        : 'http://127.0.0.1:8000/api/v1/test/start';
+      
+      await axios.post(url);
       setIsRunning(true);
-      setLogs(prev => [...prev, ">>> 发送测试启动指令..."]);
+      setLogs(prev => [...prev, `>>> 发送启动指令: ${selectedScenario || 'Default'}...`]);
     } catch (err) {
       alert("启动失败");
     }
@@ -139,13 +173,31 @@ export default function Dashboard() {
       {/* 页面头部: 标题与操作栏 */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
          <Typography variant="h4">仪表状态监控</Typography>
-         <Box sx={{ display: 'flex', gap: 2 }}>
+         
+         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            {/* 场景选择器 */}
+            <FormControl sx={{ minWidth: 220 }} size="small">
+              <InputLabel>选择测试场景</InputLabel>
+              <Select
+                value={selectedScenario}
+                label="选择测试场景"
+                onChange={(e) => setSelectedScenario(e.target.value)}
+                disabled={isRunning}
+              >
+                {scenarios.map((s) => (
+                  <MenuItem key={s.filename} value={s.filename}>
+                    {s.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <Button 
               variant="contained" 
               color="success"
               startIcon={<PlayIcon />} 
               onClick={handleStart} 
-              disabled={isRunning}
+              disabled={isRunning || !selectedScenario}
             >
               开始测试
             </Button>
@@ -164,7 +216,7 @@ export default function Dashboard() {
               onClick={fetchStatus} 
               disabled={loading}
             >
-              刷新状态
+              刷新
             </Button>
          </Box>
       </Box>

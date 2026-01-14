@@ -16,8 +16,8 @@ class ChannelEmulator:
 
     def connect(self):
         if self.simulation_mode:
-            # 模拟 Spirent Vertex
-            fake_idn = "Spirent,Vertex,Simulated,1.0"
+            # 模拟 Keysight PROPSIM F64
+            fake_idn = "Keysight,PROPSIM F64,Simulated,v10.2"
             self.logger.info(f"[模拟] 识别到 IDN: {fake_idn}")
             self._driver = DriverFactory.create_chan_em_driver(self.resource_name, fake_idn, True)
             self._driver.connect()
@@ -51,6 +51,9 @@ class ChannelEmulator:
 
     def set_output_power(self, power_dbm: float):
         self._check(); self._driver.set_output_power(power_dbm)
+
+    def set_velocity(self, velocity_kmh: float):
+        self._check(); self._driver.set_velocity(velocity_kmh)
 
     def rf_on(self):
         self._check(); self._driver.rf_on()

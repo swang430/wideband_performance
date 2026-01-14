@@ -1,0 +1,33 @@
+# 3GPP TS 38.521-1 Section 7.3: Reference Sensitivity
+# 场景: 5G NR N78 频段参考灵敏度测试
+
+metadata:
+  id: "3GPP_7_3_N78"
+  name: "5G N78 参考灵敏度测试"
+  version: "1.0"
+  author: "Gemini System"
+
+config:
+  type: "sensitivity"
+  strategy: "algorithm"
+  
+  # 射频参数
+  carrier_freq_hz: 3500e6
+  bandwidth_mhz: 100
+  subcarrier_spacing_khz: 30
+  
+  # 搜索算法参数
+  search:
+    start_power_dbm: -70.0
+    end_power_dbm: -115.0
+    step_db: 0.5
+    target_bler: 0.05  # 3GPP 标准通常要求吞吐量 > 95%，即 BLER < 5%
+    settling_time_s: 1.0
+
+  # 预期仪表配置
+  instruments:
+    tester:
+      action: "initialize_lte_signaling" # 示例动作
+    channel_emulator:
+      model: "Static_LOS.scn"
+      action: "load_channel_model"

@@ -1,0 +1,28 @@
+# 3GPP TS 38.521-1 Section 7.6: Blocking Characteristics
+# 场景: 5G NR 带内单音阻塞干扰测试
+
+metadata:
+  id: "3GPP_7_6_BLOCKING"
+  name: "5G 带内单音阻塞干扰测试"
+  version: "1.0"
+
+config:
+  type: "blocking"
+  strategy: "hybrid" # 混合模式：主信号固定，干扰信号扫描
+  
+  # 主信号配置 (来自综测仪)
+  main_signal:
+    freq_hz: 3500e6
+    power_dbm: -90.0 # 通常设为 REFSENS + 3dB
+    
+  # 干扰信号配置 (来自 VSG)
+  interferer:
+    type: "CW" # 单音
+    freq_offsets_mhz: [-20, -15, 15, 20] # 相对于中心频点的偏移
+    start_power_dbm: -60.0
+    end_power_dbm: -30.0
+    step_db: 2.0
+    
+  # 判定标准
+  limit:
+    max_bler: 0.05

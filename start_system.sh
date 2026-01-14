@@ -33,9 +33,6 @@ check_and_clean_port() {
     
     if [ ! -z "$pid" ]; then
         echo -e "${YELLOW}警告: 端口 $port ($name) 正被进程 PID $pid 占用。${NC}"
-        # 尝试获取进程名称
-        local proc_name=$(ps -p $pid -o comm=)
-        echo -e "      进程: $proc_name"
         
         # 交互询问
         read -p "是否终止该进程以继续启动? [y/N]: " choice
@@ -51,15 +48,14 @@ check_and_clean_port() {
                 else
                     echo -e "${GREEN}端口 $port 已释放。${NC}"
                 fi
-                ;; 
+                ;;
             * ) 
                 echo -e "${RED}启动中止: 端口冲突。${NC}"
                 exit 1
-                ;; 
+                ;;
         esac
     fi
 }
-
 # 清理函数：按下 Ctrl+C 时调用
 cleanup() {
     echo -e "\n${YELLOW}正在停止所有服务...${NC}"

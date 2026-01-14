@@ -1,0 +1,74 @@
+# 动态场景: 高铁移动性测试 (HST - High Speed Train)
+# 描述: 模拟终端在高铁场景下的接收性能。
+# 关键特征: 快速变化的多普勒频移 (Doppler Shift) 和频繁的小区切换 (此处简化为单小区多普勒变化)。
+
+metadata:
+  id: "DYN_HST_350KMH"
+  name: "高铁 350km/h 移动性测试"
+  version: "1.0"
+  author: "Gemini System"
+
+config:
+  type: "dynamic_scenario"
+  total_duration: 60
+  
+  # 初始环境配置
+  setup:
+    carrier_freq_hz: 3500e6
+    cell_power_dbm: -85.0 # 中等信号强度
+    
+  # 时间轴事件
+  timeline:
+    # T+0: 初始化，加载 HST 模型
+    - time: 0
+      target: "channel_emulator"
+      action: "load_channel_model"
+      params: { model_name: "3GPP_HST_SCENARIO.scn" }
+      comment: "加载 3GPP HST 信道模型"
+
+    # T+2: 启动信道
+    - time: 2
+      target: "channel_emulator"
+      action: "rf_on"
+      params: {}
+      
+    # T+5: 列车启动，设置初始速度/多普勒
+    # 假设驱动支持 set_doppler_shift 或 set_velocity 指令
+    - time: 5
+      target: "channel_emulator"
+      action: "set_velocity" 
+      params: { velocity_kmh: 50 }
+      comment: "列车启动: 50 km/h"
+
+    # T+15: 加速到最高速
+    - time: 15
+      target: "channel_emulator"
+      action: "set_velocity"
+      params: { velocity_kmh: 350 }
+      comment: "达到最高速: 350 km/h"
+
+    # T+45: 开始减速进站
+    - time: 45
+      target: "channel_emulator"
+      action: "set_velocity"
+      params: { velocity_kmh: 100 }
+      comment: "减速进站: 100 km/h"
+
+    # T+55: 停车
+    - time: 55
+      target: "channel_emulator"
+      action: "set_velocity"
+      params: { velocity_kmh: 0 }
+      comment: "停车"
+
+    # T+60: 结束
+    - time: 60
+      target: "channel_emulator"
+      action: "rf_off"
+      params: {}
+
+  # 数据采样配置
+  metrics:
+    interval: 0.2 # 200ms 采样一次，捕捉快速变化
+    targets:
+      - "integrated_tester" # 采样 BLER/Throughput

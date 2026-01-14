@@ -11,21 +11,21 @@ class GenericVSG(BaseInstrument):
 
     def set_frequency(self, frequency_hz: float):
         """
-        设置射频频率 (Standard SCPI: FREQ).
+        [标准接口] 设置射频频率 (Standard SCPI: FREQ).
         """
         self.write(f"FREQ {frequency_hz}")
         self.logger.info(f"设置频率: {frequency_hz} Hz")
 
     def set_power(self, power_dbm: float):
         """
-        设置射频功率 (Standard SCPI: POW).
+        [标准接口] 设置射频功率 (Standard SCPI: POW).
         """
         self.write(f"POW {power_dbm}")
         self.logger.info(f"设置功率: {power_dbm} dBm")
 
     def enable_output(self, enable: bool):
         """
-        开关射频输出 (Standard SCPI: OUTP).
+        [标准接口] 开关射频输出 (Standard SCPI: OUTP).
         """
         state = "ON" if enable else "OFF"
         self.write(f"OUTP {state}")
@@ -33,9 +33,7 @@ class GenericVSG(BaseInstrument):
 
     def load_waveform(self, waveform_name: str):
         """
-        加载波形文件。
-        由于各厂商路径格式差异极大，通用驱动仅提供最基础的实现或抛出警告。
+        [标准接口] 加载波形文件。
         """
-        # 尝试使用 Keysight 风格的通用加载指令，但不保证成功
-        self.logger.warning("正在使用通用 SCPI 指令加载波形，可能不适用于所有设备。建议使用专用驱动。")
+        self.logger.warning("通用驱动使用 Keysight 风格 ARB 指令，可能不适用。")
         self.write(f"SOUR:RAD:ARB:LOAD '{waveform_name}'")

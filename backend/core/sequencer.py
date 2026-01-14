@@ -1,6 +1,5 @@
 import logging
 import asyncio
-import time
 import traceback
 from datetime import datetime
 from typing import Dict, Any, List, Optional, Callable
@@ -15,6 +14,7 @@ from dut.android_controller import AndroidController
 class TestSequencer:
     """
     编排测试执行的核心逻辑 (Asyncio Version).
+    支持 Timeline Strategy (动态场景) 和 Algorithm Strategy (灵敏度/阻塞)。
     """
     def __init__(self, config: Dict[str, Any], simulation_mode: bool = False, log_callback: Optional[Callable[[str], None]] = None):
         self.config = config
@@ -23,12 +23,14 @@ class TestSequencer:
         self.instruments = {}
         self.dut = None
         self.log_callback = log_callback
+        
         self._running = False
+        self._start_time: Optional[float] = None
+        self._elapsed_time = 0.0
+        self.current_scenario: Optional[Dict[str, Any]] = None # 当前加载的场景
+        self.metrics_history = []
 
     def _log(self, message: str, level: str = "INFO"):
-        """
-        统一日志记录：同时输出到 Python Logger 和 回调函数 (WebSocket)。
-        """
         timestamp = datetime.now().strftime("%H:%M:%S")
         formatted_msg = f"[{timestamp}] {message}"
         
@@ -46,13 +48,9 @@ class TestSequencer:
                 self.logger.error(f"日志回调执行失败: {e}")
 
     def initialize_instruments(self):
-        """
-        初始化并连接配置中定义的所有仪器。
-        """
         inst_config = self.config.get('instruments', {})
         self._log("正在初始化仪器连接...")
         
-        # 定义仪器工厂映射
         factory_map = {
             'vna': (VNA, "VNA"),
             'vsg': (VSG, "VSG"),
@@ -63,6 +61,10 @@ class TestSequencer:
 
         for key, (cls, default_name) in factory_map.items():
             if key in inst_config:
+                # 避免重复初始化
+                if key in self.instruments:
+                    continue
+
                 cfg = inst_config[key]
                 name = cfg.get('name', default_name)
                 address = cfg['address']
@@ -80,9 +82,6 @@ class TestSequencer:
                     traceback.print_exc()
 
     def initialize_dut(self):
-        """
-        初始化 DUT 控制。
-        """
         dut_conf = self.config.get('dut', {})
         device_id = dut_conf.get('device_id')
         self._log("正在初始化 DUT...")
@@ -93,125 +92,233 @@ class TestSequencer:
         except Exception as e:
             self._log(f"❌ DUT 连接失败: {e}", level="WARNING")
 
-    async def run(self):
+    # --- Test Strategy Implementations ---
+
+    async def _run_blocking_test(self, scenario_cfg: Dict[str, Any]):
         """
-        运行测试序列 (Async Entry)。
+        阻塞干扰测试 (Blocking Test)。
+        逻辑: 在主信号建立后，开启 VSG 干扰源，扫描不同频偏和功率。
         """
+        self._log(">>> 开始阻塞干扰测试 (Blocking) <<<")
         self._running = True
-        self._log("=== 测试序列启动 ===")
         
-        # 1. 初始化资源
-        self.initialize_instruments()
-        self.initialize_dut()
-
-        # 2. 执行测试用例
-        test_cases = self.config.get('test_cases', [])
-        for test in test_cases:
-            if not self._running: break
-            await self.run_test_case(test)
-
-        # 3. 清理
-        self.cleanup()
-        self._running = False
-
-    async def run_test_case(self, test_case: Dict[str, Any]):
-        """
-        执行单个测试用例。
-        """
-        name = test_case.get('name', 'Unknown')
-        self._log(f"--- 开始执行用例: {name} ---")
+        self._log(f"当前可用仪表: {list(self.instruments.keys())}")
         
-        t_type = test_case.get('type')
+        main_sig = scenario_cfg.get('main_signal', {})
+        interferer = scenario_cfg.get('interferer', {})
         try:
-            if t_type == 'throughput':
-                await self._run_throughput_test(test_case)
-            else:
-                self._log(f"跳过未知类型用例: {t_type}", level="WARNING")
-        except Exception as e:
-            self._log(f"❌ 用例 {name} 执行异常: {e}", level="ERROR")
-            import traceback
-            self.logger.error(traceback.format_exc())
+            limit_bler = float(scenario_cfg.get('limit', {}).get('max_bler', 0.05))
+        except ValueError:
+            limit_bler = 0.05
+        
+        # 1. 建立主连接
+        if 'integrated_tester' in self.instruments:
+            try:
+                center_freq = float(main_sig.get('freq_hz', 3500e6))
+                self._log(f"建立主连接: {center_freq/1e6} MHz")
+            except ValueError:
+                self._log(f"频率参数错误: {main_sig.get('freq_hz')}", level="ERROR")
+                return
 
-    async def _run_throughput_test(self, test_case: Dict[str, Any]):
-        try:
-            duration = int(test_case.get('duration', 10))
-            freqs = [float(f) for f in test_case.get('frequencies', [])]
-        except ValueError as e:
-            self._log(f"❌ 配置参数类型错误: {e}", level="ERROR")
-            return
+            # self.instruments['integrated_tester'].start_call()
+            await asyncio.sleep(1)
+        else:
+            self._log("未找到综测仪 (integrated_tester)，跳过建立连接", level="WARNING")
 
-        # 1. 准备信道环境
-        if 'chan_em' in self.instruments:
-            model = test_case.get('channel_model')
-            if model:
-                self._log(f"正在配置信道模拟器: {model}")
-                self.instruments['chan_em'].load_channel_model(model)
-                self.instruments['chan_em'].rf_on()
-
-        # 2. 准备综测仪 (如果存在)
-        if 'tester' in self.instruments:
-            self._log("正在建立综测仪信令连接...")
-            self.instruments['tester'].set_tech_standard("LTE") # 示例
-            self.instruments['tester'].start_call()
-            # 简单等待连接建立
-            await asyncio.sleep(2) 
-
-        # 3. 循环频率点测试
-        for freq in freqs:
+        # 2. 干扰扫描循环
+        start_p = interferer.get('start_power_dbm', -60)
+        end_p = interferer.get('end_power_dbm', -30)
+        step = interferer.get('step_db', 2)
+        offsets = interferer.get('freq_offsets_mhz', [])
+        
+        self._log(f"扫描频偏: {offsets}")
+        
+        for offset in offsets:
             if not self._running: break
             
-            self._log(f"-> 切换测试频率: {freq/1e6} MHz")
+            # 计算干扰频率
+            center_freq = main_sig.get('freq_hz', 3500e6)
+            interferer_freq = center_freq + (offset * 1e6)
+            self._log(f"=== 测试干扰频偏: {offset} MHz (Freq: {interferer_freq/1e6} MHz) ===")
             
-            # 配置 VSG (作为干扰源或信号源)
             if 'vsg' in self.instruments:
-                self.instruments['vsg'].set_frequency(freq)
+                self.instruments['vsg'].set_frequency(interferer_freq)
                 self.instruments['vsg'].enable_output(True)
             
-            # 配置频谱仪
-            if 'spec_an' in self.instruments:
-                self.instruments['spec_an'].set_center_frequency(freq)
-                self.instruments['spec_an'].set_span(100e6)
+            # 功率爬坡
+            current_p = start_p
+            while current_p <= end_p and self._running:
+                self._log(f"-> 干扰功率: {current_p} dBm")
+                if 'vsg' in self.instruments:
+                    self.instruments['vsg'].set_power(current_p)
+                
+                await asyncio.sleep(0.5) # 测量等待
+                
+                # 模拟 BLER: 功率越高，BLER 越高
+                sim_bler = 0.0
+                if self.simulation_mode and current_p > -40:
+                    sim_bler = (current_p + 40) * 0.05
+                
+                if sim_bler > limit_bler:
+                    self._log(f"!!! 阻塞失效点: {current_p} dBm (BLER {sim_bler*100:.1f}%) !!!", level="WARNING")
+                    break
+                
+                current_p += step
             
-            # 运行流量
-            self._log(f"   开始打流 (持续 {duration}s)...")
-            
-            if self.simulation_mode:
-                # 模拟进度条
-                for i in range(duration):
-                    if not self._running: break
-                    await asyncio.sleep(1)
-                    # self._log(f"   ... {i+1}/{duration}s")
-            elif self.dut:
-                # 真实 DUT 操作
-                # 注意: start_traffic 目前是同步阻塞的，未来应改为异步
-                self.dut.start_traffic("192.168.1.50", duration=duration)
-                await asyncio.sleep(duration)
-            
-            self._log(f"   频率 {freq/1e6} MHz 测试完成")
+            if 'vsg' in self.instruments:
+                self.instruments['vsg'].enable_output(False)
+                
+        self._running = False
 
-        # 4. 拆除环境
-        if 'vsg' in self.instruments:
-            self.instruments['vsg'].enable_output(False)
-        if 'chan_em' in self.instruments:
-            self.instruments['chan_em'].rf_off()
-        if 'tester' in self.instruments:
-            self.instruments['tester'].stop_call()
+    async def run_sensitivity_test(self, test_case: Dict[str, Any]):
+        """
+        灵敏度搜索测试 (闭环反馈控制)。
+        """
+        start_power = test_case.get('start_power', -70.0)
+        end_power = test_case.get('end_power', -110.0)
+        step = test_case.get('step', 1.0)
+        target_bler = test_case.get('target_bler', 0.05)
+        
+        self._log(f">>> 开始灵敏度测试 (目标 BLER: {target_bler*100}%) <<<")
+        self._running = True
+        
+        current_power = start_power
+        sensitivity_point = None
+        
+        while current_power >= end_power and self._running:
+            self._log(f"-> 设置下行功率: {current_power} dBm")
+            if 'vsg' in self.instruments:
+                self.instruments['vsg'].set_power(current_power)
+            
+            await asyncio.sleep(0.5)
+            
+            # 模拟 BLER
+            if self.simulation_mode:
+                current_bler = 0.0 if current_power > -100 else 0.1 * ((-100 - current_power))
+            else:
+                current_bler = 0.0 
+            
+            self._log(f"   当前 BLER: {current_bler*100:.2f}%")
+            
+            if current_bler > target_bler:
+                sensitivity_point = current_power
+                self._log(f"!!! 发现灵敏度点: {current_power} dBm !!!", level="WARNING")
+                break
+            
+            current_power -= step
+        
+        self._running = False
+
+    async def run_dynamic_scenario(self, scenario_config: Dict[str, Any]):
+        """执行基于时间轴的动态场景"""
+        name = scenario_config.get('name', '未命名场景')
+        total_duration = scenario_config.get('total_duration', 30)
+        timeline = scenario_config.get('timeline', [])
+        
+        # 按时间排序事件
+        events = sorted(timeline, key=lambda x: x['time'])
+        
+        self._log(f">>> 开始场景: {name} (预计耗时 {total_duration}s) <<<")
+        self._start_time = asyncio.get_event_loop().time()
+        self._running = True
+        
+        event_idx = 0
+        while self._elapsed_time < total_duration and self._running:
+            # 更新已流逝时间
+            self._elapsed_time = asyncio.get_event_loop().time() - self._start_time
+            
+            # 检查是否有待触发的事件
+            while event_idx < len(events) and events[event_idx]['time'] <= self._elapsed_time:
+                event = events[event_idx]
+                await self._execute_event(event)
+                event_idx += 1
+            
+            await asyncio.sleep(0.1) # Tick 精度 100ms
+
+        self._log(">>> 场景执行流结束 <<<")
+        self._running = False
+
+    async def _execute_event(self, event: Dict[str, Any]):
+        """执行单个时间轴事件"""
+        target = event.get('target')
+        action = event.get('action')
+        params = event.get('params', {})
+        comment = event.get('comment', '')
+
+        self._log(f"执行事件: [{target}] {action} {params} {f'# {comment}' if comment else ''}")
+        
+        if target in self.instruments:
+            inst = self.instruments[target]
+            try:
+                func = getattr(inst, action)
+                if asyncio.iscoroutinefunction(func):
+                    await func(**params)
+                else:
+                    func(**params)
+            except Exception as e:
+                self._log(f"事件执行失败: {e}", level="ERROR")
+        else:
+            self._log(f"未找到目标仪表: {target}", level="WARNING")
+
+    # --- Main Entry ---
+
+    async def run(self):
+        """入口函数：根据 current_scenario 分发任务"""
+        self._log(f"Config Keys: {list(self.config.keys())}")
+        # self._log(f"Scenario Keys: {list(self.current_scenario.keys()) if self.current_scenario else 'None'}")
+        
+        # 确保运行标志已开启
+        self._running = True 
+        
+        self.initialize_instruments()
+        self.initialize_dut()
+        
+        if self.current_scenario:
+            cfg = self.current_scenario.get('config', {})
+            test_type = cfg.get('type')
+            self._log(f"加载场景文件: {self.current_scenario.get('metadata', {}).get('name', 'Unknown')}")
+            
+            try:
+                if test_type == 'sensitivity':
+                    # 适配灵敏度参数
+                    search_cfg = cfg.get('search', {})
+                    adapt_cfg = {
+                        "start_power": search_cfg.get('start_power_dbm'),
+                        "end_power": search_cfg.get('end_power_dbm'),
+                        "step": search_cfg.get('step_db'),
+                        "target_bler": search_cfg.get('target_bler')
+                    }
+                    await self.run_sensitivity_test(adapt_cfg)
+                    
+                elif test_type == 'blocking':
+                    await self._run_blocking_test(cfg)
+
+                elif test_type == 'dynamic_scenario':
+                    # 动态场景通常需要整个 config 部分（包含 timeline）
+                    await self.run_dynamic_scenario(cfg)
+                    
+                else:
+                    self._log(f"未知的测试类型: {test_type}", level="ERROR")
+            finally:
+                self.cleanup()
+            return
+
+        # Default: 灵敏度测试 Demo
+        self._log("未指定场景，执行默认灵敏度测试...")
+        default_case = {
+            "name": "Default_Sensitivity",
+            "start_power": -90, "end_power": -110, "step": 2, "target_bler": 0.05
+        }
+        await self.run_sensitivity_test(default_case)
+        self.cleanup()
 
     def stop(self):
-        """
-        请求停止测试。
-        """
         self._log("收到停止信号，正在中止...")
         self._running = False
 
     def cleanup(self):
-        """
-        关闭连接。
-        """
         self._log("正在断开所有仪器连接...")
         for name, inst in self.instruments.items():
-            try:
-                inst.disconnect()
-            except:
-                pass
-        self._log("=== 测试序列结束 ===")
+            try: inst.disconnect()
+            except: pass
+        self._log("=== 测试序列关闭 ===")
