@@ -9,16 +9,16 @@ class Vertex_Driver(GenericChannelEmulator):
     def __init__(self, resource_name: str, name: str = "Spirent_Vertex", simulation_mode: bool = False):
         super().__init__(resource_name, name, simulation_mode)
 
-    def load_channel_model(self, model_name: str):
+    def load_channel_model(self, model: str):
         """
         加载场景文件 (.scn)。
         """
-        if not model_name.endswith(".scn"):
-            model_name += ".scn"
+        if not model.endswith(".scn"):
+            model += ".scn"
             
-        self.logger.info(f"Vertex 加载场景: {model_name}")
+        self.logger.info(f"Vertex 加载场景: {model}")
         # 根据 RPI 规范加载
-        self.write(f"SYS:FILE:LOAD '{model_name}'")
+        self.write(f"SYS:FILE:LOAD '{model}'")
         
         # 验证加载结果
         res = self.query("*OPC?")
@@ -28,15 +28,15 @@ class Vertex_Driver(GenericChannelEmulator):
         else:
             self.logger.info("Vertex 场景加载成功")
 
-    def set_velocity(self, velocity_kmh: float):
+    def set_velocity(self, kmh: float):
         """
         设置移动速度 (km/h)。
         Ref: Vertex User Guide, p.69 (MSVelocity parameter)
         Command: CHM1:GCM:PATH1:MSVelocity <val>
         """
-        self.logger.info(f"Vertex 设置速度: {velocity_kmh} km/h (Target: CH1/Path1)")
+        self.logger.info(f"Vertex 设置速度: {kmh} km/h (Target: CH1/Path1)")
         # 假设当前模型处于 GCM 模式，或者 Vertex 能智能识别
-        self.write(f"CHM1:GCM:PATH1:MSVelocity {velocity_kmh}")
+        self.write(f"CHM1:GCM:PATH1:MSVelocity {kmh}")
 
     def rf_on(self):
         """

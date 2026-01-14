@@ -43,8 +43,8 @@ class ChannelEmulator:
         if self._driver: return self._driver.get_driver_info()
         return {"status": "Not Connected", "proxy": "ChanEm_Proxy"}
 
-    def load_channel_model(self, model_name: str):
-        self._check(); self._driver.load_channel_model(model_name)
+    def load_channel_model(self, model: str):
+        self._check(); self._driver.load_channel_model(model)
 
     def set_input_power(self, power_dbm: float):
         self._check(); self._driver.set_input_power(power_dbm)
@@ -52,8 +52,8 @@ class ChannelEmulator:
     def set_output_power(self, power_dbm: float):
         self._check(); self._driver.set_output_power(power_dbm)
 
-    def set_velocity(self, velocity_kmh: float):
-        self._check(); self._driver.set_velocity(velocity_kmh)
+    def set_velocity(self, kmh: float):
+        self._check(); self._driver.set_velocity(kmh)
 
     def rf_on(self):
         self._check(); self._driver.rf_on()

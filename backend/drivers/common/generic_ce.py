@@ -8,18 +8,18 @@ class GenericChannelEmulator(BaseInstrument):
     def __init__(self, resource_name: str, name: str = "Generic_CE", simulation_mode: bool = False):
         super().__init__(resource_name, name, simulation_mode)
 
-    def set_velocity(self, velocity_kmh: float):
+    def set_velocity(self, kmh: float):
         """
         [标准接口] 设置移动速度 (km/h) 以模拟多普勒频移。
         """
         self.logger.warning("通用驱动未实现 set_velocity")
 
-    def load_channel_model(self, model_name: str):
+    def load_channel_model(self, model: str):
         """
         [标准接口] 加载信道模型文件。
         """
         self.logger.warning("通用驱动使用标准 MEM:LOAD 指令，可能不适用。")
-        self.write(f"MEM:LOAD:MODEL '{model_name}'")
+        self.write(f"MEM:LOAD:MODEL '{model}'")
 
     def set_input_power(self, power_dbm: float):
         """

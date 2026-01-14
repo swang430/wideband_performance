@@ -9,28 +9,28 @@ class PROPSIM_Driver(GenericChannelEmulator):
     def __init__(self, resource_name: str, name: str = "Keysight_PROPSIM", simulation_mode: bool = False):
         super().__init__(resource_name, name, simulation_mode)
 
-    def load_channel_model(self, model_name: str):
+    def load_channel_model(self, model: str):
         """
         加载仿真模型。
         """
-        self.logger.info(f"PROPSIM 加载模型: {model_name}")
+        self.logger.info(f"PROPSIM 加载模型: {model}")
         # 根据 PROPSIM ATE 语法，参数间空格，字符串通常不带引号
-        self.write(f"CALCulate:FILTer:FILE {model_name}")
+        self.write(f"CALCulate:FILTer:FILE {model}")
         
         # 检查错误
         err = self.query("SYSTem:ERRor?")
         if "0," not in err:
             self.logger.error(f"PROPSIM 加载模型报错: {err}")
 
-    def set_velocity(self, velocity_kmh: float):
+    def set_velocity(self, kmh: float):
         """
         设置移动速度 (km/h)。
         Ref: Propsim User Reference (ATE Commands)
         Command: DIAGnostic:SIMUlation:MOBilespeed:MANual:CH <ch>, <speed>
         """
-        self.logger.info(f"PROPSIM 设置速度: {velocity_kmh} km/h")
+        self.logger.info(f"PROPSIM 设置速度: {kmh} km/h")
         # 对通道 1 设置速度
-        self.write(f"DIAGnostic:SIMUlation:MOBilespeed:MANual:CH 1,{velocity_kmh}")
+        self.write(f"DIAGnostic:SIMUlation:MOBilespeed:MANual:CH 1,{kmh}")
 
     def rf_on(self):
         """
