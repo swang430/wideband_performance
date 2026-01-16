@@ -120,8 +120,8 @@ export default function Dashboard() {
       if (res.data.length > 0) {
         setSelectedScenario(res.data[0].filename);
       }
-    } catch (err) {
-      console.error("Failed to load scenarios", err);
+    } catch (_err) {
+      console.error("Failed to load scenarios", _err);
     }
   };
 

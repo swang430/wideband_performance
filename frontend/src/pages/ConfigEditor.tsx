@@ -97,8 +97,8 @@ export default function ConfigEditor() {
       );
       setOriginalContent(content);
       setSnackbar({ open: true, message: '保存成功', severity: 'success' });
-    } catch (err: any) {
-      const detail = err.response?.data?.detail || '保存失败';
+    } catch (err) {
+      const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail || '保存失败';
       setSnackbar({ open: true, message: detail, severity: 'error' });
       console.error(err);
     } finally {
@@ -134,8 +134,8 @@ config:
       setNewDialogOpen(false);
       setNewFilename('');
       fetchFiles();
-    } catch (err: any) {
-      const detail = err.response?.data?.detail || '创建失败';
+    } catch (err) {
+      const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail || '加载失败';
       setSnackbar({ open: true, message: detail, severity: 'error' });
     }
   };

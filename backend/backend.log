@@ -194,3 +194,12 @@ INFO:     connection closed
 INFO:     127.0.0.1:56235 - "WebSocket /api/v1/ws/logs" [accepted]
 INFO:     127.0.0.1:56234 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
 INFO:     connection open
+INFO:     127.0.0.1:59253 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59255 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59253 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59256 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     127.0.0.1:59255 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:59257 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     connection open

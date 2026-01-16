@@ -76,9 +76,9 @@ export default function ChannelModels() {
             const response = await axios.get(`${API_BASE_URL}/api/v1/channel-models/scenarios`);
             setData(response.data);
             setError(null);
-        } catch (err: any) {
+        } catch (err) {
             console.error('Failed to fetch channel models data:', err);
-            setError(err.response?.data?.detail || '无法获取信道模型数据');
+            setError((err as { response?: { data?: { detail?: string } } })?.response?.data?.detail || '无法获取信道模型数据');
         } finally {
             setLoading(false);
         }
@@ -178,7 +178,7 @@ export default function ChannelModels() {
                                     cx="50%"
                                     cy="50%"
                                     labelLine={false}
-                                    label={(entry: any) => entry.model}
+                                    label={(entry: { model: string }) => entry.model}
                                     outerRadius={80}
                                     fill="#8884d8"
                                     dataKey="count"

@@ -108,5 +108,3 @@ export function useTheme(): ThemeContextType {
     }
     return context;
 }
-
-export default ThemeContext;
