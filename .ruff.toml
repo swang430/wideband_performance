@@ -1,19 +1,10 @@
-# Ruff 配置文件
-# 忽略的错误类型
+# Ruff 配置
 [lint]
 ignore = [
-    "E402",  # Module level import not at top of file - 某些导入需要在运行时
-    "E501",  # Line too long - 允许合理的长行
-    "E701",  # Multiple statements on one line (colon)
-    "E702",  # Multiple statements on one line (semicolon)
-    "E722",  # Bare except - 有些地方需要捕获所有异常
-    "F841",  # Local variable assigned but never used
-]
-
-# 选择要检查的规则
-select = [
-    "E",  # pycodestyle errors
-    "W",  # pycodestyle warnings
-    "F",  # pyflakes
-    "I",  # isort
+    "E402",  # Module import not at top
+    "E501",  # Line too long
+    "E701",  # Multiple statements (colon)
+    "E702",  # Multiple statements (semicolon)  
+    "E722",  # Bare except
+    "F841",  # Unused variable
 ]
