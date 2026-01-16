@@ -55,7 +55,7 @@ class Vertex_Driver(GenericChannelEmulator):
         设置路径损耗 (dB)。
         Ref: RPI_CommandRef.pdf, p.27, Section 2.2.55
         Command: [SYSTem]:PORT:{A,B}#:LOSS <value>
-        
+
         Note: 需要设置 LOSSMode 为 SET_LOSS 模式才生效
         """
         # 先确保 LossMode 设为 SET_LOSS
@@ -80,7 +80,7 @@ class Vertex_Driver(GenericChannelEmulator):
         """
         设置衰落配置。
         Ref: RPI_CommandRef.pdf, p.21, Section 2.2.1
-        
+
         Note: Vertex 通过加载不同场景文件来改变衰落配置，
         此方法通过设置 fading mode 实现运行时调整。
         """
@@ -95,7 +95,7 @@ class Vertex_Driver(GenericChannelEmulator):
     def trigger_handover(self, target_cell: int):
         """
         触发小区切换。
-        
+
         Note: Vertex 本身不直接控制小区切换，此功能需要配合综测仪使用。
         这里通过调整信道参数来模拟切换前后的信道变化。
         """

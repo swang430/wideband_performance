@@ -41,7 +41,7 @@ class LogManager:
     def sync_broadcast_metrics(self, metrics_data: Dict[str, Any]):
         """
         广播实时指标数据（JSON 格式），供 Sequencer 采样循环调用。
-        
+
         Args:
             metrics_data: 包含 throughput_mbps, bler 等字段的字典
         """

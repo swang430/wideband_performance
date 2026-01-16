@@ -54,7 +54,7 @@ class PROPSIM_Driver(GenericChannelEmulator):
         """
         设置路径损耗/增益 (dB)。
         Ref: Propsim User Reference, 'Remote Control, ATE' chapter
-        
+
         PROPSIM 通过调整通道增益来实现路损变化。
         """
         # 增益设置 (负值表示衰减)
@@ -79,7 +79,7 @@ class PROPSIM_Driver(GenericChannelEmulator):
         """
         切换衰落配置。
         Ref: Propsim ATE AN, p.12 (Fading Channels)
-        
+
         PROPSIM 主要通过加载不同仿真文件来切换衰落配置。
         运行时可调整的参数有限。
         """
@@ -98,7 +98,7 @@ class PROPSIM_Driver(GenericChannelEmulator):
         """
         触发小区切换模拟。
         Ref: Propsim User Reference, p.23 (Handover)
-        
+
         PROPSIM 通过 Shadowing 编辑器配置切换触发，此处调整增益模拟切换效果。
         """
         self.logger.info(f"PROPSIM 模拟切换到小区 {target_cell}")

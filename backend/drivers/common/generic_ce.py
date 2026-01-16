@@ -59,7 +59,7 @@ class GenericChannelEmulator(BaseInstrument):
         """
         [标准接口] 设置路径损耗 (dB)。
         用于模拟距离变化导致的信号衰减。
-        
+
         TODO: 核对手册确认 SCPI 语法 (当前为占位符)
         """
         # 占位符指令，实际语法需查阅设备手册
@@ -70,7 +70,7 @@ class GenericChannelEmulator(BaseInstrument):
         """
         [标准接口] 设置模拟距离 (km)。
         部分信道模拟器支持基于距离自动计算路损。
-        
+
         TODO: 核对手册确认 SCPI 语法 (当前为占位符)
         """
         self.write(f"CHAN:DIST {km}")
@@ -79,11 +79,11 @@ class GenericChannelEmulator(BaseInstrument):
     def set_fading_profile(self, profile: str, duration_ms: int = 0):
         """
         [标准接口] 设置衰落配置。
-        
+
         Args:
             profile: 衰落配置名称 (如 'deep_fade', 'rayleigh')
             duration_ms: 持续时间，0 表示持续生效
-            
+
         TODO: 核对手册确认 SCPI 语法 (当前为占位符)
         """
         self.write(f"CHAN:FAD:PROF '{profile}'")
@@ -94,10 +94,10 @@ class GenericChannelEmulator(BaseInstrument):
     def trigger_handover(self, target_cell: int):
         """
         [标准接口] 触发小区切换事件。
-        
+
         Args:
             target_cell: 目标小区 ID
-            
+
         TODO: 核对手册确认 SCPI 语法 (当前为占位符)
         """
         self.write(f"CELL:HO:TRIG {target_cell}")

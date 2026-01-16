@@ -64,7 +64,7 @@ def extract_channel_models_from_scenario(scenario_file: Path) -> Dict[str, Any]:
 async def get_channel_models_scenarios():
     """
     获取所有场景的信道模型使用情况
-    
+
     返回:
     - scenarios: 场景列表及其使用的信道模型
     - statistics: 信道模型使用统计
