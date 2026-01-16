@@ -1,5 +1,6 @@
 from drivers.base_instrument import BaseInstrument
 
+
 class GenericVNA(BaseInstrument):
     """
     通用矢量网络分析仪驱动。

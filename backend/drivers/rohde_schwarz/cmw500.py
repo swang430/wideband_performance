@@ -1,11 +1,12 @@
 from drivers.common.generic_tester import GenericTester
 
+
 class CMW500_Driver(GenericTester):
     """
     Rohde & Schwarz CMW500 专用驱动。
     注: CMW500 信令极其复杂，本驱动仅实现基础 LTE 信令控制框架。
     """
-    
+
     def __init__(self, resource_name: str, name: str = "RS_CMW500", simulation_mode: bool = False):
         super().__init__(resource_name, name, simulation_mode)
 

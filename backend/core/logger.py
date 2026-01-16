@@ -1,6 +1,7 @@
 import logging
 import sys
 
+
 def setup_logger(name: str = "TestSystem", log_file: str = "test_system.log", level: int = logging.INFO):
     """
     配置集中式日志记录器。

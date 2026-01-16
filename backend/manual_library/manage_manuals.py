@@ -1,7 +1,8 @@
-import yaml
-import os
 import argparse
 import logging
+import os
+
+import yaml
 
 # 配置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -58,11 +59,11 @@ def main():
     parser.add_argument("--list", action="store_true", help="List all manuals")
     parser.add_argument("--find", type=str, help="Find manuals by model name")
     parser.add_argument("--type", type=str, help="Filter list by instrument type")
-    
+
     args = parser.parse_args()
-    
+
     lib = ManualLibrary()
-    
+
     if args.find:
         lib.find_manual(args.find)
     elif args.list:

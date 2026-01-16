@@ -1,9 +1,10 @@
-import os
-import yaml
-import urllib.request
-import urllib.error
 import logging
+import os
+import urllib.error
+import urllib.request
 from urllib.parse import urlparse
+
+import yaml
 
 # 设置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -29,26 +30,26 @@ def download_file(url, target_dir, filename_prefix=""):
         filename = os.path.basename(parsed_url.path)
         if not filename or filename.endswith("/"):
             filename = "manual.html" if "html" in url else "manual.pdf"
-        
+
         # 加上前缀以防重名
         if filename_prefix:
             filename = f"{filename_prefix}_{filename}"
 
         # 确保文件名安全
         filename = "".join([c for c in filename if c.isalpha() or c.isdigit() or c in (' ', '.', '_', '-')]).strip()
-        
+
         save_path = os.path.join(target_dir, filename)
-        
+
         if os.path.exists(save_path):
             logger.info(f"File already exists: {save_path}")
             return
 
         logger.info(f"Downloading {url}...")
-        
+
         # 模拟浏览器 User-Agent，防止某些网站拒绝
         req = urllib.request.Request(
-            url, 
-            data=None, 
+            url,
+            data=None,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
             }
@@ -78,18 +79,18 @@ def main():
         for item in items:
             vendor = item.get('vendor', 'Unknown')
             series = item.get('series', 'Generic')
-            
+
             # 创建存放目录: manual_library/<category>/<Vendor>_<Series>
             folder_name = f"{vendor}_{series}".replace(" ", "_").replace("&", "and")
             target_dir = os.path.join(base_dir, category, folder_name)
-            
+
             if not os.path.exists(target_dir):
                 try:
                     os.makedirs(target_dir)
                 except OSError as e:
                     logger.error(f"Failed to create directory {target_dir}: {e}")
                     continue
-            
+
             for manual in item.get('manuals', []):
                 url = manual.get('url')
                 title = manual.get('title', 'manual')

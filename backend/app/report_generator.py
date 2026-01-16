@@ -3,7 +3,8 @@
 """
 import os
 from datetime import datetime
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
+
 from jinja2 import Environment, FileSystemLoader
 
 # 模板目录
@@ -91,7 +92,7 @@ def generate_pdf_report(
     html_content = generate_html_report(run_info, metrics, statistics)
 
     try:
-        from weasyprint import HTML, CSS
+        from weasyprint import CSS, HTML
         from weasyprint.text.fonts import FontConfiguration
 
         font_config = FontConfiguration()

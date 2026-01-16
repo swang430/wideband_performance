@@ -1,5 +1,7 @@
 from typing import Optional
+
 from core.sequencer import TestSequencer
+
 
 class AppState:
     """

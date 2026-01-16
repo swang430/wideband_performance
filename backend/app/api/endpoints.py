@@ -1,23 +1,33 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks
+import json
+import os
+import shutil
+import sys
+import time
+from typing import Any, Dict, List, Optional
+
+import yaml
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    File,
+    Form,
+    HTTPException,
+    UploadFile,
+    WebSocket,
+    WebSocketDisconnect,
+)
 from fastapi.responses import HTMLResponse, Response
 from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
-import sys
-import os
-import yaml
-import shutil
-import json
-import time
 
 # 将 backend 根目录加入路径以导入 core 和 drivers
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from app.database import MetricsSampleRepository, TestRunRepository
+from app.log_manager import manager
+from app.report_generator import ReportGenerator
+from app.state import state
 from core.config_loader import ConfigLoader
 from core.sequencer import TestSequencer
 from manual_library.scan_local_library import scan_and_update_catalog
-from app.state import state
-from app.log_manager import manager
-from app.database import TestRunRepository, MetricsSampleRepository
-from app.report_generator import ReportGenerator
 
 router = APIRouter()
 
@@ -91,7 +101,7 @@ async def get_instruments_status():
     优先使用当前正在运行的全局 Sequencer 实例，否则创建临时实例检查。
     """
     config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "config.yaml")
-    
+
     # 决定使用哪个 sequencer 实例
     if state.sequencer:
         sequencer = state.sequencer
@@ -103,14 +113,14 @@ async def get_instruments_status():
         # 临时初始化一个 Sequencer 来检查状态
         sequencer = TestSequencer(config, simulation_mode=True)
         sequencer.initialize_instruments()
-    
+
     results = []
-    
+
     inst_config = config.get('instruments', {})
     for cfg_key, info in inst_config.items():
         driver_info = None
         connected = False
-        
+
         # Sequencer.instruments 的键与 config.yaml 中的键保持一致
         if cfg_key in sequencer.instruments:
             inst_obj = sequencer.instruments[cfg_key]
@@ -121,16 +131,16 @@ async def get_instruments_status():
                     connected = True
                 except Exception:
                     pass
-        
+
         results.append(InstrumentStatus(
             id=cfg_key,
             name=info.get('name', cfg_key.upper()),
             address=info.get('address', 'Unknown'),
-            connected=connected, 
+            connected=connected,
             simulation=True, # 暂时硬编码，未来应从 config 读取
             driver_info=driver_info
         ))
-    
+
     return results
 
 @router.get("/manuals", response_model=CatalogResponse)
@@ -140,7 +150,7 @@ async def get_manuals_catalog():
     """
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     catalog_path = os.path.join(base_dir, "manual_library", "catalog.yaml")
-    
+
     if not os.path.exists(catalog_path):
         return CatalogResponse(categories={})
 
@@ -153,7 +163,7 @@ async def get_manuals_catalog():
         processed_series = []
         for entry in series_list:
             processed_manuals = []
-            
+
             vendor = entry.get('vendor', 'Unknown').replace(" ", "_").replace("&", "and")
             series = entry.get('series', 'Generic').replace(" ", "_")
             folder_name = f"{vendor}_{series}"
@@ -162,14 +172,14 @@ async def get_manuals_catalog():
             for m in entry.get('manuals', []):
                 is_local = False
                 local_url = None
-                
+
                 potential_filename = os.path.basename(m['url'])
                 full_file_path = os.path.join(local_folder_path, potential_filename)
-                
+
                 if os.path.exists(full_file_path) and os.path.isfile(full_file_path):
                     is_local = True
                     local_url = f"/manuals_static/{category}/{folder_name}/{potential_filename}"
-                
+
                 processed_manuals.append(ManualEntry(
                     title=m.get('title', 'Unknown'),
                     type=m.get('type', 'manual'),
@@ -178,7 +188,7 @@ async def get_manuals_catalog():
                     is_local=is_local,
                     local_url=local_url
                 ))
-            
+
             processed_series.append(SeriesEntry(
                 vendor=entry.get('vendor'),
                 series=entry.get('series'),
@@ -199,7 +209,7 @@ async def upload_manual(
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     folder_name = f"{vendor}_{series}".replace(" ", "_").replace("&", "and")
     target_dir = os.path.join(base_dir, "manual_library", category, folder_name)
-    
+
     if not os.path.exists(target_dir):
         try:
             os.makedirs(target_dir)
@@ -212,7 +222,7 @@ async def upload_manual(
             shutil.copyfileobj(file.file, buffer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save file: {e}")
-    
+
     try:
         scan_and_update_catalog("catalog.yaml", "manual_library")
     except Exception as e:
@@ -284,11 +294,11 @@ async def list_scenarios():
     """
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     scenarios_dir = os.path.join(base_dir, "scenarios")
-    
+
     results = []
     if not os.path.exists(scenarios_dir):
         return []
-        
+
     for f in os.listdir(scenarios_dir):
         if f.endswith(".yaml") or f.endswith(".yml"):
             try:
@@ -303,7 +313,7 @@ async def list_scenarios():
                     ))
             except Exception as e:
                 print(f"Error loading scenario {f}: {e}")
-    
+
     return results
 
 @router.post("/test/start", response_model=TestControlResponse)

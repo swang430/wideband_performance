@@ -1,7 +1,9 @@
 import logging
+
 from .base_instrument import BaseInstrument
-from .factory import DriverFactory
 from .common.generic_ce import GenericChannelEmulator
+from .factory import DriverFactory
+
 
 class ChannelEmulator:
     """
@@ -28,7 +30,7 @@ class ChannelEmulator:
             temp_inst.connect()
             idn = temp_inst.query("*IDN?")
             temp_inst.disconnect()
-            
+
             self.logger.info(f"设备 IDN: {idn}")
             self._driver = DriverFactory.create_chan_em_driver(self.resource_name, idn, self.simulation_mode)
             self._driver.connect()

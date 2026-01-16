@@ -1,5 +1,7 @@
-import pyvisa
 import logging
+
+import pyvisa
+
 
 class BaseInstrument:
     """
@@ -25,7 +27,7 @@ class BaseInstrument:
             self.logger.info(f"[模拟] 已连接到 {self.name}，地址: {self.resource_name}")
             self._idn = f"Simulated Vendor, {self.name}, 000000, v1.0"
             self.logger.info(f"身份标识 (IDN): {self._idn}")
-            
+
             if self.reset_on_connect:
                 self.logger.info("执行复位 (*RST)...")
                 self.logger.info("错误队列已清除 (*CLS)")
@@ -35,11 +37,11 @@ class BaseInstrument:
             self.instrument = self.rm.open_resource(self.resource_name)
             self._connected = True
             self.logger.info(f"已连接到 {self.name}，地址: {self.resource_name}")
-            
+
             # 1. 识别 (IDN)
             self._idn = self.query("*IDN?")
             self.logger.info(f"身份标识 (IDN): {self._idn}")
-            
+
             # 2. 选件查询 (OPT)
             try:
                 opts = self.query("*OPT?")
@@ -52,7 +54,7 @@ class BaseInstrument:
                 self.logger.info("执行复位 (*RST)...")
                 self.write("*RST")
                 self.query("*OPC?") # 等待复位完成
-                
+
                 self.write("*CLS")
                 self.logger.info("错误队列已清除 (*CLS)")
 

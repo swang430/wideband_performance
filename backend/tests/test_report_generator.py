@@ -1,18 +1,15 @@
 """
 报告生成器单元测试
 """
-import pytest
 import os
 import sys
+
+import pytest
 
 # 添加项目路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.report_generator import (
-    ReportGenerator,
-    generate_html_report,
-    TEMPLATE_DIR
-)
+from app.report_generator import TEMPLATE_DIR, ReportGenerator, generate_html_report
 
 
 class TestReportGenerator:

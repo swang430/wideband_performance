@@ -1,5 +1,6 @@
 from drivers.base_instrument import BaseInstrument
 
+
 class GenericVSG(BaseInstrument):
     """
     通用矢量信号发生器驱动 (Generic SCPI VSG Driver).

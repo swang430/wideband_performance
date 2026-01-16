@@ -1,14 +1,12 @@
 # Ruff 配置文件
-[lint]
 # 忽略的错误类型
+[lint]
 ignore = [
+    "E501",  # Line too long - 允许合理的长行
     "E701",  # Multiple statements on one line (colon)
     "E702",  # Multiple statements on one line (semicolon)
     "F841",  # Local variable assigned but never used
 ]
-
-# 每行最大长度
-line-length = 120
 
 # 选择要检查的规则
 select = [

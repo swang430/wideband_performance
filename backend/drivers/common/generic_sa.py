@@ -1,5 +1,6 @@
 from drivers.base_instrument import BaseInstrument
 
+
 class GenericSA(BaseInstrument):
     """
     通用频谱分析仪驱动 (Generic SCPI Spectrum Analyzer).
@@ -30,7 +31,7 @@ class GenericSA(BaseInstrument):
 
     def get_peak_amplitude(self) -> float:
         """[标准接口] 执行峰值搜索并返回幅度"""
-        self.write("CALC:MARK1:MAX") 
+        self.write("CALC:MARK1:MAX")
         val = self.query("CALC:MARK1:Y?")
         try:
             return float(val)

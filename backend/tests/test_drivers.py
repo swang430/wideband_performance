@@ -1,19 +1,20 @@
 """
 驱动模块单元测试
 """
-import pytest
 import os
 import sys
+
+import pytest
 
 # 添加项目路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from drivers.base_instrument import BaseInstrument
-from drivers.vsg import VSG
-from drivers.vna import VNA
 from drivers.channel_emulator import ChannelEmulator
-from drivers.spectrum_analyzer import SpectrumAnalyzer
 from drivers.integrated_tester import IntegratedTester
+from drivers.spectrum_analyzer import SpectrumAnalyzer
+from drivers.vna import VNA
+from drivers.vsg import VSG
 
 
 class TestBaseInstrument:

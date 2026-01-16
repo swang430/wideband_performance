@@ -1,11 +1,12 @@
 from drivers.common.generic_vsg import GenericVSG
 
+
 class SMW200A_Driver(GenericVSG):
     """
     Rohde & Schwarz SMW200A 专用驱动。
     继承自 GenericVSG，重写了部分差异化指令。
     """
-    
+
     def __init__(self, resource_name: str, name: str = "RS_SMW200A", simulation_mode: bool = False):
         super().__init__(resource_name, name, simulation_mode)
 
@@ -27,7 +28,7 @@ class SMW200A_Driver(GenericVSG):
         self.logger.info(f"SMW200A 加载波形: {full_path}")
         # 指令: SOURce:BB:ARBitrary:WAVeform:SELect <Path>
         self.write(f"SOUR:BB:ARB:WAV:SEL '{full_path}'")
-        
+
         # 加载后通常需要自动打开 ARB 状态
         self.write("SOUR:BB:ARB:STAT ON")
 

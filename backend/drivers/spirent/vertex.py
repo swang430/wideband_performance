@@ -1,11 +1,12 @@
 from drivers.common.generic_ce import GenericChannelEmulator
 
+
 class Vertex_Driver(GenericChannelEmulator):
     """
     Spirent Vertex 信道模拟器驱动。
     已根据 Vertex User Guide (RPI 章节) 验证。
     """
-    
+
     def __init__(self, resource_name: str, name: str = "Spirent_Vertex", simulation_mode: bool = False):
         super().__init__(resource_name, name, simulation_mode)
 
@@ -15,11 +16,11 @@ class Vertex_Driver(GenericChannelEmulator):
         """
         if not model.endswith(".scn"):
             model += ".scn"
-            
+
         self.logger.info(f"Vertex 加载场景: {model}")
         # 根据 RPI 规范加载
         self.write(f"SYS:FILE:LOAD '{model}'")
-        
+
         # 验证加载结果
         res = self.query("*OPC?")
         err = self.query(":ERR?")

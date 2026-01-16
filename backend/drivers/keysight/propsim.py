@@ -1,11 +1,12 @@
 from drivers.common.generic_ce import GenericChannelEmulator
 
+
 class PROPSIM_Driver(GenericChannelEmulator):
     """
     Keysight (Anite) PROPSIM F64 信道模拟器驱动。
     已根据 Propsim User Reference (ATE 章节) 验证。
     """
-    
+
     def __init__(self, resource_name: str, name: str = "Keysight_PROPSIM", simulation_mode: bool = False):
         super().__init__(resource_name, name, simulation_mode)
 
@@ -16,7 +17,7 @@ class PROPSIM_Driver(GenericChannelEmulator):
         self.logger.info(f"PROPSIM 加载模型: {model}")
         # 根据 PROPSIM ATE 语法，参数间空格，字符串通常不带引号
         self.write(f"CALCulate:FILTer:FILE {model}")
-        
+
         # 检查错误
         err = self.query("SYSTem:ERRor?")
         if "0," not in err:

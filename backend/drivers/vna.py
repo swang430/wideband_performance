@@ -1,7 +1,9 @@
 import logging
+
 from .base_instrument import BaseInstrument
-from .factory import DriverFactory
 from .common.generic_vna import GenericVNA
+from .factory import DriverFactory
+
 
 class VNA:
     """
@@ -27,7 +29,7 @@ class VNA:
             temp_inst.connect()
             idn = temp_inst.query("*IDN?")
             temp_inst.disconnect()
-            
+
             self.logger.info(f"设备 IDN: {idn}")
             self._driver = DriverFactory.create_vna_driver(self.resource_name, idn, self.simulation_mode)
             self._driver.connect()

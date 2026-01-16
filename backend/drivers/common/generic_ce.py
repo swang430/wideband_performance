@@ -1,5 +1,6 @@
 from drivers.base_instrument import BaseInstrument
 
+
 class GenericChannelEmulator(BaseInstrument):
     """
     通用信道模拟器驱动 (Generic SCPI Channel Emulator).

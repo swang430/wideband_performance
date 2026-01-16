@@ -1,9 +1,9 @@
-import subprocess
 import logging
-import time
 import re
-from typing import Dict, Any, Optional
+import subprocess
+import time
 from dataclasses import dataclass
+from typing import Any, Dict, Optional
 
 
 @dataclass

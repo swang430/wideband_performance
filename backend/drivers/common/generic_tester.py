@@ -1,5 +1,6 @@
 from drivers.base_instrument import BaseInstrument
 
+
 class GenericTester(BaseInstrument):
     """
     通用综测仪驱动。

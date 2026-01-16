@@ -1,11 +1,12 @@
+import logging
+import os
+import sys
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from app.api import endpoints
-from app.api import channel_models
-import sys
-import os
-import logging
+
+from app.api import channel_models, endpoints
 
 # 确保 backend 目录在 sys.path 中，以便能导入 core, drivers 等模块
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

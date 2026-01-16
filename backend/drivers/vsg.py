@@ -1,7 +1,9 @@
 import logging
+
 from .base_instrument import BaseInstrument
-from .factory import DriverFactory
 from .common.generic_vsg import GenericVSG
+from .factory import DriverFactory
+
 
 class VSG:
     """
@@ -41,10 +43,10 @@ class VSG:
 
             # 2. 使用工厂创建真正的驱动
             self._driver = DriverFactory.create_vsg_driver(self.resource_name, idn, self.simulation_mode)
-            
+
             # 3. 连接真正的驱动
             self._driver.connect()
-            
+
         except Exception as e:
             self.logger.error(f"初始化驱动失败: {e}")
             raise
