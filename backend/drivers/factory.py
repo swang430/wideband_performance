@@ -1,6 +1,5 @@
 import logging
-from typing import Optional, Type, Any
-from .base_instrument import BaseInstrument
+from typing import Type, Any
 
 # VSG
 from .common.generic_vsg import GenericVSG

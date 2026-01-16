@@ -6,7 +6,6 @@ import sys
 import os
 import yaml
 import shutil
-import asyncio
 import json
 import time
 
@@ -605,7 +604,7 @@ async def create_scenario(data: ConfigContent):
 
 # --- DUT API Endpoints ---
 
-from dut.android_controller import AndroidController, ModemStatus
+from dut.android_controller import AndroidController
 
 # 全局 DUT 控制器实例
 _dut_controller: Optional[AndroidController] = None

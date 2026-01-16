@@ -23,6 +23,6 @@ class ZNA_Driver(GenericVNA):
         
         # 4. 读取格式化数据 (Real, Imag 或 Magnitude depending on format)
         # 默认设为 Magnitude dB
-        self.write(f"CALC1:FORM MLOG") 
-        data = self.query(f"CALC1:DATA? FDAT")
+        self.write("CALC1:FORM MLOG") 
+        data = self.query("CALC1:DATA? FDAT")
         return data

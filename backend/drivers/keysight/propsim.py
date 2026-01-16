@@ -105,4 +105,4 @@ class PROPSIM_Driver(GenericChannelEmulator):
         # 1. 源小区信号减弱
         self.write("DIAG:SIMU:GAIN:CH 1,-20")
         # 2. 目标小区信号增强 (假设通道 2)
-        self.write(f"DIAG:SIMU:GAIN:CH 2,0")
+        self.write("DIAG:SIMU:GAIN:CH 2,0")

@@ -4,7 +4,6 @@
 import pytest
 import os
 import sys
-import tempfile
 
 # 添加项目路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -13,8 +12,7 @@ from app.database import (
     TestRunRepository,
     MetricsSampleRepository,
     init_database,
-    get_connection,
-    DB_PATH
+    get_connection
 )
 
 

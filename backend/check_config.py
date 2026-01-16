@@ -1,6 +1,5 @@
 import sys
 import os
-import yaml
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from core.config_loader import ConfigLoader

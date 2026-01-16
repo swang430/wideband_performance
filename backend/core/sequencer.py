@@ -2,7 +2,7 @@ import logging
 import asyncio
 import traceback
 from datetime import datetime
-from typing import Dict, Any, List, Optional, Callable
+from typing import Dict, Any, Optional, Callable
 
 from drivers.vna import VNA
 from drivers.vsg import VSG

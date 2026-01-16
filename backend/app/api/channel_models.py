@@ -5,7 +5,7 @@
 from fastapi import APIRouter, HTTPException
 from pathlib import Path
 import yaml
-from typing import List, Dict, Any
+from typing import Dict, Any
 from collections import Counter
 import logging
 
