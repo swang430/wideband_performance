@@ -229,6 +229,7 @@ export default function Dashboard() {
         }
       }
       setLogs(prev => [...prev, `>>> 发送启动指令: ${selectedScenario || 'Default'}...`]);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_err) {
       alert("启动失败");
     }
@@ -240,6 +241,7 @@ export default function Dashboard() {
       await axios.post('http://127.0.0.1:8000/api/v1/test/stop');
       setIsRunning(false);
       setLogs(prev => [...prev, ">>> 发送停止指令..."]);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_err) {
       alert("停止失败");
     }
