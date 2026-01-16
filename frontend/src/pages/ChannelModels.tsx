@@ -1,0 +1,249 @@
+import { useState, useEffect } from 'react';
+import {
+    Container,
+    Typography,
+    Box,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Chip,
+    CircularProgress,
+    Alert,
+    Grid
+} from '@mui/material';
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+    PieChart,
+    Pie,
+    Cell
+} from 'recharts';
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:8000';
+
+interface ChannelModel {
+    name: string;
+    time: number;
+    is_initial: boolean;
+}
+
+interface ScenarioInfo {
+    filename: string;
+    scenario_name: string;
+    scenario_id: string;
+    models: ChannelModel[];
+}
+
+interface ModelUsage {
+    model: string;
+    count: number;
+}
+
+interface ChannelModelsData {
+    scenarios: ScenarioInfo[];
+    statistics: {
+        total_scenarios: number;
+        total_models: number;
+        model_usage: ModelUsage[];
+    };
+}
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658'];
+
+export default function ChannelModels() {
+    const [data, setData] = useState<ChannelModelsData | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetchChannelModelsData();
+    }, []);
+
+    const fetchChannelModelsData = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${API_BASE_URL}/api/v1/channel-models/scenarios`);
+            setData(response.data);
+            setError(null);
+        } catch (err: any) {
+            console.error('Failed to fetch channel models data:', err);
+            setError(err.response?.data?.detail || '无法获取信道模型数据');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <Container maxWidth="lg" sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                <CircularProgress />
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container maxWidth="lg" sx={{ mt: 4 }}>
+                <Alert severity="error">{error}</Alert>
+            </Container>
+        );
+    }
+
+    if (!data) {
+        return null;
+    }
+
+    return (
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            {/* 页面头部 */}
+            <Box sx={{ mb: 4 }}>
+                <Typography variant="h4" gutterBottom>信道模型概览</Typography>
+                <Typography variant="body1" color="text.secondary">
+                    查看所有测试场景使用的信道模型及其统计信息
+                </Typography>
+            </Box>
+
+            {/* 统计卡片 */}
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 3, textAlign: 'center' }}>
+                        <Typography variant="h3" color="primary.main">
+                            {data.statistics.total_scenarios}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            测试场景总数
+                        </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 3, textAlign: 'center' }}>
+                        <Typography variant="h3" color="secondary.main">
+                            {data.statistics.total_models}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            不同信道模型数
+                        </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 3, textAlign: 'center' }}>
+                        <Typography variant="h3" color="success.main">
+                            {data.statistics.model_usage.reduce((sum, item) => sum + item.count, 0)}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            模型使用总次数
+                        </Typography>
+                    </Paper>
+                </Grid>
+            </Grid>
+
+            {/* 图表区域 */}
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+                {/* 柱状图 */}
+                <Grid item xs={12} md={7}>
+                    <Paper elevation={3} sx={{ p: 3 }}>
+                        <Typography variant="h6" gutterBottom>信道模型使用频率</Typography>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={data.statistics.model_usage}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="model" angle={-45} textAnchor="end" height={80} />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="count" fill="#8884d8" name="使用次数" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Paper>
+                </Grid>
+
+                {/* 饼图 */}
+                <Grid item xs={12} md={5}>
+                    <Paper elevation={3} sx={{ p: 3 }}>
+                        <Typography variant="h6" gutterBottom>模型分布占比</Typography>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                                <Pie
+                                    data={data.statistics.model_usage}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    label={(entry: any) => entry.model}
+                                    outerRadius={80}
+                                    fill="#8884d8"
+                                    dataKey="count"
+                                >
+                                    {data.statistics.model_usage.map((_entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </Paper>
+                </Grid>
+            </Grid>
+
+            {/* 场景详细列表 */}
+            <Paper elevation={3} sx={{ p: 3 }}>
+                <Typography variant="h6" gutterBottom>场景详情</Typography>
+                <TableContainer>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>场景名称</TableCell>
+                                <TableCell>场景ID</TableCell>
+                                <TableCell>文件名</TableCell>
+                                <TableCell>信道模型</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {data.scenarios.map((scenario) => (
+                                <TableRow key={scenario.filename} hover>
+                                    <TableCell>
+                                        <Typography variant="body2" fontWeight="bold">
+                                            {scenario.scenario_name}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {scenario.scenario_id || '-'}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.875rem' }}>
+                                            {scenario.filename}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                            {scenario.models.map((model, idx) => (
+                                                <Chip
+                                                    key={idx}
+                                                    label={`${model.name}${model.is_initial ? '' : ` @${model.time}s`}`}
+                                                    size="small"
+                                                    color={model.is_initial ? 'primary' : 'default'}
+                                                    variant={model.is_initial ? 'filled' : 'outlined'}
+                                                />
+                                            ))}
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        </Container>
+    );
+}

@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   Container, Typography, Box, Accordion, AccordionSummary, AccordionDetails,
   List, ListItem, ListItemText, ListItemSecondaryAction, Button,
-  Chip, Dialog, DialogTitle, DialogContent, DialogActions, TextField,
+  Chip, Dialog, DialogTitle, DialogContent, DialogActions,
   FormControl, InputLabel, Select, MenuItem, Alert, CircularProgress
 } from '@mui/material';
 import {
@@ -56,7 +56,7 @@ export default function Manuals() {
   // 状态管理
   const [catalog, setCatalog] = useState<CatalogResponse['categories']>({});
   const [loading, setLoading] = useState(false);
-  
+
   // 上传对话框状态
   const [uploadOpen, setUploadOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -90,7 +90,7 @@ export default function Manuals() {
    */
   const handleUpload = async () => {
     if (!selectedFile || !uploadCategory || !uploadVendor || !uploadSeries) return;
-    
+
     setUploading(true);
     const formData = new FormData();
     formData.append('file', selectedFile);
@@ -105,7 +105,7 @@ export default function Manuals() {
       // 上传成功后关闭对话框并刷新列表
       setUploadOpen(false);
       setSelectedFile(null);
-      fetchCatalog(); 
+      fetchCatalog();
     } catch (err) {
       alert("上传失败，请查看控制台日志。");
       console.error(err);
@@ -121,9 +121,9 @@ export default function Manuals() {
       {/* 页面头部: 标题与操作按钮 */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4">仪表手册库</Typography>
-        <Button 
-          variant="contained" 
-          startIcon={<UploadIcon />} 
+        <Button
+          variant="contained"
+          startIcon={<UploadIcon />}
           onClick={() => setUploadOpen(true)}
         >
           上传手册
@@ -137,36 +137,36 @@ export default function Manuals() {
       ) : (
         <Box>
           {categories.length === 0 && <Alert severity="info">暂无手册数据</Alert>}
-          
+
           {categories.map((cat) => (
             <Box key={cat} sx={{ mb: 4 }}>
               {/* 分类标题 (如 Spectrum Analyzer) */}
               <Typography variant="h5" sx={{ mb: 2, textTransform: 'capitalize', borderLeft: '4px solid #90caf9', pl: 2 }}>
                 {cat.replace('_', ' ')}
               </Typography>
-              
+
               {catalog[cat].map((series, idx) => {
                 // --- 智能过滤逻辑 ---
                 // 目的: 如果用户已手动上传了某个手册 (is_local=true)，
                 // 则自动隐藏那些提示“需登录下载”或“联系厂商”的占位条目，避免列表冗余。
-                
+
                 // 1. 检查该系列下是否存在任何本地手册
                 const hasLocal = series.manuals.some(m => m.is_local);
-                
+
                 // 2. 过滤列表
                 const visibleManuals = series.manuals.filter(m => {
                   if (hasLocal && !m.is_local) {
                     // 检查是否是占位符 (支持英文和中文关键词)
                     const note = m.notes ? m.notes.toLowerCase() : "";
                     const url = m.url.toLowerCase();
-                    
-                    const isPlaceholder = 
-                      url.includes("unavailable") || 
-                      note.includes("login") || 
+
+                    const isPlaceholder =
+                      url.includes("unavailable") ||
+                      note.includes("login") ||
                       note.includes("contact") ||
                       note.includes("需登录") ||
                       note.includes("联系");
-                    
+
                     if (isPlaceholder) return false; // 如果是占位符且已有本地版，则隐藏它
                   }
                   return true;
@@ -186,7 +186,7 @@ export default function Manuals() {
                       <List>
                         {visibleManuals.map((manual, mIdx) => (
                           <ListItem key={mIdx} divider>
-                            <ListItemText 
+                            <ListItemText
                               primary={
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                   <PdfIcon color={manual.is_local ? "success" : "action"} />
@@ -198,9 +198,9 @@ export default function Manuals() {
                             />
                             <ListItemSecondaryAction>
                               {manual.is_local && manual.local_url ? (
-                                <Button 
-                                  variant="outlined" 
-                                  size="small" 
+                                <Button
+                                  variant="outlined"
+                                  size="small"
                                   startIcon={<ViewIcon />}
                                   href={`http://127.0.0.1:8000${manual.local_url}`}
                                   target="_blank"
@@ -208,9 +208,9 @@ export default function Manuals() {
                                   预览
                                 </Button>
                               ) : (
-                                <Button 
-                                  variant="text" 
-                                  size="small" 
+                                <Button
+                                  variant="text"
+                                  size="small"
                                   startIcon={<WebIcon />}
                                   href={manual.url}
                                   target="_blank"
@@ -242,14 +242,14 @@ export default function Manuals() {
         <DialogTitle>上传 PDF 手册</DialogTitle>
         <DialogContent sx={{ minWidth: 400, pt: 2 }}>
           <Alert severity="info" sx={{ mb: 2 }}>
-             为保持库结构整洁，仅支持上传到现有的厂商系列中。
+            为保持库结构整洁，仅支持上传到现有的厂商系列中。
           </Alert>
 
           {/* 1. 仪器类型选择 */}
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel>仪器类型</InputLabel>
-            <Select 
-              value={uploadCategory} 
+            <Select
+              value={uploadCategory}
               label="仪器类型"
               onChange={(e) => {
                 setUploadCategory(e.target.value);
@@ -260,12 +260,12 @@ export default function Manuals() {
               {categories.map(c => <MenuItem key={c} value={c}>{c.replace('_', ' ')}</MenuItem>)}
             </Select>
           </FormControl>
-          
+
           {/* 2. 厂商选择 (级联) */}
           <FormControl fullWidth sx={{ mb: 2 }} disabled={!uploadCategory}>
             <InputLabel>厂商 (Vendor)</InputLabel>
-            <Select 
-              value={uploadVendor} 
+            <Select
+              value={uploadVendor}
               label="厂商 (Vendor)"
               onChange={(e) => {
                 setUploadVendor(e.target.value);
@@ -284,8 +284,8 @@ export default function Manuals() {
           {/* 3. 系列选择 (级联) */}
           <FormControl fullWidth sx={{ mb: 2 }} disabled={!uploadVendor}>
             <InputLabel>系列 (Series)</InputLabel>
-            <Select 
-              value={uploadSeries} 
+            <Select
+              value={uploadSeries}
               label="系列 (Series)"
               onChange={(e) => setUploadSeries(e.target.value)}
             >
@@ -296,7 +296,7 @@ export default function Manuals() {
               }
             </Select>
           </FormControl>
-          
+
           <Button
             variant="outlined"
             component="label"
@@ -304,19 +304,19 @@ export default function Manuals() {
             startIcon={<UploadIcon />}
           >
             {selectedFile ? selectedFile.name : "选择文件 (.pdf / .html)"}
-            <input 
-              type="file" 
-              hidden 
+            <input
+              type="file"
+              hidden
               accept=".pdf,.html,.htm"
-              onChange={(e) => e.target.files && setSelectedFile(e.target.files[0])} 
+              onChange={(e) => e.target.files && setSelectedFile(e.target.files[0])}
             />
           </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setUploadOpen(false)}>取消</Button>
-          <Button 
-            onClick={handleUpload} 
-            variant="contained" 
+          <Button
+            onClick={handleUpload}
+            variant="contained"
             disabled={uploading || !selectedFile || !uploadSeries}
           >
             {uploading ? "上传中..." : "开始上传"}

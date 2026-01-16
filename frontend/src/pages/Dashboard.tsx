@@ -17,6 +17,8 @@ import {
   Stop as StopIcon
 } from '@mui/icons-material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import DutPanel from '../components/DutPanel';
+import TestProgress from '../components/TestProgress';
 
 /**
  * 仪表状态数据接口
@@ -84,6 +86,12 @@ export default function Dashboard() {
   // 实时指标数据 (滑动窗口 60 秒)
   const [metricsData, setMetricsData] = useState<MetricsPoint[]>([]);
   const metricsStartTime = useRef<number | null>(null);
+
+  // 测试进度状态
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [totalDuration, setTotalDuration] = useState(120); // 默认 120 秒
+  const [timelineEvents, setTimelineEvents] = useState<Array<{ time: number; target: string; action: string; comment?: string }>>([]);
+  const [currentScenarioName, setCurrentScenarioName] = useState<string>('');
 
   /**
    * 从后端 API 获取仪表状态数据
@@ -158,6 +166,8 @@ export default function Dashboard() {
             }
             return updated;
           });
+          // 更新测试进度
+          setElapsedTime(relativeTime);
           return;  // 不显示在日志区
         }
       } catch {
@@ -199,6 +209,25 @@ export default function Dashboard() {
 
       await axios.post(url);
       setIsRunning(true);
+      setElapsedTime(0); // 重置进度
+      // 设置当前场景名称
+      const selected = scenarios.find(s => s.filename === selectedScenario);
+      if (selected) {
+        setCurrentScenarioName(selected.name);
+        // 加载场景时间线事件（如果后端提供的话）
+        try {
+          const scenarioRes = await axios.get(`http://127.0.0.1:8000/api/v1/config/scenario/${selectedScenario}`);
+          const scenarioData = JSON.parse(scenarioRes.data.content || '{}');
+          if (scenarioData.config?.total_duration) {
+            setTotalDuration(scenarioData.config.total_duration);
+          }
+          if (scenarioData.config?.timeline) {
+            setTimelineEvents(scenarioData.config.timeline);
+          }
+        } catch {
+          // 忽略场景加载失败
+        }
+      }
       setLogs(prev => [...prev, `>>> 发送启动指令: ${selectedScenario || 'Default'}...`]);
     } catch (err) {
       alert("启动失败");
@@ -284,7 +313,7 @@ export default function Dashboard() {
       ) : (
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {instruments.map((inst) => (
-            <Grid item xs={12} sm={6} md={4} key={inst.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={inst.id}>
               <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -332,8 +361,22 @@ export default function Dashboard() {
               </Card>
             </Grid>
           ))}
+
+          {/* DUT 状态面板 */}
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+            <DutPanel />
+          </Grid>
         </Grid>
       )}
+
+      {/* 测试进度可视化 */}
+      <TestProgress
+        elapsedTime={elapsedTime}
+        totalDuration={totalDuration}
+        events={timelineEvents}
+        isRunning={isRunning}
+        scenarioName={currentScenarioName}
+      />
 
       {/* 实时指标图表区域 */}
       <Typography variant="h5" sx={{ mb: 2 }}>实时性能指标</Typography>

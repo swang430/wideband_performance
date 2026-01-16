@@ -9,19 +9,19 @@ class GenericVSG(BaseInstrument):
     def __init__(self, resource_name: str, name: str = "Generic_VSG", simulation_mode: bool = False):
         super().__init__(resource_name, name, simulation_mode)
 
-    def set_frequency(self, frequency_hz: float):
+    def set_frequency(self, hz: float):
         """
         [标准接口] 设置射频频率 (Standard SCPI: FREQ).
         """
-        self.write(f"FREQ {frequency_hz}")
-        self.logger.info(f"设置频率: {frequency_hz} Hz")
+        self.write(f"FREQ {hz}")
+        self.logger.info(f"设置频率: {hz} Hz")
 
-    def set_power(self, power_dbm: float):
+    def set_power(self, dbm: float):
         """
         [标准接口] 设置射频功率 (Standard SCPI: POW).
         """
-        self.write(f"POW {power_dbm}")
-        self.logger.info(f"设置功率: {power_dbm} dBm")
+        self.write(f"POW {dbm}")
+        self.logger.info(f"设置功率: {dbm} dBm")
 
     def enable_output(self, enable: bool):
         """

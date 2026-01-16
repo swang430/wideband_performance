@@ -12,6 +12,8 @@ import {
   Refresh as RefreshIcon,
   Add as AddIcon
 } from '@mui/icons-material';
+import YamlEditor from '../components/YamlEditor';
+import ConfigHelp from '../components/ConfigHelp';
 
 /**
  * 配置文件信息接口
@@ -47,6 +49,7 @@ export default function ConfigEditor() {
   // 新建场景对话框
   const [newDialogOpen, setNewDialogOpen] = useState(false);
   const [newFilename, setNewFilename] = useState('');
+  const [showHelp, setShowHelp] = useState(true);
 
   /**
    * 加载文件列表
@@ -150,6 +153,13 @@ config:
         <Typography variant="h4">配置编辑器</Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button
+            variant={showHelp ? 'contained' : 'outlined'}
+            onClick={() => setShowHelp(!showHelp)}
+            size="small"
+          >
+            {showHelp ? '隐藏帮助' : '显示帮助'}
+          </Button>
+          <Button
             variant="outlined"
             startIcon={<AddIcon />}
             onClick={() => setNewDialogOpen(true)}
@@ -171,7 +181,7 @@ config:
         <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>
       )}
 
-      <Box sx={{ display: 'flex', gap: 3, height: 'calc(100vh - 250px)', minHeight: 500 }}>
+      <Box sx={{ display: 'flex', gap: 2, height: 'calc(100vh - 250px)', minHeight: 500 }}>
         {/* 左侧文件列表 */}
         <Paper elevation={3} sx={{ width: 280, overflow: 'auto' }}>
           <Box sx={{ p: 2, bgcolor: 'primary.main', color: 'white' }}>
@@ -248,35 +258,13 @@ config:
 
           {/* 编辑器 */}
           {selectedFile ? (
-            <TextField
-              multiline
-              fullWidth
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              sx={{
-                flex: 1,
-                '& .MuiInputBase-root': {
-                  height: '100%',
-                  alignItems: 'flex-start',
-                  fontFamily: 'Consolas, Monaco, monospace',
-                  fontSize: '13px',
-                  bgcolor: '#1e1e1e',
-                  color: '#d4d4d4'
-                },
-                '& .MuiInputBase-input': {
-                  height: '100% !important',
-                  overflow: 'auto !important'
-                },
-                '& .MuiOutlinedInput-notchedOutline': {
-                  border: 'none'
-                }
-              }}
-              slotProps={{
-                input: {
-                  style: { height: '100%' }
-                }
-              }}
-            />
+            <Box sx={{ flex: 1, overflow: 'hidden' }}>
+              <YamlEditor
+                filename={selectedFile.filename}
+                value={content}
+                onChange={(newValue) => setContent(newValue || '')}
+              />
+            </Box>
           ) : (
             <Box sx={{
               flex: 1,
@@ -289,6 +277,21 @@ config:
             </Box>
           )}
         </Paper>
+
+        {/* 右侧帮助面板 */}
+        {showHelp && (
+          <Paper
+            elevation={3}
+            sx={{
+              width: 350,
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden'
+            }}
+          >
+            <ConfigHelp />
+          </Paper>
+        )}
       </Box>
 
       {/* 新建场景对话框 */}

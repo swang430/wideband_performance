@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.api import endpoints
+from app.api import channel_models
 import sys
 import os
 import logging
@@ -33,6 +34,7 @@ app.mount("/manuals_static", StaticFiles(directory=manual_lib_path), name="manua
 
 # 注册路由
 app.include_router(endpoints.router, prefix="/api/v1")
+app.include_router(channel_models.router, prefix="/api/v1")
 
 @app.get("/")
 async def root():

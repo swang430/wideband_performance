@@ -1,10 +1,69 @@
 import { createTheme } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
 
 /**
- * 全局应用主题定义
- * 采用深色模式 (Dark Mode) 以适应实验室低光环境和专业仪表风格
+ * 通用组件样式定义
  */
-const theme = createTheme({
+const commonComponents = {
+  // 统一卡片样式
+  MuiCard: {
+    styleOverrides: {
+      root: {
+        borderRadius: 12,
+        transition: 'transform 0.2s',
+        '&:hover': {
+          boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+        },
+      },
+    },
+  },
+  // 统一按钮圆角
+  MuiButton: {
+    styleOverrides: {
+      root: {
+        borderRadius: 8,
+        textTransform: 'none' as const,
+      },
+    },
+  },
+  // 统一 Chip 标签样式
+  MuiChip: {
+    styleOverrides: {
+      root: {
+        fontWeight: 'bold' as const,
+      },
+    },
+  },
+};
+
+/**
+ * 通用字体定义
+ */
+const commonTypography = {
+  fontFamily: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+  ].join(','),
+  h4: {
+    fontWeight: 600,
+    letterSpacing: '0.05rem',
+    marginBottom: '1.5rem',
+  },
+  h6: {
+    fontWeight: 500,
+  },
+};
+
+/**
+ * 深色主题
+ * 采用深色模式以适应实验室低光环境和专业仪表风格
+ */
+export const darkTheme: Theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
@@ -27,56 +86,53 @@ const theme = createTheme({
       main: '#f44336', // 红色，用于断开或错误
     },
   },
-  typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
-    h4: {
-      fontWeight: 600,
-      letterSpacing: '0.05rem',
-      marginBottom: '1.5rem',
-    },
-    h6: {
-      fontWeight: 500,
-    },
-  },
+  typography: commonTypography,
   components: {
-    // 统一卡片样式
+    ...commonComponents,
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 12, // 圆角
-          transition: 'transform 0.2s', // 悬停动画准备
+          borderRadius: 12,
+          transition: 'transform 0.2s',
           '&:hover': {
             boxShadow: '0 8px 16px rgba(0,0,0,0.4)',
           },
         },
       },
     },
-    // 统一按钮圆角
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          textTransform: 'none', // 取消全大写
-        },
-      },
-    },
-    // 统一 Chip 标签样式
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          fontWeight: 'bold',
-        },
-      },
-    },
   },
 });
 
-export default theme;
+/**
+ * 亮色主题
+ * 提供明亮的界面选项，适合日间使用
+ */
+export const lightTheme: Theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#1976d2', // 蓝色
+    },
+    secondary: {
+      main: '#e91e63', // 粉色
+    },
+    background: {
+      default: '#f5f5f5', // 浅灰背景
+      paper: '#ffffff',   // 白色卡片背景
+    },
+    success: {
+      main: '#4caf50', // 绿色
+    },
+    warning: {
+      main: '#ff9800', // 橙色
+    },
+    error: {
+      main: '#f44336', // 红色
+    },
+  },
+  typography: commonTypography,
+  components: commonComponents,
+});
+
+// 默认导出深色主题以保持向后兼容
+export default darkTheme;

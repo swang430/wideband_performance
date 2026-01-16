@@ -114,7 +114,7 @@ graph TD
 
 ## 4. 开发路线图 (Roadmap)
 
-本项目采用分阶段迭代开发，共6个阶段 (Phase)。**全部阶段已完成。**
+本项目采用分阶段迭代开发。Phase 1-6 已完成，Phase 7 正在规划中。
 
 ### 4.1 Phase 1: 实时数据可视化 ✅ 已完成
 *   **目标**: Dashboard 实时展示测试过程中的吞吐量和 BLER 数据。
@@ -157,6 +157,19 @@ graph TD
     *   `GET /api/v1/dut/signal` - 信号质量摘要
     *   `POST /api/v1/dut/airplane-mode` - 飞行模式控制
 *   **涉及文件**: `android_controller.py`, `endpoints.py`
+
+### 4.7 Phase 7: 前端界面增强 ✅ 已完成
+*   **目标**: 增强前端可视化能力，完善 DUT 监控及用户体验。
+*   **子任务**:
+    1.  **DUT 状态面板**: 在 Dashboard 展示 Android 终端的 Modem 参数 (RSRP/RSRQ/SINR/CQI) 和飞行模式控制。
+    2.  **测试进度可视化**: 实时展示测试执行进度条和事件时间轴。
+    3.  **主题切换**: Support Light/Dark mode.
+    4.  **ConfigEditor 升级**: 集成 Monaco Editor，支持 YAML Schema 自动补全和校验。✅ 已完成亮色主题切换，并持久化用户偏好。
+*   **技术方案**:
+    *   新建 `DutPanel.tsx`, `TestProgress.tsx` 组件
+    *   新建 `ThemeContext.tsx` 管理主题状态
+    *   后端新增 `/api/v1/scenarios/{id}/timeline` 接口
+*   **涉及文件**: `Dashboard.tsx`, `App.tsx`, `theme.ts`, `endpoints.py`
 
 ## 5. 核心业务场景 (Core Use Cases)
 ### 5.1 灵敏度测试 (Sensitivity Search)

@@ -55,13 +55,13 @@ class VSG:
 
     # --- 代理方法 (Delegation) ---
 
-    def set_frequency(self, frequency_hz: float):
+    def set_frequency(self, hz: float):
         self._check_driver()
-        self._driver.set_frequency(frequency_hz)
+        self._driver.set_frequency(hz)
 
-    def set_power(self, power_dbm: float):
+    def set_power(self, dbm: float):
         self._check_driver()
-        self._driver.set_power(power_dbm)
+        self._driver.set_power(dbm)
 
     def enable_output(self, enable: bool):
         self._check_driver()
