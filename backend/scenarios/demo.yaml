@@ -1,0 +1,10 @@
+# 新建测试场景
+metadata:
+  id: demo
+  name: 新场景
+  version: "1.0"
+  description: 场景描述
+
+config:
+  type: sensitivity  # sensitivity, blocking, dynamic_scenario
+  # 在此添加配置参数

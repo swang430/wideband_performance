@@ -1,215 +1,344 @@
-INFO:     Started server process [58896]
+INFO:     Started server process [38167]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:54890 - "WebSocket /api/v1/ws/logs" [accepted]
-2026-01-16 23:03:39,226 - INFO - 正在从 /Users/Simon/Tools/WideBand_Performance/backend/config.yaml 加载配置
-2026-01-16 23:03:39,230 - INFO - 正在初始化仪器连接...
-2026-01-16 23:03:39,230 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
-2026-01-16 23:03:39,230 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
-2026-01-16 23:03:39,230 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
-2026-01-16 23:03:39,230 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
-2026-01-16 23:03:39,230 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
-2026-01-16 23:03:39,230 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,230 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,230 - INFO - ✅ VNA 连接成功
-2026-01-16 23:03:39,231 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
-2026-01-16 23:03:39,231 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
-2026-01-16 23:03:39,231 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
-2026-01-16 23:03:39,231 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
-2026-01-16 23:03:39,231 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
-2026-01-16 23:03:39,231 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,231 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,231 - INFO - ✅ VSG 连接成功
-2026-01-16 23:03:39,231 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
-2026-01-16 23:03:39,231 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
-2026-01-16 23:03:39,231 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
-2026-01-16 23:03:39,231 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
-2026-01-16 23:03:39,231 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
-2026-01-16 23:03:39,231 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,231 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,231 - INFO - ✅ ChanEm 连接成功
-2026-01-16 23:03:39,231 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
-2026-01-16 23:03:39,231 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
-2026-01-16 23:03:39,231 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
-2026-01-16 23:03:39,231 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
-2026-01-16 23:03:39,231 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
-2026-01-16 23:03:39,231 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,231 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,231 - INFO - ✅ Tester 连接成功
-2026-01-16 23:03:39,231 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
-2026-01-16 23:03:39,231 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
-2026-01-16 23:03:39,231 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
-2026-01-16 23:03:39,232 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
-2026-01-16 23:03:39,232 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
-2026-01-16 23:03:39,232 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,232 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,232 - INFO - ✅ SpecAn 连接成功
-INFO:     127.0.0.1:54891 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     connection open
-INFO:     127.0.0.1:54892 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
-2026-01-16 23:03:39,266 - INFO - 正在从 /Users/Simon/Tools/WideBand_Performance/backend/config.yaml 加载配置
-2026-01-16 23:03:39,267 - INFO - 正在初始化仪器连接...
-2026-01-16 23:03:39,267 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
-2026-01-16 23:03:39,267 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
-2026-01-16 23:03:39,267 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
-2026-01-16 23:03:39,267 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
-2026-01-16 23:03:39,267 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
-2026-01-16 23:03:39,267 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,267 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,267 - INFO - ✅ VNA 连接成功
-2026-01-16 23:03:39,267 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
-2026-01-16 23:03:39,267 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
-2026-01-16 23:03:39,267 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
-2026-01-16 23:03:39,267 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
-2026-01-16 23:03:39,267 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
-2026-01-16 23:03:39,267 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,267 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,267 - INFO - ✅ VSG 连接成功
-2026-01-16 23:03:39,267 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
-2026-01-16 23:03:39,267 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
-2026-01-16 23:03:39,267 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
-2026-01-16 23:03:39,268 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
-2026-01-16 23:03:39,268 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
-2026-01-16 23:03:39,268 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,268 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,268 - INFO - ✅ ChanEm 连接成功
-2026-01-16 23:03:39,268 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
-2026-01-16 23:03:39,268 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
-2026-01-16 23:03:39,268 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
-2026-01-16 23:03:39,268 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
-2026-01-16 23:03:39,268 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
-2026-01-16 23:03:39,268 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,268 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,268 - INFO - ✅ Tester 连接成功
-2026-01-16 23:03:39,268 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
-2026-01-16 23:03:39,268 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
-2026-01-16 23:03:39,268 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
-2026-01-16 23:03:39,268 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
-2026-01-16 23:03:39,268 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
-2026-01-16 23:03:39,268 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:39,268 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:39,268 - INFO - ✅ SpecAn 连接成功
-INFO:     127.0.0.1:54891 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55501 - "GET /api/v1/config/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55501 - "GET /api/v1/config/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55501 - "GET /api/v1/config/config/config.yaml HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55501 - "GET /api/v1/config/scenario/demo.yaml HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55501 - "GET /api/v1/config/scenario/3gpp_7_3_sensitivity_n78.yaml HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55501 - "GET /api/v1/config/scenario/uma_urban_macro.yaml HTTP/1.1" 200 OK
+2026-01-17 18:34:20,478 - INFO - 正在从 /Users/Simon/Tools/WideBand_Performance/backend/config.yaml 加载配置
+2026-01-17 18:34:20,484 - INFO - 正在初始化仪器连接...
+2026-01-17 18:34:20,484 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
+2026-01-17 18:34:20,484 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
+2026-01-17 18:34:20,484 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
+2026-01-17 18:34:20,485 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
+2026-01-17 18:34:20,485 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
+2026-01-17 18:34:20,485 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,485 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,485 - INFO - ✅ VNA 连接成功
+2026-01-17 18:34:20,485 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
+2026-01-17 18:34:20,485 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
+2026-01-17 18:34:20,485 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
+2026-01-17 18:34:20,485 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
+2026-01-17 18:34:20,485 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
+2026-01-17 18:34:20,485 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,485 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,485 - INFO - ✅ VSG 连接成功
+2026-01-17 18:34:20,485 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
+2026-01-17 18:34:20,485 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
+2026-01-17 18:34:20,485 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
+2026-01-17 18:34:20,485 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
+2026-01-17 18:34:20,485 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
+2026-01-17 18:34:20,485 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,485 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,485 - INFO - ✅ ChanEm 连接成功
+2026-01-17 18:34:20,486 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
+2026-01-17 18:34:20,486 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
+2026-01-17 18:34:20,486 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
+2026-01-17 18:34:20,486 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
+2026-01-17 18:34:20,486 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
+2026-01-17 18:34:20,486 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,486 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,486 - INFO - ✅ Tester 连接成功
+2026-01-17 18:34:20,486 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
+2026-01-17 18:34:20,486 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
+2026-01-17 18:34:20,486 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
+2026-01-17 18:34:20,486 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
+2026-01-17 18:34:20,486 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
+2026-01-17 18:34:20,486 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,486 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,486 - INFO - ✅ SpecAn 连接成功
+INFO:     127.0.0.1:55501 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55563 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+2026-01-17 18:34:20,531 - INFO - 正在从 /Users/Simon/Tools/WideBand_Performance/backend/config.yaml 加载配置
+2026-01-17 18:34:20,533 - INFO - 正在初始化仪器连接...
+2026-01-17 18:34:20,533 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
+2026-01-17 18:34:20,533 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
+2026-01-17 18:34:20,533 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
+2026-01-17 18:34:20,533 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
+2026-01-17 18:34:20,533 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
+2026-01-17 18:34:20,533 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,533 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,533 - INFO - ✅ VNA 连接成功
+2026-01-17 18:34:20,533 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
+2026-01-17 18:34:20,533 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
+2026-01-17 18:34:20,533 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
+2026-01-17 18:34:20,533 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
+2026-01-17 18:34:20,533 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
+2026-01-17 18:34:20,533 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,534 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,534 - INFO - ✅ VSG 连接成功
+2026-01-17 18:34:20,534 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
+2026-01-17 18:34:20,534 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
+2026-01-17 18:34:20,534 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
+2026-01-17 18:34:20,534 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
+2026-01-17 18:34:20,534 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
+2026-01-17 18:34:20,534 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,534 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,534 - INFO - ✅ ChanEm 连接成功
+2026-01-17 18:34:20,534 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
+2026-01-17 18:34:20,534 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
+2026-01-17 18:34:20,534 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
+2026-01-17 18:34:20,534 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
+2026-01-17 18:34:20,534 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
+2026-01-17 18:34:20,534 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,534 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,534 - INFO - ✅ Tester 连接成功
+2026-01-17 18:34:20,534 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
+2026-01-17 18:34:20,534 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
+2026-01-17 18:34:20,534 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
+2026-01-17 18:34:20,534 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
+2026-01-17 18:34:20,534 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
+2026-01-17 18:34:20,534 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:20,534 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:20,534 - INFO - ✅ SpecAn 连接成功
+INFO:     127.0.0.1:55501 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55564 - "WebSocket /api/v1/ws/logs" [accepted]
+INFO:     127.0.0.1:55563 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
 INFO:     connection closed
-INFO:     127.0.0.1:54893 - "WebSocket /api/v1/ws/logs" [accepted]
-INFO:     127.0.0.1:54892 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55565 - "WebSocket /api/v1/ws/logs" [accepted]
 INFO:     connection open
-2026-01-16 23:03:47,028 - INFO - 正在从 /Users/Simon/Tools/WideBand_Performance/backend/config.yaml 加载配置
-INFO:     127.0.0.1:54926 - "POST /api/v1/test/start?filename=inh_indoor_hotspot.yaml HTTP/1.1" 200 OK
-2026-01-16 23:03:47,044 - INFO - Config Keys: ['instruments', 'dut', 'test_cases']
-2026-01-16 23:03:47,044 - INFO - 正在初始化仪器连接...
-2026-01-16 23:03:47,044 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
-2026-01-16 23:03:47,044 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
-2026-01-16 23:03:47,044 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
-2026-01-16 23:03:47,044 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
-2026-01-16 23:03:47,044 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
-2026-01-16 23:03:47,044 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:47,044 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:47,044 - INFO - ✅ VNA 连接成功
-2026-01-16 23:03:47,044 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
-2026-01-16 23:03:47,044 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
-2026-01-16 23:03:47,044 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
-2026-01-16 23:03:47,045 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
-2026-01-16 23:03:47,045 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
-2026-01-16 23:03:47,045 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:47,045 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:47,045 - INFO - ✅ VSG 连接成功
-2026-01-16 23:03:47,045 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
-2026-01-16 23:03:47,045 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
-2026-01-16 23:03:47,045 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
-2026-01-16 23:03:47,045 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
-2026-01-16 23:03:47,045 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
-2026-01-16 23:03:47,045 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:47,045 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:47,045 - INFO - ✅ ChanEm 连接成功
-2026-01-16 23:03:47,045 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
-2026-01-16 23:03:47,045 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
-2026-01-16 23:03:47,045 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
-2026-01-16 23:03:47,045 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
-2026-01-16 23:03:47,045 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
-2026-01-16 23:03:47,045 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:47,045 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:47,045 - INFO - ✅ Tester 连接成功
-2026-01-16 23:03:47,045 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
-2026-01-16 23:03:47,045 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
-2026-01-16 23:03:47,045 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
-2026-01-16 23:03:47,045 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
-2026-01-16 23:03:47,045 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
-2026-01-16 23:03:47,045 - INFO - 执行复位 (*RST)...
-2026-01-16 23:03:47,045 - INFO - 错误队列已清除 (*CLS)
-2026-01-16 23:03:47,045 - INFO - ✅ SpecAn 连接成功
-2026-01-16 23:03:47,045 - INFO - 正在初始化 DUT...
-2026-01-16 23:03:47,045 - INFO - DUT 已通过 ADB 连接
-2026-01-16 23:03:47,045 - INFO - ✅ DUT 连接成功
-2026-01-16 23:03:47,045 - INFO - 加载场景文件: 室内热点容量测试
-2026-01-16 23:03:47,045 - INFO - >>> 开始场景: 未命名场景 (预计耗时 60s) <<<
-2026-01-16 23:03:47,045 - INFO - 执行事件: [channel_emulator] load_channel_model {'model': 'InH_Office'} 
-2026-01-16 23:03:47,045 - INFO - PROPSIM 加载模型: InH_Office
-2026-01-16 23:03:47,045 - ERROR - PROPSIM 加载模型报错: SIM_DATA
-2026-01-16 23:03:47,045 - INFO - 执行事件: [channel_emulator] set_velocity {'kmh': 3} # 步行速度
-2026-01-16 23:03:47,045 - INFO - PROPSIM 设置速度: 3 km/h
-INFO:     127.0.0.1:54926 - "GET /api/v1/config/scenario/inh_indoor_hotspot.yaml HTTP/1.1" 200 OK
-2026-01-16 23:04:07,069 - INFO - 执行事件: [vsg] set_frequency {'hz': 3500000000} # 干扰频率设置
-2026-01-16 23:04:07,070 - INFO - 设置频率: 3500000000 Hz
-2026-01-16 23:04:07,070 - INFO - 执行事件: [vsg] set_power {'dbm': -80} # 低干扰
-2026-01-16 23:04:07,070 - INFO - 设置功率: -80 dBm
-2026-01-16 23:04:07,070 - INFO - 执行事件: [vsg] enable_output {'enable': True} 
-2026-01-16 23:04:07,070 - INFO - 射频输出: ON
-2026-01-16 23:04:22,100 - INFO - 执行事件: [vsg] set_power {'dbm': -70} # 中等干扰
-2026-01-16 23:04:22,101 - INFO - 设置功率: -70 dBm
-2026-01-16 23:04:37,141 - INFO - 执行事件: [vsg] set_power {'dbm': -60} # 高干扰
-2026-01-16 23:04:37,143 - INFO - 设置功率: -60 dBm
-2026-01-16 23:04:45,065 - INFO - 执行事件: [vsg] enable_output {'enable': False} 
-2026-01-16 23:04:45,066 - INFO - 射频输出: OFF
-2026-01-16 23:04:47,191 - INFO - >>> 场景执行流结束 <<<
-2026-01-16 23:04:47,192 - INFO - 正在断开所有仪器连接...
-2026-01-16 23:04:47,192 - INFO - === 测试序列关闭 ===
-INFO:     connection closed
-INFO:     127.0.0.1:55312 - "GET /api/v1/manuals HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55312 - "GET /api/v1/manuals HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55397 - "GET /api/v1/channel-models/scenarios HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55397 - "GET /api/v1/channel-models/scenarios HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55484 - "GET /api/v1/config/files HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55484 - "GET /api/v1/config/files HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55584 - "GET /api/v1/config/config/config.yaml HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55620 - "GET /api/v1/config/scenario/3gpp_7_3_sensitivity_n78.yaml HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55620 - "GET /api/v1/config/scenario/uma_urban_macro.yaml HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55620 - "GET /api/v1/config/scenario/rma_rural_macro.yaml HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55620 - "GET /api/v1/config/scenario/3gpp_7_6_blocking_cw.yaml HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55620 - "GET /api/v1/config/scenario/tunnel_transition.yaml HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55620 - "GET /api/v1/config/scenario/hst_high_speed_train.yaml HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55620 - "GET /api/v1/history HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55620 - "GET /api/v1/history HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55672 - "GET /api/v1/report/79/pdf HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56035 - "GET /api/v1/history/75 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56035 - "GET /api/v1/history/79 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56092 - "GET /api/v1/history/78 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56229 - "WebSocket /api/v1/ws/logs" [accepted]
-INFO:     127.0.0.1:56233 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     connection open
-INFO:     127.0.0.1:56234 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56233 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     connection closed
-INFO:     127.0.0.1:56235 - "WebSocket /api/v1/ws/logs" [accepted]
-INFO:     127.0.0.1:56234 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
-INFO:     connection open
-INFO:     127.0.0.1:59253 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59255 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59253 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59256 - "WebSocket /api/v1/ws/logs" [accepted]
-INFO:     127.0.0.1:59255 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
-INFO:     connection closed
-INFO:     connection closed
-INFO:     127.0.0.1:59257 - "WebSocket /api/v1/ws/logs" [accepted]
-INFO:     connection open
-INFO:     connection closed
-INFO:     127.0.0.1:60917 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60918 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60917 - "GET /api/v1/instruments/status HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60919 - "WebSocket /api/v1/ws/logs" [accepted]
-INFO:     127.0.0.1:60918 - "GET /api/v1/scenarios HTTP/1.1" 200 OK
-INFO:     connection open
-INFO:     connection closed
-INFO:     127.0.0.1:60920 - "WebSocket /api/v1/ws/logs" [accepted]
-INFO:     connection open
+2026-01-17 18:34:28,216 - INFO - 正在从 /Users/Simon/Tools/WideBand_Performance/backend/config.yaml 加载配置
+INFO:     127.0.0.1:55604 - "POST /api/v1/test/start?filename=3gpp_7_3_sensitivity_n78.yaml HTTP/1.1" 200 OK
+2026-01-17 18:34:28,230 - INFO - Config Keys: ['instruments', 'dut', 'test_cases']
+2026-01-17 18:34:28,230 - INFO - 正在初始化仪器连接...
+2026-01-17 18:34:28,230 - INFO - 正在连接 VNA (TCPIP0::192.168.1.100::inst0::INSTR)...
+2026-01-17 18:34:28,230 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,ZNA,Simulated,1.0
+2026-01-17 18:34:28,230 - INFO - 识别到仪表 (ZNA)，加载驱动: ZNA_Driver
+2026-01-17 18:34:28,230 - INFO - [模拟] 已连接到 ZNA，地址: TCPIP0::192.168.1.100::inst0::INSTR
+2026-01-17 18:34:28,230 - INFO - 身份标识 (IDN): Simulated Vendor, ZNA, 000000, v1.0
+2026-01-17 18:34:28,230 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:28,230 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:28,230 - INFO - ✅ VNA 连接成功
+2026-01-17 18:34:28,230 - INFO - 正在连接 VSG (TCPIP0::192.168.1.101::inst0::INSTR)...
+2026-01-17 18:34:28,230 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,SMW200A,Simulated,1.0
+2026-01-17 18:34:28,230 - INFO - 识别到仪表 (SMW)，加载驱动: SMW200A_Driver
+2026-01-17 18:34:28,230 - INFO - [模拟] 已连接到 SMW，地址: TCPIP0::192.168.1.101::inst0::INSTR
+2026-01-17 18:34:28,230 - INFO - 身份标识 (IDN): Simulated Vendor, SMW, 000000, v1.0
+2026-01-17 18:34:28,230 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:28,230 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:28,230 - INFO - ✅ VSG 连接成功
+2026-01-17 18:34:28,230 - INFO - 正在连接 ChanEm (TCPIP0::192.168.1.102::inst0::INSTR)...
+2026-01-17 18:34:28,231 - INFO - [模拟] 识别到 IDN: Keysight,PROPSIM F64,Simulated,v10.2
+2026-01-17 18:34:28,231 - INFO - 识别到仪表 (PROPSIM)，加载驱动: PROPSIM_Driver
+2026-01-17 18:34:28,231 - INFO - [模拟] 已连接到 PROPSIM，地址: TCPIP0::192.168.1.102::inst0::INSTR
+2026-01-17 18:34:28,231 - INFO - 身份标识 (IDN): Simulated Vendor, PROPSIM, 000000, v1.0
+2026-01-17 18:34:28,231 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:28,231 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:28,231 - INFO - ✅ ChanEm 连接成功
+2026-01-17 18:34:28,231 - INFO - 正在连接 Tester (TCPIP0::192.168.1.103::inst0::INSTR)...
+2026-01-17 18:34:28,231 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,CMW,Simulated,1.0
+2026-01-17 18:34:28,231 - INFO - 识别到仪表 (CMW)，加载驱动: CMW500_Driver
+2026-01-17 18:34:28,231 - INFO - [模拟] 已连接到 CMW，地址: TCPIP0::192.168.1.103::inst0::INSTR
+2026-01-17 18:34:28,231 - INFO - 身份标识 (IDN): Simulated Vendor, CMW, 000000, v1.0
+2026-01-17 18:34:28,231 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:28,231 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:28,231 - INFO - ✅ Tester 连接成功
+2026-01-17 18:34:28,231 - INFO - 正在连接 SpecAn (TCPIP0::192.168.1.104::inst0::INSTR)...
+2026-01-17 18:34:28,231 - INFO - [模拟] 识别到 IDN: Rohde&Schwarz,FSW,Simulated,1.0
+2026-01-17 18:34:28,231 - INFO - 识别到仪表 (FSW)，加载驱动: FSW_Driver
+2026-01-17 18:34:28,231 - INFO - [模拟] 已连接到 FSW，地址: TCPIP0::192.168.1.104::inst0::INSTR
+2026-01-17 18:34:28,231 - INFO - 身份标识 (IDN): Simulated Vendor, FSW, 000000, v1.0
+2026-01-17 18:34:28,231 - INFO - 执行复位 (*RST)...
+2026-01-17 18:34:28,231 - INFO - 错误队列已清除 (*CLS)
+2026-01-17 18:34:28,231 - INFO - ✅ SpecAn 连接成功
+2026-01-17 18:34:28,231 - INFO - 正在初始化 DUT...
+2026-01-17 18:34:28,231 - INFO - DUT 已通过 ADB 连接
+2026-01-17 18:34:28,231 - INFO - ✅ DUT 连接成功
+2026-01-17 18:34:28,231 - INFO - 加载场景文件: 5G N78 参考灵敏度测试
+2026-01-17 18:34:28,232 - INFO - >>> 开始灵敏度测试 (目标 BLER: 5.0%) <<<
+2026-01-17 18:34:28,232 - INFO - -> 设置下行功率: -70.0 dBm
+2026-01-17 18:34:28,232 - INFO - 设置功率: -70.0 dBm
+INFO:     127.0.0.1:55604 - "GET /api/v1/config/scenario/3gpp_7_3_sensitivity_n78.yaml HTTP/1.1" 200 OK
+2026-01-17 18:34:28,736 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:28,736 - INFO - -> 设置下行功率: -70.5 dBm
+2026-01-17 18:34:28,736 - INFO - 设置功率: -70.5 dBm
+2026-01-17 18:34:29,242 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:29,243 - INFO - -> 设置下行功率: -71.0 dBm
+2026-01-17 18:34:29,243 - INFO - 设置功率: -71.0 dBm
+2026-01-17 18:34:29,749 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:29,749 - INFO - -> 设置下行功率: -71.5 dBm
+2026-01-17 18:34:29,749 - INFO - 设置功率: -71.5 dBm
+2026-01-17 18:34:30,252 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:30,252 - INFO - -> 设置下行功率: -72.0 dBm
+2026-01-17 18:34:30,252 - INFO - 设置功率: -72.0 dBm
+2026-01-17 18:34:30,757 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:30,757 - INFO - -> 设置下行功率: -72.5 dBm
+2026-01-17 18:34:30,757 - INFO - 设置功率: -72.5 dBm
+2026-01-17 18:34:31,262 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:31,262 - INFO - -> 设置下行功率: -73.0 dBm
+2026-01-17 18:34:31,262 - INFO - 设置功率: -73.0 dBm
+2026-01-17 18:34:31,767 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:31,767 - INFO - -> 设置下行功率: -73.5 dBm
+2026-01-17 18:34:31,767 - INFO - 设置功率: -73.5 dBm
+2026-01-17 18:34:32,273 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:32,273 - INFO - -> 设置下行功率: -74.0 dBm
+2026-01-17 18:34:32,273 - INFO - 设置功率: -74.0 dBm
+2026-01-17 18:34:32,778 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:32,778 - INFO - -> 设置下行功率: -74.5 dBm
+2026-01-17 18:34:32,778 - INFO - 设置功率: -74.5 dBm
+2026-01-17 18:34:33,284 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:33,285 - INFO - -> 设置下行功率: -75.0 dBm
+2026-01-17 18:34:33,285 - INFO - 设置功率: -75.0 dBm
+2026-01-17 18:34:33,791 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:33,791 - INFO - -> 设置下行功率: -75.5 dBm
+2026-01-17 18:34:33,791 - INFO - 设置功率: -75.5 dBm
+2026-01-17 18:34:34,298 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:34,298 - INFO - -> 设置下行功率: -76.0 dBm
+2026-01-17 18:34:34,298 - INFO - 设置功率: -76.0 dBm
+2026-01-17 18:34:34,803 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:34,803 - INFO - -> 设置下行功率: -76.5 dBm
+2026-01-17 18:34:34,803 - INFO - 设置功率: -76.5 dBm
+2026-01-17 18:34:35,308 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:35,309 - INFO - -> 设置下行功率: -77.0 dBm
+2026-01-17 18:34:35,309 - INFO - 设置功率: -77.0 dBm
+2026-01-17 18:34:35,814 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:35,814 - INFO - -> 设置下行功率: -77.5 dBm
+2026-01-17 18:34:35,814 - INFO - 设置功率: -77.5 dBm
+2026-01-17 18:34:36,318 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:36,318 - INFO - -> 设置下行功率: -78.0 dBm
+2026-01-17 18:34:36,318 - INFO - 设置功率: -78.0 dBm
+2026-01-17 18:34:36,824 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:36,824 - INFO - -> 设置下行功率: -78.5 dBm
+2026-01-17 18:34:36,824 - INFO - 设置功率: -78.5 dBm
+2026-01-17 18:34:37,328 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:37,329 - INFO - -> 设置下行功率: -79.0 dBm
+2026-01-17 18:34:37,329 - INFO - 设置功率: -79.0 dBm
+2026-01-17 18:34:37,833 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:37,833 - INFO - -> 设置下行功率: -79.5 dBm
+2026-01-17 18:34:37,833 - INFO - 设置功率: -79.5 dBm
+2026-01-17 18:34:38,341 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:38,342 - INFO - -> 设置下行功率: -80.0 dBm
+2026-01-17 18:34:38,342 - INFO - 设置功率: -80.0 dBm
+2026-01-17 18:34:38,847 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:38,847 - INFO - -> 设置下行功率: -80.5 dBm
+2026-01-17 18:34:38,847 - INFO - 设置功率: -80.5 dBm
+2026-01-17 18:34:39,352 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:39,353 - INFO - -> 设置下行功率: -81.0 dBm
+2026-01-17 18:34:39,353 - INFO - 设置功率: -81.0 dBm
+2026-01-17 18:34:39,858 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:39,858 - INFO - -> 设置下行功率: -81.5 dBm
+2026-01-17 18:34:39,858 - INFO - 设置功率: -81.5 dBm
+2026-01-17 18:34:40,360 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:40,360 - INFO - -> 设置下行功率: -82.0 dBm
+2026-01-17 18:34:40,361 - INFO - 设置功率: -82.0 dBm
+2026-01-17 18:34:40,865 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:40,865 - INFO - -> 设置下行功率: -82.5 dBm
+2026-01-17 18:34:40,865 - INFO - 设置功率: -82.5 dBm
+2026-01-17 18:34:41,375 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:41,375 - INFO - -> 设置下行功率: -83.0 dBm
+2026-01-17 18:34:41,375 - INFO - 设置功率: -83.0 dBm
+2026-01-17 18:34:41,880 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:41,880 - INFO - -> 设置下行功率: -83.5 dBm
+2026-01-17 18:34:41,881 - INFO - 设置功率: -83.5 dBm
+2026-01-17 18:34:42,385 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:42,385 - INFO - -> 设置下行功率: -84.0 dBm
+2026-01-17 18:34:42,386 - INFO - 设置功率: -84.0 dBm
+2026-01-17 18:34:42,890 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:42,890 - INFO - -> 设置下行功率: -84.5 dBm
+2026-01-17 18:34:42,890 - INFO - 设置功率: -84.5 dBm
+2026-01-17 18:34:43,396 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:43,396 - INFO - -> 设置下行功率: -85.0 dBm
+2026-01-17 18:34:43,396 - INFO - 设置功率: -85.0 dBm
+2026-01-17 18:34:43,900 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:43,900 - INFO - -> 设置下行功率: -85.5 dBm
+2026-01-17 18:34:43,901 - INFO - 设置功率: -85.5 dBm
+2026-01-17 18:34:44,405 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:44,405 - INFO - -> 设置下行功率: -86.0 dBm
+2026-01-17 18:34:44,405 - INFO - 设置功率: -86.0 dBm
+2026-01-17 18:34:44,908 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:44,909 - INFO - -> 设置下行功率: -86.5 dBm
+2026-01-17 18:34:44,909 - INFO - 设置功率: -86.5 dBm
+2026-01-17 18:34:45,413 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:45,414 - INFO - -> 设置下行功率: -87.0 dBm
+2026-01-17 18:34:45,414 - INFO - 设置功率: -87.0 dBm
+2026-01-17 18:34:45,918 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:45,919 - INFO - -> 设置下行功率: -87.5 dBm
+2026-01-17 18:34:45,919 - INFO - 设置功率: -87.5 dBm
+2026-01-17 18:34:46,423 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:46,423 - INFO - -> 设置下行功率: -88.0 dBm
+2026-01-17 18:34:46,423 - INFO - 设置功率: -88.0 dBm
+2026-01-17 18:34:46,927 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:46,927 - INFO - -> 设置下行功率: -88.5 dBm
+2026-01-17 18:34:46,927 - INFO - 设置功率: -88.5 dBm
+2026-01-17 18:34:47,431 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:47,432 - INFO - -> 设置下行功率: -89.0 dBm
+2026-01-17 18:34:47,432 - INFO - 设置功率: -89.0 dBm
+2026-01-17 18:34:47,936 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:47,937 - INFO - -> 设置下行功率: -89.5 dBm
+2026-01-17 18:34:47,937 - INFO - 设置功率: -89.5 dBm
+2026-01-17 18:34:48,441 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:48,441 - INFO - -> 设置下行功率: -90.0 dBm
+2026-01-17 18:34:48,441 - INFO - 设置功率: -90.0 dBm
+2026-01-17 18:34:48,945 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:48,945 - INFO - -> 设置下行功率: -90.5 dBm
+2026-01-17 18:34:48,945 - INFO - 设置功率: -90.5 dBm
+2026-01-17 18:34:49,450 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:49,451 - INFO - -> 设置下行功率: -91.0 dBm
+2026-01-17 18:34:49,451 - INFO - 设置功率: -91.0 dBm
+2026-01-17 18:34:49,955 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:49,955 - INFO - -> 设置下行功率: -91.5 dBm
+2026-01-17 18:34:49,955 - INFO - 设置功率: -91.5 dBm
+2026-01-17 18:34:50,457 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:50,457 - INFO - -> 设置下行功率: -92.0 dBm
+2026-01-17 18:34:50,457 - INFO - 设置功率: -92.0 dBm
+2026-01-17 18:34:50,963 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:50,963 - INFO - -> 设置下行功率: -92.5 dBm
+2026-01-17 18:34:50,963 - INFO - 设置功率: -92.5 dBm
+2026-01-17 18:34:51,468 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:51,468 - INFO - -> 设置下行功率: -93.0 dBm
+2026-01-17 18:34:51,468 - INFO - 设置功率: -93.0 dBm
+2026-01-17 18:34:51,972 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:51,972 - INFO - -> 设置下行功率: -93.5 dBm
+2026-01-17 18:34:51,972 - INFO - 设置功率: -93.5 dBm
+2026-01-17 18:34:52,476 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:52,476 - INFO - -> 设置下行功率: -94.0 dBm
+2026-01-17 18:34:52,476 - INFO - 设置功率: -94.0 dBm
+2026-01-17 18:34:52,981 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:52,981 - INFO - -> 设置下行功率: -94.5 dBm
+2026-01-17 18:34:52,981 - INFO - 设置功率: -94.5 dBm
+2026-01-17 18:34:53,486 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:53,486 - INFO - -> 设置下行功率: -95.0 dBm
+2026-01-17 18:34:53,486 - INFO - 设置功率: -95.0 dBm
+2026-01-17 18:34:53,989 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:53,989 - INFO - -> 设置下行功率: -95.5 dBm
+2026-01-17 18:34:53,989 - INFO - 设置功率: -95.5 dBm
+2026-01-17 18:34:54,495 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:54,495 - INFO - -> 设置下行功率: -96.0 dBm
+2026-01-17 18:34:54,495 - INFO - 设置功率: -96.0 dBm
+2026-01-17 18:34:54,999 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:54,999 - INFO - -> 设置下行功率: -96.5 dBm
+2026-01-17 18:34:55,000 - INFO - 设置功率: -96.5 dBm
+2026-01-17 18:34:55,504 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:55,504 - INFO - -> 设置下行功率: -97.0 dBm
+2026-01-17 18:34:55,504 - INFO - 设置功率: -97.0 dBm
+2026-01-17 18:34:56,007 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:56,007 - INFO - -> 设置下行功率: -97.5 dBm
+2026-01-17 18:34:56,007 - INFO - 设置功率: -97.5 dBm
+2026-01-17 18:34:56,512 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:56,512 - INFO - -> 设置下行功率: -98.0 dBm
+2026-01-17 18:34:56,512 - INFO - 设置功率: -98.0 dBm
+2026-01-17 18:34:57,018 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:57,019 - INFO - -> 设置下行功率: -98.5 dBm
+2026-01-17 18:34:57,019 - INFO - 设置功率: -98.5 dBm
+2026-01-17 18:34:57,523 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:57,524 - INFO - -> 设置下行功率: -99.0 dBm
+2026-01-17 18:34:57,524 - INFO - 设置功率: -99.0 dBm
+2026-01-17 18:34:58,027 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:58,027 - INFO - -> 设置下行功率: -99.5 dBm
+2026-01-17 18:34:58,028 - INFO - 设置功率: -99.5 dBm
+2026-01-17 18:34:58,531 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:58,532 - INFO - -> 设置下行功率: -100.0 dBm
+2026-01-17 18:34:58,532 - INFO - 设置功率: -100.0 dBm
+2026-01-17 18:34:59,036 - INFO -    当前 BLER: 0.00%
+2026-01-17 18:34:59,037 - INFO - -> 设置下行功率: -100.5 dBm
+2026-01-17 18:34:59,037 - INFO - 设置功率: -100.5 dBm
+2026-01-17 18:34:59,541 - INFO -    当前 BLER: 5.00%
+2026-01-17 18:34:59,541 - INFO - -> 设置下行功率: -101.0 dBm
+2026-01-17 18:34:59,541 - INFO - 设置功率: -101.0 dBm
+2026-01-17 18:35:00,046 - INFO -    当前 BLER: 10.00%
+2026-01-17 18:35:00,046 - WARNING - !!! 发现灵敏度点: -101.0 dBm !!!
+2026-01-17 18:35:00,046 - INFO - 正在断开所有仪器连接...
+2026-01-17 18:35:00,047 - INFO - === 测试序列关闭 ===
