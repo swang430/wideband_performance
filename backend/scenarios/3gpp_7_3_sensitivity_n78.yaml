@@ -8,7 +8,7 @@ metadata:
   author: "Gemini System"
 
 config:
-  type: "sensertivity"
+  type: "sensitivity"
   strategy: "algorithm"
   
   # 射频参数

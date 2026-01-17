@@ -23,7 +23,7 @@ config:
     - time: 0
       target: "channel_emulator"
       action: "load_channel_model"
-      params: { model_name: "3GPP_HST_SCENARIO.scn" }
+      params: { model: "3GPP_HST_SCENARIO.scn" }
       comment: "加载 3GPP HST 信道模型"
 
     # T+2: 启动信道
@@ -37,28 +37,28 @@ config:
     - time: 5
       target: "channel_emulator"
       action: "set_velocity" 
-      params: { velocity_kmh: 50 }
+      params: { kmh: 50 }
       comment: "列车启动: 50 km/h"
 
     # T+15: 加速到最高速
     - time: 15
       target: "channel_emulator"
       action: "set_velocity"
-      params: { velocity_kmh: 350 }
+      params: { kmh: 350 }
       comment: "达到最高速: 350 km/h"
 
     # T+45: 开始减速进站
     - time: 45
       target: "channel_emulator"
       action: "set_velocity"
-      params: { velocity_kmh: 100 }
+      params: { kmh: 100 }
       comment: "减速进站: 100 km/h"
 
     # T+55: 停车
     - time: 55
       target: "channel_emulator"
       action: "set_velocity"
-      params: { velocity_kmh: 0 }
+      params: { kmh: 0 }
       comment: "停车"
 
     # T+60: 结束
