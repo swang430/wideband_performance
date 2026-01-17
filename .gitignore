@@ -1,36 +1,31 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
 *.so
-.Python
-venv/
-.venv/
 *.egg-info/
 dist/
 build/
+*.log
+
+# macOS
+.DS_Store
+
+# Virtual Environment
+venv/
+env/
 
 # IDE
-.idea/
 .vscode/
-*.swp
-*.swo
+.idea/
 
-# OS
-.DS_Store
-Thumbs.db
+# Frontend
+frontend/node_modules/
+frontend/dist/
 
-# Project specific
-*.log
-backend/backend.log
-backend/test_results.db
+# Database
 *.db
+*.sqlite
 
-# Node
-node_modules/
-npm-debug.log
-
-# Coverage
+# Test
+.pytest_cache/
 .coverage
-htmlcov/
-coverage.xml
