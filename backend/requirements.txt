@@ -1,56 +1,68 @@
 # 终端宽带标准信道验证系统 - Python 依赖包
 # 生成时间: 2026-01-17
 # Python 版本: 3.13+
+#
+# 安装方法: pip install -r requirements.txt
 
-# ============ 核心依赖 ============
+# ============ 核心业务依赖 ============
 
-# 硬件通信
-pyvisa==1.14.1                    # VISA 协议库（仪表通信）
-pyvisa-py==0.7.2                  # Pure Python VISA 实现
+# 硬件通信（SCPI/VISA）
+pyvisa==1.16.1                    # VISA 协议库（仪表通信）
+pyvisa-py==0.8.1                  # Pure Python VISA 后端
 
 # Web 框架
-fastapi==0.115.6                  # FastAPI Web 框架
-uvicorn[standard]==0.34.0         # ASGI 服务器
-websockets==14.1                  # WebSocket 支持
-python-multipart==0.0.20          # 文件上传支持
+fastapi==0.128.0                  # FastAPI Web 框架
+uvicorn==0.40.0                   # ASGI 服务器
+websockets==16.0                  # WebSocket 实时通信
+python-multipart==0.0.21          # 表单数据处理
 
 # 数据处理
-numpy==2.2.1                      # 数值计算库
-pandas==2.2.3                     # 数据分析库
+numpy==2.4.1                      # 数值计算
+pandas==2.3.3                     # 数据分析
 
 # DUT 控制
-pure-python-adb==0.3.0.dev0       # ADB 协议库
+pure-python-adb==0.3.0.dev0       # Android Debug Bridge
 
 # 配置文件
-pyyaml==6.0.2                     # YAML 解析
+pyyaml==6.0.3                     # YAML 解析器
 
-# 模板引擎
-jinja2==3.1.5                     # 报告生成模板
-
-# PDF 生成
-weasyprint==63.1                  # HTML 转 PDF
+# 模板和报告
+jinja2==3.1.6                     # 模板引擎
+weasyprint==67.0                  # HTML 转 PDF
 
 # HTTP 客户端
 httpx==0.28.1                     # 异步 HTTP 客户端
 
-# ============ 开发依赖 ============
+# ============ 开发和测试 ============
 
 # 测试框架
-pytest==8.3.4                     # 单元测试框架
-pytest-asyncio==0.24.0            # 异步测试支持
+pytest==9.0.2                     # 单元测试
+pytest-asyncio==1.3.0             # 异步测试支持
 
-# 代码质量
-ruff==0.14.13                     # 快速 Linter（可选）
+# 代码质量（可选，CI 使用）
+ruff==0.14.13                     # 快速 Python Linter
 
-# ============ 说明 ============
-# 
-# 版本策略:
-# - 使用精确版本号 (==) 确保可重现性
-# - 每 3-6 个月审查一次依赖更新
-# 
-# 安装方法:
-#   pip install -r requirements.txt
-# 
-# 更新依赖:
-#   pip install --upgrade -r requirements.txt
-#   pip freeze > requirements.txt
+# ============ 依赖的传递依赖（自动安装） ============
+# 以下包会被上述包自动安装，列出以供参考：
+# - starlette (FastAPI 依赖)
+# - pydantic (FastAPI 依赖)
+# - uvloop (uvicorn 性能优化)
+# - httpcore (httpx 依赖)
+# - anyio (异步 I/O)
+
+# ============ 版本策略说明 ============
+#
+# 1. 为什么需要版本号？
+#    - 确保环境可重现：今天和明天安装结果一致
+#    - 避免兼容性问题：新版本可能破坏 API
+#    - 便于团队协作：所有人使用相同版本
+#    - 提升调试效率：环境一致更易定位问题
+#
+# 2. 版本更新策略：
+#    - 每 3-6 个月审查一次依赖更新
+#    - 更新前在开发环境测试
+#    - 更新命令: pip install --upgrade <package>
+#
+# 3. 重新生成此文件：
+#    pip freeze > requirements.txt
+#    (注意：需手动添加注释和分类)
