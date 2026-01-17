@@ -1,15 +1,56 @@
-pyvisa
-pyvisa-py
-pandas
-numpy
-pure-python-adb
-pyyaml
-pytest
-pytest-asyncio
-httpx
-fastapi
-uvicorn[standard]
-websockets
-python-multipart
-jinja2
-weasyprint
+# 终端宽带标准信道验证系统 - Python 依赖包
+# 生成时间: 2026-01-17
+# Python 版本: 3.13+
+
+# ============ 核心依赖 ============
+
+# 硬件通信
+pyvisa==1.14.1                    # VISA 协议库（仪表通信）
+pyvisa-py==0.7.2                  # Pure Python VISA 实现
+
+# Web 框架
+fastapi==0.115.6                  # FastAPI Web 框架
+uvicorn[standard]==0.34.0         # ASGI 服务器
+websockets==14.1                  # WebSocket 支持
+python-multipart==0.0.20          # 文件上传支持
+
+# 数据处理
+numpy==2.2.1                      # 数值计算库
+pandas==2.2.3                     # 数据分析库
+
+# DUT 控制
+pure-python-adb==0.3.0.dev0       # ADB 协议库
+
+# 配置文件
+pyyaml==6.0.2                     # YAML 解析
+
+# 模板引擎
+jinja2==3.1.5                     # 报告生成模板
+
+# PDF 生成
+weasyprint==63.1                  # HTML 转 PDF
+
+# HTTP 客户端
+httpx==0.28.1                     # 异步 HTTP 客户端
+
+# ============ 开发依赖 ============
+
+# 测试框架
+pytest==8.3.4                     # 单元测试框架
+pytest-asyncio==0.24.0            # 异步测试支持
+
+# 代码质量
+ruff==0.14.13                     # 快速 Linter（可选）
+
+# ============ 说明 ============
+# 
+# 版本策略:
+# - 使用精确版本号 (==) 确保可重现性
+# - 每 3-6 个月审查一次依赖更新
+# 
+# 安装方法:
+#   pip install -r requirements.txt
+# 
+# 更新依赖:
+#   pip install --upgrade -r requirements.txt
+#   pip freeze > requirements.txt
