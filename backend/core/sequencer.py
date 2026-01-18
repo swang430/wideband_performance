@@ -10,6 +10,10 @@ from drivers.spectrum_analyzer import SpectrumAnalyzer
 from drivers.tcu import TCU
 from drivers.vna import VNA
 from drivers.vsg import VSG
+from drivers.power_meter import PowerMeter
+from drivers.signal_generator import SignalGenerator
+from drivers.field_probe import FieldProbe
+from drivers.positioner import Positioner
 from dut.android_controller import AndroidController
 
 
@@ -62,7 +66,12 @@ class TestSequencer:
             'channel_emulator': (ChannelEmulator, "ChanEm"),
             'integrated_tester': (IntegratedTester, "Tester"),
             'spectrum_analyzer': (SpectrumAnalyzer, "SpecAn"),
-            'tcu': (TCU, "TCU")
+            'tcu': (TCU, "TCU"),
+            'power_meter': (PowerMeter, "PowerMeter"),
+            'emgen': (SignalGenerator, "SigGen"),
+            'signal_generator': (SignalGenerator, "SigGen"),  # 别名
+            'field_probe': (FieldProbe, "FieldProbe"),
+            'positioner': (Positioner, "Positioner")
         }
 
         for key, (cls, default_name) in factory_map.items():
