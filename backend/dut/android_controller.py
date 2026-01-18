@@ -48,6 +48,9 @@ class AndroidController:
         self.simulation_mode = simulation_mode
         self.logger = logging.getLogger("DUT.Android")
         self._last_modem_status: Optional[ModemStatus] = None
+        # 网络流量缓存（用于计算吞吐量）
+        self._last_network_stats: Optional[Dict[str, int]] = None
+        self._last_network_timestamp: Optional[float] = None
 
     def _run_adb(self, command: str) -> str:
         """
@@ -326,3 +329,285 @@ class AndroidController:
         value = type_map[network_type]
         self.shell(f"settings put global preferred_network_mode {value}")
         self.logger.info(f"首选网络类型设置为: {network_type}")
+
+    # ========== 吞吐量采集方法 ==========
+
+    def _get_network_stats_raw(self, interface: str = "rmnet_data0") -> Optional[Dict[str, int]]:
+        """
+        获取原始网络统计数据（从 /proc/net/dev）。
+
+        Args:
+            interface: 网络接口名称，常见的有:
+                - rmnet_data0 (高通平台移动数据)
+                - rmnet0 (部分设备)
+                - wlan0 (WiFi)
+                - ccmni0 (联发科平台)
+
+        Returns:
+            包含 rx_bytes, tx_bytes, rx_packets, tx_packets 的字典
+        """
+        if self.simulation_mode:
+            # 模拟网络流量增长
+            import random
+            base = int(time.time() * 1e6)  # 使用时间戳模拟累积流量
+            return {
+                "rx_bytes": base + random.randint(0, 1000000),
+                "tx_bytes": base // 2 + random.randint(0, 500000),
+                "rx_packets": base // 1500,
+                "tx_packets": base // 3000,
+                "timestamp": time.time()
+            }
+
+        try:
+            # 读取 /proc/net/dev
+            dump = self.shell("cat /proc/net/dev")
+
+            # 解析指定接口的数据
+            # 格式: interface: rx_bytes rx_packets ... tx_bytes tx_packets ...
+            for line in dump.splitlines():
+                if interface in line:
+                    parts = line.split()
+                    # parts[0] = interface:
+                    # parts[1] = rx_bytes
+                    # parts[2] = rx_packets
+                    # parts[9] = tx_bytes
+                    # parts[10] = tx_packets
+                    if len(parts) >= 11:
+                        return {
+                            "rx_bytes": int(parts[1]),
+                            "tx_bytes": int(parts[9]),
+                            "rx_packets": int(parts[2]),
+                            "tx_packets": int(parts[10]),
+                            "timestamp": time.time()
+                        }
+
+            self.logger.warning(f"未找到网络接口: {interface}")
+            return None
+
+        except Exception as e:
+            self.logger.error(f"获取网络统计失败: {e}")
+            return None
+
+    def get_network_throughput(self, interface: str = "rmnet_data0") -> Dict[str, float]:
+        """
+        获取当前网络吞吐量（需要两次采样计算速率）。
+
+        Args:
+            interface: 网络接口名称
+
+        Returns:
+            {
+                "rx_mbps": 下行速率 (Mbps),
+                "tx_mbps": 上行速率 (Mbps),
+                "rx_bytes": 累积接收字节数,
+                "tx_bytes": 累积发送字节数,
+                "interval_sec": 采样间隔 (秒)
+            }
+        """
+        current_stats = self._get_network_stats_raw(interface)
+
+        if current_stats is None:
+            return {
+                "rx_mbps": 0.0,
+                "tx_mbps": 0.0,
+                "rx_bytes": 0,
+                "tx_bytes": 0,
+                "interval_sec": 0.0
+            }
+
+        # 如果没有上次的数据，保存当前数据并返回0
+        if self._last_network_stats is None or self._last_network_timestamp is None:
+            self._last_network_stats = current_stats
+            self._last_network_timestamp = current_stats["timestamp"]
+            return {
+                "rx_mbps": 0.0,
+                "tx_mbps": 0.0,
+                "rx_bytes": current_stats["rx_bytes"],
+                "tx_bytes": current_stats["tx_bytes"],
+                "interval_sec": 0.0
+            }
+
+        # 计算时间间隔
+        time_delta = current_stats["timestamp"] - self._last_network_timestamp
+
+        if time_delta <= 0:
+            time_delta = 0.001  # 避免除零
+
+        # 计算字节数差值
+        rx_bytes_delta = current_stats["rx_bytes"] - self._last_network_stats["rx_bytes"]
+        tx_bytes_delta = current_stats["tx_bytes"] - self._last_network_stats["tx_bytes"]
+
+        # 处理计数器溢出（重启后归零）
+        if rx_bytes_delta < 0:
+            rx_bytes_delta = current_stats["rx_bytes"]
+        if tx_bytes_delta < 0:
+            tx_bytes_delta = current_stats["tx_bytes"]
+
+        # 计算速率 (Mbps)
+        rx_mbps = (rx_bytes_delta * 8) / (time_delta * 1e6)  # bytes -> bits -> Mbps
+        tx_mbps = (tx_bytes_delta * 8) / (time_delta * 1e6)
+
+        # 更新缓存
+        self._last_network_stats = current_stats
+        self._last_network_timestamp = current_stats["timestamp"]
+
+        result = {
+            "rx_mbps": round(rx_mbps, 2),
+            "tx_mbps": round(tx_mbps, 2),
+            "rx_bytes": current_stats["rx_bytes"],
+            "tx_bytes": current_stats["tx_bytes"],
+            "interval_sec": round(time_delta, 2)
+        }
+
+        self.logger.debug(f"吞吐量: DL={result['rx_mbps']} Mbps, UL={result['tx_mbps']} Mbps")
+        return result
+
+    def monitor_throughput(self, duration: int = 10, interval: float = 1.0,
+                          interface: str = "rmnet_data0") -> list:
+        """
+        持续监控网络吞吐量。
+
+        Args:
+            duration: 监控持续时间 (秒)
+            interval: 采样间隔 (秒)
+            interface: 网络接口名称
+
+        Returns:
+            时序吞吐量数据列表
+        """
+        samples = []
+        start_time = time.time()
+
+        # 初始化（获取基准值）
+        self.get_network_throughput(interface)
+        time.sleep(0.1)  # 短暂等待
+
+        while time.time() - start_time < duration:
+            throughput = self.get_network_throughput(interface)
+            samples.append({
+                "timestamp": time.time() - start_time,
+                **throughput
+            })
+
+            # 等待下一次采样
+            time.sleep(interval)
+
+        self.logger.info(f"吞吐量监控完成，共采集 {len(samples)} 个样本")
+        return samples
+
+    def get_comprehensive_metrics(self, interface: str = "rmnet_data0") -> Dict[str, Any]:
+        """
+        获取综合测试指标（Modem参数 + 吞吐量）。
+
+        Args:
+            interface: 网络接口名称
+
+        Returns:
+            包含所有关键指标的字典
+        """
+        modem_status = self.get_modem_status()
+        throughput = self.get_network_throughput(interface)
+
+        return {
+            # Modem参数
+            "rsrp_dbm": modem_status.rsrp,
+            "rsrq_db": modem_status.rsrq,
+            "sinr_db": modem_status.sinr,
+            "cqi": modem_status.cqi,
+            "pci": modem_status.pci,
+            "earfcn": modem_status.earfcn,
+            "band": modem_status.band,
+            "network_type": modem_status.network_type,
+            "cell_id": modem_status.cell_id,
+
+            # 吞吐量
+            "dl_mbps": throughput["rx_mbps"],
+            "ul_mbps": throughput["tx_mbps"],
+
+            # 连接状态
+            "connection_state": self.get_data_connection_state(),
+
+            # 时间戳
+            "timestamp": time.time()
+        }
+
+    def monitor_comprehensive(self, duration: int = 10, interval: float = 1.0,
+                             interface: str = "rmnet_data0") -> list:
+        """
+        综合监控（Modem参数 + 吞吐量）。
+
+        Args:
+            duration: 监控持续时间 (秒)
+            interval: 采样间隔 (秒)
+            interface: 网络接口名称
+
+        Returns:
+            综合时序数据列表
+        """
+        samples = []
+        start_time = time.time()
+
+        # 初始化吞吐量采集
+        self.get_network_throughput(interface)
+        time.sleep(0.1)
+
+        self.logger.info(f"开始综合监控，持续 {duration} 秒，间隔 {interval} 秒")
+
+        while time.time() - start_time < duration:
+            metrics = self.get_comprehensive_metrics(interface)
+            metrics["relative_time"] = time.time() - start_time
+            samples.append(metrics)
+
+            self.logger.debug(
+                f"[{metrics['relative_time']:.1f}s] "
+                f"RSRP={metrics['rsrp_dbm']} dBm, "
+                f"SINR={metrics['sinr_db']} dB, "
+                f"DL={metrics['dl_mbps']} Mbps, "
+                f"UL={metrics['ul_mbps']} Mbps"
+            )
+
+            time.sleep(interval)
+
+        self.logger.info(f"综合监控完成，共采集 {len(samples)} 个样本")
+        return samples
+
+    def detect_network_interface(self) -> str:
+        """
+        自动检测移动数据网络接口名称。
+
+        Returns:
+            检测到的接口名称，优先级：rmnet_data0 > rmnet0 > ccmni0
+        """
+        if self.simulation_mode:
+            return "rmnet_data0"
+
+        try:
+            dump = self.shell("cat /proc/net/dev")
+            interfaces = []
+
+            for line in dump.splitlines():
+                if ':' in line:
+                    interface = line.split(':')[0].strip()
+                    interfaces.append(interface)
+
+            # 按优先级检测常见移动数据接口
+            priority = ["rmnet_data0", "rmnet0", "rmnet_ipa0", "ccmni0", "ccmni1"]
+            for candidate in priority:
+                if candidate in interfaces:
+                    self.logger.info(f"检测到移动数据接口: {candidate}")
+                    return candidate
+
+            # 如果没有找到，返回第一个rmnet或ccmni开头的接口
+            for interface in interfaces:
+                if interface.startswith("rmnet") or interface.startswith("ccmni"):
+                    self.logger.info(f"使用检测到的接口: {interface}")
+                    return interface
+
+            # 默认返回
+            self.logger.warning("未检测到移动数据接口，使用默认: rmnet_data0")
+            return "rmnet_data0"
+
+        except Exception as e:
+            self.logger.error(f"接口检测失败: {e}")
+            return "rmnet_data0"
+
