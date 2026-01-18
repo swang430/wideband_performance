@@ -30,14 +30,27 @@ python3 manual_library/download_manuals.py
 4.  **验证**: 运行 `python3 manual_library/manage_manuals.py --list` 确认新文件已显示。
 
 ## 如何添加新型号
-如果您引入了新的仪表型号（例如 Tektronix 示波器），请编辑 `catalog.yaml`：
+如果您引入了新的仪表型号（例如 TCU 测试配置单元），请编辑 `catalog.yaml`：
 
 ```yaml
 # 在 catalog.yaml 中添加
-oscilloscope:  # 新的一级分类
-  - vendor: Tektronix
-    series: MSO5
-    models: [MSO54, MSO56]
-    manuals: [] # 初始可以为空
+tcu:  # 新的一级分类（已添加）
+  - vendor: EMCenter
+    series: TCU
+    models: [TCU-1000, TCU-2000]
+    manuals:
+      - title: EMCenter TCU SCPI Programming Manual
+        type: scpi_reference
+        url: unavailable - pending upload
+        notes: 待用户上传 EMCenter TCU SCPI 手册
 ```
-然后手动创建文件夹 `manual_library/oscilloscope/Tektronix_MSO5/` 并放入手册，最后运行扫描脚本即可。
+然后手动创建文件夹 `manual_library/tcu/EMCenter_TCU/` 并放入手册，最后运行扫描脚本即可。
+
+## 支持的设备类型
+当前手册库支持以下设备分类：
+- `spectrum_analyzer` - 频谱分析仪
+- `signal_generator` - 信号发生器 (VSG)
+- `integrated_tester` - 综合测试仪
+- `vna` - 网络分析仪
+- `channel_emulator` - 信道模拟器
+- `tcu` - 测试配置单元 (射频开关/衰减器/放大器控制)

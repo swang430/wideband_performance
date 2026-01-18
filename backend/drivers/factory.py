@@ -13,6 +13,10 @@ from .common.generic_tester import GenericTester
 # VNA
 from .common.generic_vna import GenericVNA
 
+# TCU
+from .common.generic_tcu import GenericTCU
+from .emcenter import EMCenter_Driver
+
 # VSG
 from .common.generic_vsg import GenericVSG
 from .keysight.propsim import PROPSIM_Driver
@@ -32,6 +36,7 @@ CE_REGISTRY = {
     "PROPSIM": PROPSIM_Driver,
     "F64": PROPSIM_Driver
 }
+TCU_REGISTRY = {"EMCenter": EMCenter_Driver}
 
 class DriverFactory:
     """
@@ -70,3 +75,7 @@ class DriverFactory:
     @staticmethod
     def create_chan_em_driver(resource_name: str, idn_string: str, simulation_mode: bool = False) -> GenericChannelEmulator:
         return DriverFactory._create_driver(resource_name, idn_string, CE_REGISTRY, GenericChannelEmulator, simulation_mode)
+
+    @staticmethod
+    def create_tcu_driver(resource_name: str, idn_string: str, simulation_mode: bool = False) -> GenericTCU:
+        return DriverFactory._create_driver(resource_name, idn_string, TCU_REGISTRY, GenericTCU, simulation_mode)

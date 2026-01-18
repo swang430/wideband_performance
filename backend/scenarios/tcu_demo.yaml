@@ -1,0 +1,69 @@
+# TCU设备功能演示场景
+# 用于测试TCU（Test Config Unit）的基本功能：切换通路、设置衰减、控制放大器
+
+metadata:
+  id: "TCU_DEMO"
+  name: "TCU设备功能演示"
+  version: "1.0"
+  author: "Gemini System"
+
+config:
+  type: "dynamic_scenario"
+  total_duration: 20  # 总时长20秒
+  
+  # 时间轴事件
+  timeline:
+    # T+0: 切换射频通路到天线1
+    - time: 0
+      target: "tcu"
+      action: "switch_rf_path"
+      params: { path: "ANT1_TO_DUT" }
+      comment: "连接天线1到DUT"
+    
+    # T+3: 设置衰减器ATT1为10dB
+    - time: 3
+      target: "tcu"
+      action: "set_attenuation"
+      params: { port: "ATT1", db: 10.0 }
+      comment: "设置ATT1衰减10dB"
+    
+    # T+6: 开启放大器AMP1
+    - time: 6
+      target: "tcu"
+      action: "enable_amplifier"
+      params: { port: "AMP1", enable: true }
+      comment: "开启AMP1放大器"
+    
+    # T+9: 查询开关状态（调试用）
+    - time: 9
+      target: "tcu"
+      action: "get_switch_state"
+      params: { path: "ANT1_TO_DUT" }
+      comment: "查询ANT1通路状态"
+    
+    # T+12: 调整衰减至20dB
+    - time: 12
+      target: "tcu"
+      action: "set_attenuation"
+      params: { port: "ATT1", db: 20.0 }
+      comment: "增加衰减至20dB"
+    
+    # T+15: 关闭放大器AMP1
+    - time: 15
+      target: "tcu"
+      action: "enable_amplifier"
+      params: { port: "AMP1", enable: false }
+      comment: "关闭AMP1放大器"
+    
+    # T+18: 切换到备用通路（天线2）
+    - time: 18
+      target: "tcu"
+      action: "switch_rf_path"
+      params: { path: "ANT2_TO_DUT" }
+      comment: "切换到天线2"
+
+  # 数据采样配置（TCU本身不产生测试指标，此处仅占位）
+  metrics:
+    interval: 0.5
+    targets:
+      - "integrated_tester"  # 如需监测DUT性能变化

@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict, Optional
 from drivers.channel_emulator import ChannelEmulator
 from drivers.integrated_tester import IntegratedTester
 from drivers.spectrum_analyzer import SpectrumAnalyzer
+from drivers.tcu import TCU
 from drivers.vna import VNA
 from drivers.vsg import VSG
 from dut.android_controller import AndroidController
@@ -60,7 +61,8 @@ class TestSequencer:
             'vsg': (VSG, "VSG"),
             'channel_emulator': (ChannelEmulator, "ChanEm"),
             'integrated_tester': (IntegratedTester, "Tester"),
-            'spectrum_analyzer': (SpectrumAnalyzer, "SpecAn")
+            'spectrum_analyzer': (SpectrumAnalyzer, "SpecAn"),
+            'tcu': (TCU, "TCU")
         }
 
         for key, (cls, default_name) in factory_map.items():

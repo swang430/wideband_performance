@@ -11,6 +11,35 @@ instruments:
     address: "TCPIP0::192.168.1.103::inst0::INSTR"
   spectrum_analyzer:
     address: "TCPIP0::192.168.1.104::inst0::INSTR"
+  tcu:
+    address: "TCPIP0::192.168.1.105::inst0::INSTR"
+    timeout: 3000
+    reset: false
+  # EMCenter功率计 (同一机箱，不同模块)
+  power_meter:
+    address: "TCPIP0::192.168.1.105::inst0::INSTR"
+    slot: 2
+    port: "A"
+  # EMCenter信号发生器
+  emgen:
+    address: "TCPIP0::192.168.1.105::inst0::INSTR"
+    slot: 3
+  # EMCenter电场探头
+  field_probe:
+    address: "TCPIP0::192.168.1.105::inst0::INSTR"
+    slot: 1
+  # EMCenter转台控制器
+  positioner:
+    address: "TCPIP0::192.168.1.105::inst0::INSTR"
+    slot: 5
+  # 独立程控衰减器 (如果有)
+  # attenuator:
+  #   address: "TCPIP0::192.168.1.106::inst0::INSTR"
+  #   type: "Weinschel_8310"
+  # 独立程控放大器 (如果有)
+  # amplifier:
+  #   address: "TCPIP0::192.168.1.107::inst0::INSTR"
+  #   type: "MiniCircuits_ZVE"
 
 dut:
   device_id: null # 自动检测

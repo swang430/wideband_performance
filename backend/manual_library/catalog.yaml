@@ -171,3 +171,39 @@ channel_emulator:
     url: Propsim ATE environment and practices AN.pdf
     notes: Automatically detected local file
     is_local: true
+tcu:
+- vendor: EMCenter
+  series: TCU
+  models:
+  - TCU-1000
+  - TCU-2000
+  manuals:
+  - title: EMCenter TCU SCPI Programming Manual
+    type: scpi_reference
+    url: unavailable - pending upload
+    notes: 待用户上传 EMCenter TCU SCPI 手册
+  - title: EMCenter SCPI Cmds and Errs RevA 1801188
+    type: user_manual_local
+    url: EMCenter_SCPI_Cmds_and_Errs_RevA_1801188.pdf
+    notes: Automatically detected local file
+    is_local: true
+- vendor: NI
+  series: PXI Switch
+  models:
+  - PXI-2593
+  - PXI-2585
+  manuals:
+  - title: NI RF Switch Modules User Guide
+    type: user_guide
+    url: https://www.ni.com/pdf/manuals/373311c.pdf
+    notes: 可选 - 如果使用 NI PXI 开关模块作为 TCU
+- vendor: Keysight
+  series: L47xx
+  models:
+  - L4750A
+  - L4762A
+  manuals:
+  - title: Keysight Multiport RF Switch SCPI Programming Guide
+    type: scpi_reference
+    url: https://www.keysight.com/us/en/assets/9018-03789/programming-guides/9018-03789.pdf
+    notes: 可选 - 如果使用 Keysight RF 开关模块作为 TCU
