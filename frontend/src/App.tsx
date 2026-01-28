@@ -15,6 +15,7 @@ import Manuals from './pages/Manuals';
 import History from './pages/History';
 import ConfigEditor from './pages/ConfigEditor';
 import ChannelModels from './pages/ChannelModels';
+import InstrumentValidation from './pages/InstrumentValidation';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 
 /**
@@ -108,6 +109,8 @@ function AppContent() {
           <Route path="/channel-models" element={<ChannelModels />} />
           {/* 仪表手册库页面 */}
           <Route path="/manuals" element={<Manuals />} />
+          {/* 仪表 SCPI 验证页面 */}
+          <Route path="/instruments/:instrumentId" element={<InstrumentValidation />} />
         </Routes>
       </Box>
     </BrowserRouter>

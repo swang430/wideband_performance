@@ -20,6 +20,7 @@ from .emcenter import EMCenter_Driver
 # VSG
 from .common.generic_vsg import GenericVSG
 from .keysight.propsim import PROPSIM_Driver
+from .keysight.uxm import UXM_Driver
 from .rohde_schwarz.cmw500 import CMW500_Driver
 from .rohde_schwarz.fsw import FSW_Driver
 from .rohde_schwarz.smw200a import SMW200A_Driver
@@ -30,7 +31,13 @@ from .spirent.vertex import Vertex_Driver
 VSG_REGISTRY = {"SMW": SMW200A_Driver}
 SA_REGISTRY = {"FSW": FSW_Driver}
 VNA_REGISTRY = {"ZNA": ZNA_Driver}
-TESTER_REGISTRY = {"CMW": CMW500_Driver}
+TESTER_REGISTRY = {
+    "CMW": CMW500_Driver,
+    "UXM": UXM_Driver,
+    "E7515": UXM_Driver,
+    "E7515A": UXM_Driver,
+    "E7515B": UXM_Driver,
+}
 CE_REGISTRY = {
     "Vertex": Vertex_Driver,
     "PROPSIM": PROPSIM_Driver,

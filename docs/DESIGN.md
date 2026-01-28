@@ -102,6 +102,49 @@ graph TD
 *   `enable_output(bool)`: RF 开关。
 *   `load_waveform(filename)`: 加载 ARB 波形。
 
+### 2.7 SCPI 全量覆盖与验证（UXM 起步）
+为了实现“从手册出发的完整驱动验证”，系统引入 SCPI 目录化与全量验证机制。
+
+*   **目录生成**: `backend/manual_library/extract_scpi_catalog.py` 解析 UXM HTML 手册，生成命令清单。
+    *   输出路径: `backend/scpi_catalog/keysight_uxm.json`
+    *   包含字段: `command / query / placeholders / index`
+*   **验证模式**: `/api/v1/instruments/{id}/scpi/verify` 支持 `full_scpi` 模式。
+    *   默认先执行 quick（`*IDN?` / `*OPC?` / `SYST:ERR?`），再遍历目录命令。
+    *   **安全策略**: 默认只执行查询指令；写指令需显式开启。
+*   **占位符策略**:
+    *   `placeholder_policy: auto | strict`（默认 `auto`）
+    *   `placeholders` 可在配置或接口中覆盖，解决 `<cell> / <bwp> / <format>` 等变量。
+
+#### 2.7.1 配置示例
+```yaml
+validation:
+  scpi:
+    catalog_id: keysight_uxm
+    include_write: false
+    filter_prefix: "BSE:MEASure"
+    max_commands: 500
+    delay_ms: 5
+    placeholder_policy: auto
+    placeholders:
+      cell: CELL1
+      bwp: BWP1
+      nrotatputcsvresultformat: FORMAT_1
+```
+
+#### 2.7.2 API 覆盖示例
+```json
+{
+  "mode": "full_scpi",
+  "scpi": {
+    "include_write": false,
+    "placeholder_policy": "auto",
+    "placeholders": {
+      "cell": "CELL1"
+    }
+  }
+}
+```
+
 ## 3. GUI 设计方案 (已实施)
 
 ### 3.1 技术栈
@@ -143,6 +186,49 @@ graph TD
     *   后端 `/api/v1/config` 读写接口
     *   前端代码编辑器 (YAML 语法高亮)
 *   **涉及文件**: `endpoints.py`, `ConfigEditor.tsx`
+
+#### 4.4.1 配置编辑器 YAML Schema 设计 ✅ 已完成
+*   **目标**: 在编辑 `config.yaml` 与场景 YAML 时提供结构化校验与自动补全。
+*   **技术方案**:
+    *   前端引入 `monaco-yaml`，启用 hover/validation/completion。
+    *   本地 JSON Schema 按文件名匹配：
+        *   `config.yaml` → 主配置 Schema
+        *   其他 `.yaml` → 场景 Schema
+    *   Schema 覆盖核心字段（`metadata/config/search/timeline/metrics` 等），常用枚举提供提示。
+    *   Monaco worker 在入口统一注册，确保 YAML 语言服务生效。
+*   **涉及文件**: `frontend/src/schemas/yamlSchemas.ts`, `YamlEditor.tsx`, `main.tsx`
+
+**Schema 覆盖字段清单**：
+*   **config.yaml**
+    *   `instruments.<key>.address/name/timeout/reset/slot/port/type`
+    *   `dut.device_id / dut.wifi_interface`
+    *   `test_cases[].name/type/duration/frequencies/channel_model`
+*   **scenario YAML**
+    *   `metadata.id/name/version/author/description`
+    *   `config.type/strategy`
+    *   `config.search.start_power_dbm/end_power_dbm/step_db/target_bler/settling_time_s`
+    *   `config.main_signal.* / config.interferer.* / config.limit.*`
+    *   `config.total_duration / config.channel.model/velocity_kmh / config.setup`
+    *   `config.timeline[].time/target/action/params/comment`
+    *   `config.metrics.interval/collect/targets / config.limits.*`
+
+**限制项说明**（当前启用）：
+*   `config.type` 仅允许 `sensitivity | blocking | dynamic_scenario`
+*   `config.search.target_bler` 范围 `0~1`
+*   `config.total_duration`、`metrics.interval`、`duration_ms` 等要求非负
+*   `timeline.target`/`timeline.action` 使用枚举，限制为已支持动作
+*   `timeline.params` 按 action 细化结构（如 `set_velocity.kmh`、`set_path_loss.db`、`set_frequency.hz` 等）
+*   `load_channel_model.params.model` 与 `config.channel.model` 采用枚举模型列表
+*   `rf_on/rf_off/stop_signaling` 要求空参数（或不填写 params）
+*   `trigger_handover` 支持 `target_cell` 或 `target_config` 两种结构
+
+**TODO（增强清单）**：
+1.  **模型列表自动同步**：从 `/api/v1/channel-models/list` 动态生成 `channelModelEnum`，避免手动维护。
+2.  **target-action 交叉校验**：约束 action 只能与对应 target 组合（如 `set_power` 仅允许 vsg）。
+3.  **参数范围进一步细化**：为功率/频率/带宽等加入合理范围提示与单位说明。
+4.  **可扩展动作机制**：支持 `x-` 前缀自定义动作，同时保留严格校验与提示。
+5.  **时间轴一致性检查**：新增 lint 规则校验时间排序、重复事件与冲突动作。
+6.  **Schema 版本与兼容策略**：支持多版本 schema 选择与迁移提示。
 
 ### 4.5 Phase 5: 单元测试完善 ✅ 已完成
 *   **目标**: pytest 覆盖率 > 70%。

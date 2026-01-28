@@ -1,0 +1,75 @@
+# WiFi 吞吐量测试（CMW500）
+# 依据 CMW WLAN User Manual：AP/STA 模式支持 SISO/MIMO 2x2，信道模型 A-F 支持 20/40 MHz。
+# 使用信道仿真器加载 802.11ac Model B (40 MHz) 模型，速度按 TGn 模型默认 1.2 km/h。
+
+metadata:
+  id: "WIFI_TPUT_CMW500_AC40_MODEL_B"
+  name: "WiFi 吞吐量测试（CMW500 AP 模式）"
+  version: "1.0"
+  author: "Codex"
+  description: "CMW500 WLAN AP 模式吞吐量测试，信道仿真器启用 802.11ac Model B (40 MHz)。"
+
+config:
+  type: "dynamic_scenario"
+  total_duration: 40
+
+  setup:
+    standard: "802.11ac"
+    mode: "AP"
+    mimo: "2x2"
+    bandwidth_mhz: 40
+    center_freq_mhz: 5180
+    note: "AP 模式 SISO/MIMO 2x2；802.11n/ac/ax 模型 A-F 支持 20/40 MHz。"
+
+  channel:
+    model: "WLAN_Model_B_40MHz"
+    velocity_kmh: 1.2
+
+  timeline:
+    - time: 0
+      target: "channel_emulator"
+      action: "load_channel_model"
+      params:
+        model: "WLAN_Model_B_40MHz"
+      comment: "802.11ac Model B (40 MHz)，名称需与信道仿真器库一致"
+
+    - time: 0
+      target: "channel_emulator"
+      action: "set_velocity"
+      params:
+        kmh: 1.2
+      comment: "TGn 模型默认速度 1.2 km/h"
+
+    - time: 1
+      target: "channel_emulator"
+      action: "rf_on"
+      params: {}
+
+    - time: 2
+      target: "integrated_tester"
+      action: "set_tech_standard"
+      params:
+        standard: "WLAN"
+
+    - time: 3
+      target: "integrated_tester"
+      action: "start_signaling"
+      params:
+        tech: "WLAN"
+      comment: "CMW500 WLAN AP 模式建立连接"
+
+    - time: 35
+      target: "integrated_tester"
+      action: "stop_signaling"
+      params: {}
+
+    - time: 38
+      target: "channel_emulator"
+      action: "rf_off"
+      params: {}
+
+  metrics:
+    interval: 0.5
+    collect:
+      - throughput_mbps
+      - bler

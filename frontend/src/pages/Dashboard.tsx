@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Typography, Container, Grid, Card, CardContent, CardActions, Button, Chip, Box, CircularProgress, Alert, Paper,
@@ -71,6 +72,7 @@ const getIcon = (id: string) => {
  * 展示仪表状态、实时指标图表和运行日志
  */
 export default function Dashboard() {
+  const navigate = useNavigate();
   // 状态管理
   const [instruments, setInstruments] = useState<InstrumentStatus[]>([]);
   const [scenarios, setScenarios] = useState<ScenarioInfo[]>([]);
@@ -357,7 +359,7 @@ export default function Dashboard() {
                   </Box>
                 </CardContent>
                 <CardActions sx={{ mt: 'auto', justifyContent: 'flex-end' }}>
-                  <Button size="small">详情</Button>
+                  <Button size="small" onClick={() => navigate(`/instruments/${inst.id}`)}>详情</Button>
                   <Button size="small" color="warning">重连</Button>
                 </CardActions>
               </Card>

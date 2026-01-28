@@ -1,0 +1,2556 @@
+{
+  "catalog_id": "rohde_schwarz_cmw_wlan",
+  "source": "manual_library/integrated_tester/Rohde_and_Schwarz_CMW/CMW_WLAN_UserManual_V4-0-20_en_35 (2).pdf",
+  "generated_at": "2026-01-26T02:31:25.347218+00:00",
+  "command_count": 312,
+  "commands": [
+    {
+      "index": "abort:wlan:meas<i>:mevaluation",
+      "command": "ABORt:WLAN:MEAS<i>:MEValuation",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "abort:wlan:meas<i>:tmode",
+      "command": "ABORt:WLAN:MEAS<i>:TMODe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "abort:wlan:sign<i>:per",
+      "command": "ABORt:WLAN:SIGN<i>:PER",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "call:wlan:sign<i>:action:station:connect",
+      "command": "CALL:WLAN:SIGN<i>:ACTion:STATion:CONNect",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "call:wlan:sign<i>:action:station:reconnect",
+      "command": "CALL:WLAN:SIGN<i>:ACTion:STATion:REConnect",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "call:wlan:sign<i>:sta<s>:action:disconnect",
+      "command": "CALL:WLAN:SIGN<i>:STA<s>:ACTion:DISConnect",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "clean:wlan:sign<i>:elogging",
+      "command": "CLEan:WLAN:SIGN<i>:ELOGging",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "clear:wlan:meas<i>:tmode:data",
+      "command": "CLEar:WLAN:MEAS<i>:TMODe:DATA",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:btype",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:BTYPe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:bwidth",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:BWIDth",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:cdistance",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:CDIStance",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:dsss:elength",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:DSSS:ELENgth",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:iqswap",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:IQSWap",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:modfilter",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:MODFilter",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:ofdm:elength",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:OFDM:ELENgth",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:pclass",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:PCLass",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:rmode",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:RMODe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:standard",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:STANdard",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:tdata",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:TDATa",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:isignal:tdata:file:date?",
+      "command": "CONFigure:WLAN:MEAS<i>:ISIGnal:TDATa:FILE:DATE?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:compensation:cestimation",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:COMPensation:CESTimation",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:compensation:eftaps",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:COMPensation:EFTaps",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:compensation:skipsymbols",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:COMPensation:SKIPsymbols",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:compensation:tracking:level",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:COMPensation:TRACking:LEVel",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:compensation:tracking:phase",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:COMPensation:TRACking:PHASe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:compensation:tracking:timing",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:COMPensation:TRACking:TIMing",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:demod:fft:offset",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:DEMod:FFT:OFFSet",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:emethod",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:EMEThod",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:list",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:LIST",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:moexception",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:MOEXception",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:pvtime:alength",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:PVTime:ALENgth",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:pvtime:rpower",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:PVTime:RPOWer",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:repetition",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:REPetition",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result:evm",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult:EVM",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result:evmcarrier",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult:EVMCarrier",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result:evmsymbol",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult:EVMSymbol",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result:iqconst",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult:IQConst",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result:mscalar",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult:MSCalar",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result:pvtime",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult:PVTime",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result:sflatness",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult:SFLatness",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result:tsmask",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult:TSMask",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:result[:all]",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:RESult[:ALL]",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:scondition",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:SCONdition",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:scount:modulation",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:SCOunt:MODulation",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:scount:pvtime",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:SCOunt:PVTime",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:scount:tsmask",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:SCOunt:TSMask",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:sflatness:dmode",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:SFLatness:DMODe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:smode",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:SMODe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:tsmask:afftnum",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:TSMask:AFFTnum",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:tsmask:dmode",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:TSMask:DMODe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:tsmask:mselection",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:TSMask:MSELection",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:tsmask:obwpercent",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:TSMask:OBWPercent",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mevaluation:tsmask:trotime",
+      "command": "CONFigure:WLAN:MEAS<i>:MEValuation:TSMask:TROTime",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mimo:noantennas",
+      "command": "CONFigure:WLAN:MEAS<i>:MIMO:NOANtennas",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:mode",
+      "command": "CONFigure:WLAN:MEAS<i>:MODE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:antenna<n>",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:ANTenna<n>",
+      "query": false,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:eattenuation",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:EATTenuation",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:enpower<connector>",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:ENPower<connector>",
+      "query": false,
+      "placeholders": [
+        "connector",
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:foffset",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:FOFFset",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:frequency",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:FREQuency",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:frequency:band",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:FREQuency:BAND",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:frequency:channels",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:FREQuency:CHANnels",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:frequency:channels<ch>",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:FREQuency:CHANnels<Ch>",
+      "query": false,
+      "placeholders": [
+        "Ch",
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:mloffset",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:MLOFfset",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:santennas",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:SANTennas",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:rfsettings:umargin<connector>",
+      "command": "CONFigure:WLAN:MEAS<i>:RFSettings:UMARgin<connector>",
+      "query": false,
+      "placeholders": [
+        "connector",
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:tmode:file:date?",
+      "command": "CONFigure:WLAN:MEAS<i>:TMODe:FILE:DATE?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:tmode:file:save",
+      "command": "CONFigure:WLAN:MEAS<i>:TMODe:FILE:SAVE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:meas<i>:tmode:noantennas",
+      "command": "CONFigure:WLAN:MEAS<i>:TMODe:NOANtennas",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:aid",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:AID",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:association:disass",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:ASSociation:DISass",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:association:preemption",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:ASSociation:PREemption",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:association:sta<s>:macreserve",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:ASSociation:STA<s>:MACReserve",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:association:stapriority",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:ASSociation:STAPriority",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:beacon",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BEACon",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:bsscolor",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BSSColor",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:bssid",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BSSid",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:btwt:enable",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BTWT:ENABle",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:btwt:schedule:enable",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BTWT:SCHedule:ENABle",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:btwt:schedule:ftype",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BTWT:SCHedule:FTYPe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:btwt:schedule:mwduration",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BTWT:SCHedule:MWDuration",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:btwt:schedule:stime",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BTWT:SCHedule:STIMe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:btwt:schedule:tenable",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:BTWT:SCHedule:TENable",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ccode:ccconf",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:CCODe:CCConf",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ccode:ccstate",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:CCODe:CCSTate",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:dperiod",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:DPERiod",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:dsss",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:DSSS",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:edca:acbe",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:EDCA:ACBE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:edca:acbk",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:EDCA:ACBK",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:edca:acvi",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:EDCA:ACVI",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:edca:acvo",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:EDCA:ACVO",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hemac:bsrsupport",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HEMac:BSRSupport",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:aptxpower?",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:APTXpower?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:chbw",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:CHBW",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:csr",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:CSR",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:gilt",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:GILT",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:ldpc",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:LDPC",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:mltf",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:MLTF",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:nofsymbols",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:NOFSymbols",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:sstx",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:SSTX",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:ttyp",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:TTYP",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:txen",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:TXEN",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hetf:txp",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HETF:TXP",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hotspot:cutil",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HOTSpot:CUTil",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hotspot:dname<no>",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HOTSpot:DNAMe<no>",
+      "query": false,
+      "placeholders": [
+        "i",
+        "no"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hotspot:hspar",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HOTSpot:HSPar",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hotspot:hsspar",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HOTSpot:HSSPar",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hotspot:mndigits",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HOTSpot:MNDigits",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hotspot:plmn<no>",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HOTSpot:PLMN<no>",
+      "query": false,
+      "placeholders": [
+        "i",
+        "no"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:hotspot:realm<no>",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:HOTSpot:REALm<no>",
+      "query": false,
+      "placeholders": [
+        "i",
+        "no"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ivsupport",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:IVSupport",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:mfdef",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:MFDef",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:mstation",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:MSTation",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:muedca:acbe",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:MUEDca:ACBE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:muedca:acbk",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:MUEDca:ACBK",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:muedca:acvi",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:MUEDca:ACVI",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:muedca:acvo",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:MUEDca:ACVO",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:bw",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:BW",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:cbook",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:CBOok",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:ltfgi",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:LTFGi",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:method",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:METHod",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:numcolumns",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:NUMColumns",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:ruend",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:RUENd",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:rustart",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:RUSTart",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:spstreams",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:SPSTreams",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:sstx",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:SSTX",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:subgrouping",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:SUBGrouping",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:target",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:TARGet",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:txen",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:TXEN",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:txp",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:TXP",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ndpsounding:type",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:NDPSounding:TYPE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:omode",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:OMODe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:qos:etoe",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:QOS:ETOE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:qos:prioritiz",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:QOS:PRIoritiz",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:eaka:kalgo",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:EAKA:KALGo",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:encryption",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:ENCRyption",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:esim:ktone",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:ESIM:KTONe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:esim:ktthree",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:ESIM:KTTHree",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:esim:kttwo",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:ESIM:KTTWo",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:gtransform",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:GTRansform",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:hashtoelem",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:HASHtoelem",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:passphrase",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:PASSphrase",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:pkey",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:PKEY",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:pmf",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:PMF",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:rserver:iconf",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:RSERver:ICONf",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:rserver:mode",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:RSERver:MODE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:rserver:pnumber",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:RSERver:PNUMber",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:rserver:skey",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:RSERver:SKEY",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:security:type",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SECurity:TYPE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:smoothing",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SMOothing",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:srates",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SRATes",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:srates:dsssconf",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SRATes:DSSSconf",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:srates:ofdmconf",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SRATes:OFDMconf",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:srates:omcsconf",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SRATes:OMCSconf",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:srates:vhtconf",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SRATes:VHTConf",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:ssid",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SSID",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:sta<s>:dframe:hemu:alsfield",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:STA<s>:DFRame:HEMU:ALSField",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:standard",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:STANdard",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:station:cmode",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:STATion:CMODe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:station:sconnection",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:STATion:SCONnection",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:connection:sync",
+      "command": "CONFigure:WLAN:SIGN<i>:CONNection:SYNC",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:edau:enable",
+      "command": "CONFigure:WLAN:SIGN<i>:EDAU:ENABle",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:edau:nid",
+      "command": "CONFigure:WLAN:SIGN<i>:EDAU:NID",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:edau:nsegment",
+      "command": "CONFigure:WLAN:SIGN<i>:EDAU:NSEGment",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:etoe:duip",
+      "command": "CONFigure:WLAN:SIGN<i>:ETOE:DUIP",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:etoe:irlist:ipraddress<n>",
+      "command": "CONFigure:WLAN:SIGN<i>:ETOE:IRList:IPRaddress<n>",
+      "query": false,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:fading:awgn:bwidth:ratio",
+      "command": "CONFigure:WLAN:SIGN<i>:FADing:AWGN:BWIDth:RATio",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:fading:awgn:enable",
+      "command": "CONFigure:WLAN:SIGN<i>:FADing:AWGN:ENABle",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:fading:awgn:snratio",
+      "command": "CONFigure:WLAN:SIGN<i>:FADing:AWGN:SNRatio",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:fading:fsimulator:enable",
+      "command": "CONFigure:WLAN:SIGN<i>:FADing:FSIMulator:ENABle",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:fading:fsimulator:iloss:loss?",
+      "command": "CONFigure:WLAN:SIGN<i>:FADing:FSIMulator:ILOSs:LOSS?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:fading:fsimulator:standard",
+      "command": "CONFigure:WLAN:SIGN<i>:FADing:FSIMulator:STANdard",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:ipvfour:dhcp",
+      "command": "CONFigure:WLAN:SIGN<i>:IPVFour:DHCP",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:ipvfour:static:ipaddress:cmw",
+      "command": "CONFigure:WLAN:SIGN<i>:IPVFour:STATic:IPADdress:CMW",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:ipvfour:static:ipaddress:dns",
+      "command": "CONFigure:WLAN:SIGN<i>:IPVFour:STATic:IPADdress:DNS",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:ipvfour:static:ipaddress:gateway",
+      "command": "CONFigure:WLAN:SIGN<i>:IPVFour:STATic:IPADdress:GATeway",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:ipvfour:static:ipaddress:sta<s>",
+      "command": "CONFigure:WLAN:SIGN<i>:IPVFour:STATic:IPADdress:STA<s>",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:ipvfour:static:smask",
+      "command": "CONFigure:WLAN:SIGN<i>:IPVFour:STATic:SMASk",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:ipvsix:prefix",
+      "command": "CONFigure:WLAN:SIGN<i>:IPVSix:PREFix",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:mimo:tmmode",
+      "command": "CONFigure:WLAN:SIGN<i>:MIMO:TMMode",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:mmonitor:enable",
+      "command": "CONFigure:WLAN:SIGN<i>:MMONitor:ENABle",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:mmonitor:ipaddress",
+      "command": "CONFigure:WLAN:SIGN<i>:MMONitor:IPADdress",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:atype",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:ATYPe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:destination",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DESTination",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dframe:hemu:alsfield",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DFRame:HEMU:ALSField",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dframe:hemu:blallocation?",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DFRame:HEMU:BLALlocation?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dframe:hemu:dummy<index>:mcs",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DFRame:HEMU:DUMMy<index>:MCS",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dframe:hemu:ruallocation",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DFRame:HEMU:RUALlocation",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dframe:hemu:user<index>:allocation",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DFRame:HEMU:USER<index>:ALLocation",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dframe:hemu:user<index>:ctype",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DFRame:HEMU:USER<index>:CTYPe",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dframe:hemu:user<index>:mcs",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DFRame:HEMU:USER<index>:MCS",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dframe:hemu:user<index>:streams",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DFRame:HEMU:USER<index>:STReams",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dinterval",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DINTerval",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:dpattern",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:DPATtern",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:fdef",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:FDEF",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:packets",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:PACKets",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:payload:size",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:PAYLoad:SIZE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:per:tidentifier",
+      "command": "CONFigure:WLAN:SIGN<i>:PER:TIDentifier",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:pgen<index>:config",
+      "command": "CONFigure:WLAN:SIGN<i>:PGEN<index>:CONFig",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:pgen<index>:destination",
+      "command": "CONFigure:WLAN:SIGN<i>:PGEN<index>:DESTination",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:pgen<index>:ipversion",
+      "command": "CONFigure:WLAN:SIGN<i>:PGEN<index>:IPVersion",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:pgen<index>:protocol",
+      "command": "CONFigure:WLAN:SIGN<i>:PGEN<index>:PROTocol",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:pgen<index>:uports",
+      "command": "CONFigure:WLAN:SIGN<i>:PGEN<index>:UPORts",
+      "query": false,
+      "placeholders": [
+        "i",
+        "index"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:antenna<n>:eattenuation:input",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:ANTenna<n>:EATTenuation:INPut",
+      "query": false,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:antenna<n>:eattenuation:output",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:ANTenna<n>:EATTenuation:OUTPut",
+      "query": false,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:antenna<n>:epepower",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:ANTenna<n>:EPEPower",
+      "query": false,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:antenna<n>:mloffset",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:ANTenna<n>:MLOFfset",
+      "query": false,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:band",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:BAND",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:bopower",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:BOPower",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:channel",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:CHANnel",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:foffset",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:FOFFset",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:frequency",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:FREQuency",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:npchannel",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:NPCHannel",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:npfrequency",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:NPFRequency",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:npindex",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:NPINdex",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:ocwidth",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:OCWidth",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:rfsettings:tsratio",
+      "command": "CONFigure:WLAN:SIGN<i>:RFSettings:TSRatio",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:ampdu",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:AMPDu",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:dfdef",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:DFDef",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:ctyp",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:CTYP",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:dcm",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:DCM",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:mcs",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:MCS",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:nss",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:NSS",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:rual",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:RUAL",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:sss?",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:SSS?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:trsmode",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:TRSMode",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:trssi?",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:TRSSi?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:hetf:tsrcontrol",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:HETF:TSRControl",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:qos:barmethod",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:QOS:BARMethod",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:sta<s>:connection:qos:black",
+      "command": "CONFigure:WLAN:SIGN<i>:STA<s>:CONNection:QOS:BLACk",
+      "query": false,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:uesinfo:reset",
+      "command": "CONFigure:WLAN:SIGN<i>:UESinfo:RESet",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "configure:wlan:sign<i>:uesinfo:settings",
+      "command": "CONFigure:WLAN:SIGN<i>:UESinfo:SETTings",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:modulation:cfdistrib?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:MODulation:CFDistrib?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:pvtime:tedistrib?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:PVTime:TEDistrib?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:sinfo:hemu:bdcm?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:SINFo:HEMU:BDCM?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:sinfo:hesu:beamchange?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:SINFo:HESU:BEAMchange?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:sinfo:hetb:bsscolor?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:SINFo:HETB:BSSColor?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:sinfo:htsig:aggregation?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:SINFo:HTSig:AGGRegation?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:sinfo:lsig:length?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:SINFo:LSIG:LENGth?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:sinfo:vhtsig:beamformed?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:SINFo:VHTSig:BEAMformed?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:state:all?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:STATe:ALL?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:mevaluation:state?",
+      "command": "FETCh:WLAN:MEAS<i>:MEValuation:STATe?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:meas<i>:tmode:antenna<antennas>?",
+      "command": "FETCh:WLAN:MEAS<i>:TMODe:ANTenna<Antennas>?",
+      "query": true,
+      "placeholders": [
+        "Antennas",
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:sign<i>:packrate?",
+      "command": "FETCh:WLAN:SIGN<i>:PACKrate?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:sign<i>:per:state:all?",
+      "command": "FETCh:WLAN:SIGN<i>:PER:STATe:ALL?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:sign<i>:per:state?",
+      "command": "FETCh:WLAN:SIGN<i>:PER:STATe?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:sign<i>:per?",
+      "command": "FETCh:WLAN:SIGN<i>:PER?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:sign<i>:pswitched:state?",
+      "command": "FETCh:WLAN:SIGN<i>:PSWitched:STATe?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:sign<i>:second:state?",
+      "command": "FETCh:WLAN:SIGN<i>:SECond:STATe?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "fetch:wlan:sign<i>:third:state?",
+      "command": "FETCh:WLAN:SIGN<i>:THIRd:STATe?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "initiate:wlan:meas<i>:mevaluation",
+      "command": "INITiate:WLAN:MEAS<i>:MEValuation",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "initiate:wlan:meas<i>:tmode:antenna<antennas>",
+      "command": "INITiate:WLAN:MEAS<i>:TMODe:ANTenna<Antennas>",
+      "query": false,
+      "placeholders": [
+        "Antennas",
+        "i"
+      ]
+    },
+    {
+      "index": "initiate:wlan:sign<i>:per",
+      "command": "INITiate:WLAN:SIGN<i>:PER",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "read:wlan:meas<i>:tmode:antenna<antennas>?",
+      "command": "READ:WLAN:MEAS<i>:TMODe:ANTenna<Antennas>?",
+      "query": true,
+      "placeholders": [
+        "Antennas",
+        "i"
+      ]
+    },
+    {
+      "index": "read:wlan:sign<i>:per?",
+      "command": "READ:WLAN:SIGN<i>:PER?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:meas<i>:catalog:scenario?",
+      "command": "ROUTe:WLAN:MEAS<i>:CATalog:SCENario?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:meas<i>:scenario:cspath",
+      "command": "ROUTe:WLAN:MEAS<i>:SCENario:CSPath",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:meas<i>:scenario:salone",
+      "command": "ROUTe:WLAN:MEAS<i>:SCENario:SALone",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:meas<i>:scenario:tmimo<pathcount>",
+      "command": "ROUTe:WLAN:MEAS<i>:SCENario:TMIMo<PathCount>",
+      "query": false,
+      "placeholders": [
+        "PathCount",
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:meas<i>:scenario?",
+      "command": "ROUTe:WLAN:MEAS<i>:SCENario?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:meas<i>?",
+      "command": "ROUTe:WLAN:MEAS<i>?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:sign<i>:scenario:mimfading:flexible",
+      "command": "ROUTe:WLAN:SIGN<i>:SCENario:MIMFading:FLEXible",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:sign<i>:scenario:mimo:flexible",
+      "command": "ROUTe:WLAN:SIGN<i>:SCENario:MIMO:FLEXible",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:sign<i>:scenario:scell:flexible",
+      "command": "ROUTe:WLAN:SIGN<i>:SCENario:SCELl:FLEXible",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:sign<i>:scenario:scfading:flexible",
+      "command": "ROUTe:WLAN:SIGN<i>:SCENario:SCFading:FLEXible",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:sign<i>:scenario?",
+      "command": "ROUTe:WLAN:SIGN<i>:SCENario?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "route:wlan:sign<i>?",
+      "command": "ROUTe:WLAN:SIGN<i>?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:elogging:all?",
+      "command": "SENSe:WLAN:SIGN<i>:ELOGging:ALL?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sinfo:eapstat?",
+      "command": "SENSe:WLAN:SIGN<i>:SINFo:EAPStat?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sinfo[:antenna<n>]:rxpindicator?",
+      "command": "SENSe:WLAN:SIGN<i>:SINFo[:ANTenna<n>]:RXPindicator?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sta<s>:hetbinfo:uphinfo?",
+      "command": "SENSe:WLAN:SIGN<i>:STA<s>:HETBinfo:UPHinfo?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sta<s>:uecapability:he?",
+      "command": "SENSe:WLAN:SIGN<i>:STA<s>:UECapability:HE?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sta<s>:uecapability:mac:address?",
+      "command": "SENSe:WLAN:SIGN<i>:STA<s>:UECapability:MAC:ADDRess?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sta<s>:uesinfo:absreport?",
+      "command": "SENSe:WLAN:SIGN<i>:STA<s>:UESinfo:ABSReport?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sta<s>:uesinfo:drate?",
+      "command": "SENSe:WLAN:SIGN<i>:STA<s>:UESinfo:DRATe?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sta<s>:uesinfo:rxbpower?",
+      "command": "SENSe:WLAN:SIGN<i>:STA<s>:UESinfo:RXBPower?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "s"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:sta<s>:uesinfo:ueaddress:ipv<n>?",
+      "command": "SENSe:WLAN:SIGN<i>:STA<s>:UESinfo:UEADdress:IPV<n>?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "n",
+        "s"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:apssid?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:APSSid?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:cmwaddress:ipv<n>?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:CMWaddress:IPV<n>?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:rxpsdu:hemu?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:RXPSdu:HEMU?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:rxpsdu:hesu?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:RXPSdu:HESU?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:rxpsdu:hetb?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:RXPSdu:HETB?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:rxpsdu:ht?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:RXPSdu:HT?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:rxpsdu:nonht?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:RXPSdu:NONHt?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:rxpsdu:vht?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:RXPSdu:VHT?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo:rxtrigframe?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo:RXTRigframe?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "sense:wlan:sign<i>:uesinfo[:antenna<n>]:arxbpower?",
+      "command": "SENSe:WLAN:SIGN<i>:UESinfo[:ANTenna<n>]:ARXBpower?",
+      "query": true,
+      "placeholders": [
+        "i",
+        "n"
+      ]
+    },
+    {
+      "index": "source:wlan:sign<i>:state",
+      "command": "SOURce:WLAN:SIGN<i>:STATe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "source:wlan:sign<i>:state:all?",
+      "command": "SOURce:WLAN:SIGN<i>:STATe:ALL?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "stop:wlan:meas<i>:mevaluation",
+      "command": "STOP:WLAN:MEAS<i>:MEValuation",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "stop:wlan:sign<i>:per",
+      "command": "STOP:WLAN:SIGN<i>:PER",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:meas<i>:mevaluation:catalog:source?",
+      "command": "TRIGger:WLAN:MEAS<i>:MEValuation:CATalog:SOURce?",
+      "query": true,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:meas<i>:mevaluation:mgap",
+      "command": "TRIGger:WLAN:MEAS<i>:MEValuation:MGAP",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:meas<i>:mevaluation:slope",
+      "command": "TRIGger:WLAN:MEAS<i>:MEValuation:SLOPe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:meas<i>:mevaluation:source",
+      "command": "TRIGger:WLAN:MEAS<i>:MEValuation:SOURce",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:meas<i>:mevaluation:threshold",
+      "command": "TRIGger:WLAN:MEAS<i>:MEValuation:THReshold",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:meas<i>:mevaluation:tout",
+      "command": "TRIGger:WLAN:MEAS<i>:MEValuation:TOUT",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:btype",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:BTYPe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:bw",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:BW",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:ctdelay",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:CTDelay",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:dsmlength",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:DSMLength",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:ofmlength",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:OFMLength",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:plength:mode",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:PLENgth:MODE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:plength:value",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:PLENgth:VALue",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:rate",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:RATE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:rrestriction",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:RREStriction",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:slope",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:SLOPe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:rx:macframe:streams",
+      "command": "TRIGger:WLAN:SIGN<i>:RX:MACFrame:STReams",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:tx:macframe:plength:mode",
+      "command": "TRIGger:WLAN:SIGN<i>:TX:MACFrame:PLENgth:MODE",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:tx:macframe:plength:value",
+      "command": "TRIGger:WLAN:SIGN<i>:TX:MACFrame:PLENgth:VALue",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "trigger:wlan:sign<i>:tx:macframe:slope",
+      "command": "TRIGger:WLAN:SIGN<i>:TX:MACFrame:SLOPe",
+      "query": false,
+      "placeholders": [
+        "i"
+      ]
+    },
+    {
+      "index": "tax: ...wlan:meas:mevaluation",
+      "command": "tax: ...WLAN:MEAS:MEValuation",
+      "query": false,
+      "placeholders": []
+    }
+  ]
+}

@@ -29,6 +29,37 @@ python3 manual_library/download_manuals.py
     ```
 4.  **验证**: 运行 `python3 manual_library/manage_manuals.py --list` 确认新文件已显示。
 
+### 3. 自动发现新类型/品牌（推荐）
+
+从现在起，`scan_local_library.py` 会自动补齐 **类别、品牌、系列**，不再要求你先手动改 `catalog.yaml`：
+
+1.  **放置目录**：
+    ```
+    manual_library/<category>/<Vendor>_<Series>/
+    ```
+    例如：
+    ```
+    manual_library/integrated_tester/Keysight_UXM/
+    ```
+2.  **更准确的命名（可选）**：
+    - 如果厂商名里有多个单词或容易混淆，建议使用双下划线分隔：
+      ```
+      Rohde_and_Schwarz__CMW
+      ```
+    - 或者在该目录下放一个 `meta.yaml`，显式指定 `vendor/series/models`：
+      ```yaml
+      vendor: Rohde & Schwarz
+      series: CMW
+      models: [CMW500]
+      ```
+3.  **执行扫描**：
+    ```bash
+    python3 manual_library/scan_local_library.py
+    ```
+4.  **效果**：脚本会自动新增 `catalog.yaml` 中缺失的类别/品牌/系列，并注册本地手册文件。
+
+> 注意：扫描只处理本地文件；如需补充远程链接或官方下载地址，仍需手动编辑 `catalog.yaml`。
+
 ## 如何添加新型号
 如果您引入了新的仪表型号（例如 TCU 测试配置单元），请编辑 `catalog.yaml`：
 

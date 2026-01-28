@@ -44,6 +44,28 @@ class InstrumentStatus(BaseModel):
     simulation: bool
     driver_info: Optional[Dict[str, Any]] = None
 
+class InstrumentVerifyRequest(BaseModel):
+    mode: str = "quick"  # quick | full | full_scpi
+    simulation_mode: Optional[bool] = None
+    params: Optional[Dict[str, Any]] = None
+    scpi: Optional[Dict[str, Any]] = None
+
+class InstrumentVerifyStep(BaseModel):
+    name: str
+    status: str
+    message: str
+    duration_ms: float
+    error: Optional[str] = None
+
+class InstrumentVerifyResult(BaseModel):
+    instrument_id: str
+    mode: str
+    simulation_mode: bool
+    duration_ms: float
+    summary: Dict[str, int]
+    steps: List[InstrumentVerifyStep]
+    driver_info: Optional[Dict[str, Any]] = None
+
 class ManualEntry(BaseModel):
     title: str
     type: str
@@ -94,6 +116,12 @@ class TestRunDetail(BaseModel):
 async def health_check():
     return {"status": "ok", "version": "0.1.0"}
 
+def _resolve_simulation_mode(config: Dict[str, Any], override: Optional[bool] = None) -> bool:
+    if override is not None:
+        return override
+    system_cfg = config.get("system", {})
+    return system_cfg.get("simulation_mode", True)
+
 @router.get("/instruments/status", response_model=List[InstrumentStatus])
 async def get_instruments_status():
     """
@@ -103,16 +131,20 @@ async def get_instruments_status():
     config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "config.yaml")
 
     # 决定使用哪个 sequencer 实例
+    temp_sequencer = False
     if state.sequencer:
         sequencer = state.sequencer
         # 如果正在运行，大概率已经连接好了
         config = sequencer.config
+        simulation_mode = sequencer.simulation_mode
     else:
         loader = ConfigLoader(config_path)
         config = loader.load()
+        simulation_mode = _resolve_simulation_mode(config)
         # 临时初始化一个 Sequencer 来检查状态
-        sequencer = TestSequencer(config, simulation_mode=True)
+        sequencer = TestSequencer(config, simulation_mode=simulation_mode)
         sequencer.initialize_instruments()
+        temp_sequencer = True
 
     results = []
 
@@ -137,11 +169,98 @@ async def get_instruments_status():
             name=info.get('name', cfg_key.upper()),
             address=info.get('address', 'Unknown'),
             connected=connected,
-            simulation=True, # 暂时硬编码，未来应从 config 读取
+            simulation=simulation_mode,
             driver_info=driver_info
         ))
 
+    if temp_sequencer:
+        for inst in sequencer.instruments.values():
+            try:
+                inst.disconnect()
+            except Exception:
+                pass
+
     return results
+
+@router.get("/instruments/{instrument_id}", response_model=InstrumentStatus)
+async def get_instrument_detail(instrument_id: str):
+    config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "config.yaml")
+    loader = ConfigLoader(config_path)
+    config = loader.load()
+    simulation_mode = _resolve_simulation_mode(config)
+
+    if instrument_id not in config.get("instruments", {}):
+        raise HTTPException(status_code=404, detail="Instrument not found")
+
+    temp_sequencer = False
+    if state.sequencer:
+        sequencer = state.sequencer
+        simulation_mode = sequencer.simulation_mode
+    else:
+        sequencer = TestSequencer(config, simulation_mode=simulation_mode)
+        sequencer.initialize_instruments()
+        temp_sequencer = True
+
+    inst_cfg = config["instruments"][instrument_id]
+    inst_obj = sequencer.instruments.get(instrument_id)
+    driver_info = None
+    connected = False
+    if inst_obj and hasattr(inst_obj, "get_driver_info"):
+        try:
+            driver_info = inst_obj.get_driver_info()
+            connected = True
+        except Exception:
+            connected = False
+
+    result = InstrumentStatus(
+        id=instrument_id,
+        name=inst_cfg.get("name", instrument_id.upper()),
+        address=inst_cfg.get("address", "Unknown"),
+        connected=connected,
+        simulation=simulation_mode,
+        driver_info=driver_info,
+    )
+
+    if temp_sequencer:
+        for inst in sequencer.instruments.values():
+            try:
+                inst.disconnect()
+            except Exception:
+                pass
+
+    return result
+
+@router.post("/instruments/{instrument_id}/scpi/verify", response_model=InstrumentVerifyResult)
+async def verify_instrument_scpi(instrument_id: str, payload: InstrumentVerifyRequest):
+    if state.is_running:
+        raise HTTPException(status_code=409, detail="Test is running, SCPI验证已禁用")
+
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    config_path = os.path.join(base_dir, "config.yaml")
+    loader = ConfigLoader(config_path)
+    config = loader.load()
+    simulation_mode = _resolve_simulation_mode(config, payload.simulation_mode)
+
+    if payload.mode not in ("quick", "full", "full_scpi"):
+        raise HTTPException(status_code=400, detail="mode 必须为 quick、full 或 full_scpi")
+
+    from app.scpi_validation import run_scpi_validation
+
+    try:
+        result = run_scpi_validation(
+            instrument_id=instrument_id,
+            config=config,
+            mode=payload.mode,
+            simulation_mode=simulation_mode,
+            override_params=payload.params,
+            scpi_override=payload.scpi,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"SCPI验证失败: {exc}") from exc
+
+    return result
 
 @router.get("/manuals", response_model=CatalogResponse)
 async def get_manuals_catalog():

@@ -80,6 +80,32 @@ integrated_tester:
     url: Remote_Control_SCPI_GettingStarted_en_04.pdf
     notes: Automatically detected local file
     is_local: true
+  - title: ' info Rohde Schwarz 1201 0002K55 101395 UT Manual 2022819133542'
+    type: user_manual_local
+    url: _info_Rohde_Schwarz_1201_0002K55_101395_UT_Manual_2022819133542.pdf
+    notes: Automatically detected local file
+    is_local: true
+  - title: CMW WLAN UserManual V4-0-20 en 35 (2)
+    type: user_manual_local
+    url: CMW_WLAN_UserManual_V4-0-20_en_35 (2).pdf
+    notes: Automatically detected local file
+    is_local: true
+- vendor: Keysight
+  series: UXM
+  models:
+  - E7515B
+  - E7515A
+  manuals:
+  - title: Keysight UXM 5G NR Test Application SCPI Reference
+    type: scpi_reference
+    url: 5G_NR_Test_Application_SCPI_Reference.html
+    notes: Automatically detected local file
+    is_local: true
+  - title: 5G NR Test Application SCPI Reference
+    type: user_manual_local
+    url: 5G_NR_Test_Application_SCPI_Reference.html
+    notes: Automatically detected local file
+    is_local: true
 - vendor: Anritsu
   series: MT8000A
   models:
@@ -171,6 +197,10 @@ channel_emulator:
     url: Propsim ATE environment and practices AN.pdf
     notes: Automatically detected local file
     is_local: true
+- vendor: Keysight
+  series: F64
+  models: []
+  manuals: []
 tcu:
 - vendor: EMCenter
   series: TCU

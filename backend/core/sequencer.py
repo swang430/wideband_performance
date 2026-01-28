@@ -86,7 +86,15 @@ class TestSequencer:
 
                 try:
                     self._log(f"正在连接 {name} ({address})...")
-                    inst = cls(address, name=name, simulation_mode=self.simulation_mode)
+                    if key == 'integrated_tester':
+                        inst = cls(
+                            address,
+                            name=name,
+                            simulation_mode=self.simulation_mode,
+                            driver_hint=cfg.get('driver_hint'),
+                        )
+                    else:
+                        inst = cls(address, name=name, simulation_mode=self.simulation_mode)
                     inst.connect()
                     self.instruments[key] = inst
                     self._log(f"✅ {name} 连接成功")
@@ -180,13 +188,19 @@ class TestSequencer:
                 # 推送实时指标到前端
                 if self.metrics_callback:
                     self._elapsed_time = asyncio.get_event_loop().time() - (self._start_time or asyncio.get_event_loop().time())
-                    self.metrics_callback({
-                        "throughput_mbps": round(sim_throughput, 2),
-                        "bler": round(sim_bler, 4),
+                    if self.simulation_mode:
+                        metrics = {
+                            "throughput_mbps": round(sim_throughput, 2),
+                            "bler": round(sim_bler, 4),
+                            "elapsed_time": round(self._elapsed_time, 2),
+                        }
+                    else:
+                        metrics = self._collect_metrics()
+                    metrics.update({
                         "interferer_power_dbm": current_p,
                         "freq_offset_mhz": offset,
-                        "elapsed_time": round(self._elapsed_time, 2)
                     })
+                    self.metrics_callback(metrics)
 
                 if sim_bler > limit_bler:
                     self._log(f"!!! 阻塞失效点: {current_p} dBm (BLER {sim_bler*100:.1f}%) !!!", level="WARNING")
@@ -233,12 +247,18 @@ class TestSequencer:
 
             # 推送实时指标
             if self.metrics_callback:
-                self.metrics_callback({
-                    "throughput_mbps": round(sim_throughput, 2),
-                    "bler": round(current_bler, 4),
+                if self.simulation_mode:
+                    metrics = {
+                        "throughput_mbps": round(sim_throughput, 2),
+                        "bler": round(current_bler, 4),
+                        "elapsed_time": self._elapsed_time,
+                    }
+                else:
+                    metrics = self._collect_metrics()
+                metrics.update({
                     "power_dbm": current_power,
-                    "elapsed_time": self._elapsed_time
                 })
+                self.metrics_callback(metrics)
 
             self._log(f"   当前 BLER: {current_bler*100:.2f}%")
 
@@ -281,20 +301,62 @@ class TestSequencer:
 
             # 定期采样并推送指标
             if self.metrics_callback and (self._elapsed_time - last_metrics_time) >= metrics_interval:
-                # 模拟指标数据
-                sim_throughput = 180 + random.uniform(-20, 20)
-                sim_bler = 0.01 + random.uniform(0, 0.02)
-                self.metrics_callback({
-                    "throughput_mbps": round(sim_throughput, 2),
-                    "bler": round(sim_bler, 4),
-                    "elapsed_time": round(self._elapsed_time, 2)
-                })
+                metrics = self._collect_metrics(default_random=random)
+                self.metrics_callback(metrics)
                 last_metrics_time = self._elapsed_time
 
             await asyncio.sleep(0.1)  # Tick 精度 100ms
 
         self._log(">>> 场景执行流结束 <<<")
         self._running = False
+
+    def _collect_metrics(self, default_random=None) -> Dict[str, Any]:
+        if default_random is None:
+            import random as default_random
+
+        metrics: Dict[str, Any] = {
+            "elapsed_time": round(self._elapsed_time, 2)
+        }
+
+        tester = self.instruments.get('integrated_tester')
+        if self.simulation_mode or tester is None:
+            sim_throughput = 180 + default_random.uniform(-20, 20)
+            sim_bler = 0.01 + default_random.uniform(0, 0.02)
+            metrics["throughput_mbps"] = round(sim_throughput, 2)
+            metrics["bler"] = round(sim_bler, 4)
+            return metrics
+
+        try:
+            metrics["throughput_mbps"] = float(tester.get_throughput())
+        except Exception as e:
+            self._log(f"吞吐量采集失败: {e}", level="WARNING")
+            metrics["throughput_mbps"] = None
+
+        try:
+            metrics["bler"] = float(tester.get_bler())
+        except Exception as e:
+            self._log(f"BLER/PER 采集失败: {e}", level="WARNING")
+            metrics["bler"] = None
+
+        try:
+            metrics["rsrp_dbm"] = float(tester.get_rsrp())
+        except Exception:
+            pass
+
+        try:
+            metrics["sinr_db"] = float(tester.get_sinr())
+        except Exception:
+            pass
+
+        if hasattr(tester, "get_wlan_metrics"):
+            try:
+                wlan_metrics = tester.get_wlan_metrics()
+                if isinstance(wlan_metrics, dict):
+                    metrics.update(wlan_metrics)
+            except Exception as e:
+                self._log(f"WLAN 指标采集失败: {e}", level="WARNING")
+
+        return metrics
 
     async def _execute_event(self, event: Dict[str, Any]):
         """执行单个时间轴事件"""
