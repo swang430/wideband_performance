@@ -1,1 +1,2 @@
+*.pdf filter=lfs diff=lfs merge=lfs -text
 backend/manual_library/integrated_tester/Keysight_UXM/5G_NR_Test_Application_SCPI_Reference.html filter=lfs diff=lfs merge=lfs -text
