@@ -1,45 +1,224 @@
-from drivers.common.generic_tester import GenericTester
+"""
+Rohde & Schwarz CMW500 Wideband Radio Communication Tester Driver
+WLAN Signaling & Measurement Implementation.
+
+Ref: CMW_WLAN_UserManual_V4-0-20_en.pdf
+"""
+
+from typing import Optional, Dict
+import time
+
+from unicon.instruments.base_instrument import BaseInstrument
 
 
-class CMW500_Driver(GenericTester):
+class CMW500(BaseInstrument):
     """
-    Rohde & Schwarz CMW500 专用驱动。
-    注: CMW500 信令极其复杂，本驱动仅实现基础 LTE 信令控制框架。
+    R&S CMW500 综测仪驱动程序。
+    目前侧重于 WLAN (Wi-Fi) 信令与测量模式的控制。
     """
+    
+    def __init__(self, resource_name: str, name: str = "CMW500", simulation_mode: bool = False, reset_on_connect: bool = True):
+        super().__init__(resource_name, name=name, simulation_mode=simulation_mode, reset_on_connect=reset_on_connect)
+        self.wlan = self.WlanSubsystem(self)
 
-    def __init__(self, resource_name: str, name: str = "RS_CMW500", simulation_mode: bool = False):
-        super().__init__(resource_name, name, simulation_mode)
+    class WlanSubsystem:
+        """WLAN Signaling & Measurement Subsystem"""
+        def __init__(self, parent: 'CMW500'):
+            self.parent = parent
+            self.logger = parent.logger
 
-    def set_tech_standard(self, standard: str):
-        """
-        切换信令场景 (例如 LTE)。
-        """
-        if standard.upper() == "LTE":
-            self.write("ROUT:SIGN:LTE:SCEN:MOD STAN")
-            self.logger.info("CMW500: 切换到 LTE Standard 信令模式")
-        elif standard.upper() == "NR5G":
-            self.write("ROUT:SIGN:NR5G:SCEN:MOD STAN") # 假设指令
-            self.logger.info("CMW500: 切换到 5G NR 信令模式")
-        else:
-            self.logger.warning(f"CMW500: 未知标准 {standard}")
+        def set_routing(self, scenario: str = "STANdard", rf_in: str = "RF1C", rf_out: str = "RF1C"):
+            """
+            配置 WLAN 信令的射频路由和场景模式。
+            Ref: CMW WLAN User Manual - ROUTe:WLAN:SIGNaling...
+            """
+            self.logger.info(f"配置 WLAN 路由: 场景={scenario}, RF_IN={rf_in}, RF_OUT={rf_out}")
+            # 设置基本信令场景
+            self.parent.write(f"ROUTe:WLAN:SIGNaling:SCENario:MODe {scenario}")
+            # 配置 TX/RX 端口
+            self.parent.write(f"ROUTe:WLAN:SIGNaling:TX {rf_out}")
+            self.parent.write(f"ROUTe:WLAN:SIGNaling:RX {rf_in}")
 
-    def start_call(self):
-        """
-        开启信令并等待 Attach。
-        """
-        self.write("SOUR:LTE:SIGN:STAT ON")
-        self.logger.info("CMW500: 开启 LTE 信令...")
+        def configure_rf(self, band: str = "OB24", channel: int = 6, tx_power_dbm: float = -10.0, ext_att_in: float = 0.0, ext_att_out: float = 0.0):
+            """
+            配置 WLAN 的射频参数（频段、信道、发射功率、外部衰减）。
+            Ref: CMW WLAN User Manual - CONFigure:WLAN:SIGNaling:RFSettings...
+            
+            :param band: 频段 (OB24 -> 2.4 GHz, OB50 -> 5 GHz, OB60 -> 6 GHz)
+            :param channel: 信道号
+            :param tx_power_dbm: CMW500 TX 输出功率 (dBm)
+            :param ext_att_in: RF 输入路径的外部线损 (dB)
+            :param ext_att_out: RF 输出路径的外部线损 (dB)
+            """
+            self.logger.info(f"配置 WLAN 射频: 频段={band}, 信道={channel}, 功率={tx_power_dbm} dBm")
+            # 设置频段和信道
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:BAND {band}")
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:RFSettings:CHANnel {channel}")
+            
+            # 设置外部衰减 (External Attenuation)
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:RFSettings:EATTenuation:INPut {ext_att_in}")
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:RFSettings:EATTenuation:OUTPut {ext_att_out}")
+            
+            # 设置下行 TX 功率
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:RFSettings:LEVel {tx_power_dbm}")
 
-    def stop_call(self):
-        self.write("SOUR:LTE:SIGN:STAT OFF")
-        self.logger.info("CMW500: 关闭 LTE 信令")
+        def configure_network(self, ssid: str, standard: str = "N", bandwidth: str = "BW20"):
+            """
+            配置 WLAN 接入点 (AP) 的网络参数。
+            Ref: CMW WLAN User Manual - CONFigure:WLAN:SIGNaling:CONNection...
+            
+            :param ssid: AP 的 SSID 名称
+            :param standard: WLAN 标准 (A, B, G, N, AC, AX, BE)
+            :param bandwidth: 信道带宽 (BW20, BW40, BW80, BW160)
+            """
+            self.logger.info(f"配置 WLAN 网络: SSID={ssid}, Standard=802.11{standard}, 带宽={bandwidth}")
+            # 设置网络标准 (例如 11n, 11ac)
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:CONNection:STANdard {standard}")
+            # 设置信道带宽
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:CONNection:Bwidth {bandwidth}")
+            # 设置 SSID
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:CONNection:SSID '{ssid}'")
 
-    def get_connection_status(self) -> str:
-        """
-        查询 LTE 连接状态。
-        """
-        # 返回如 'ATT', 'CONN', 'IDLE'
-        try:
-            return self.query("FETC:LTE:SIGN:PSW:STAT?")
-        except Exception:
-            return "ERROR"
+        def start_signaling(self) -> bool:
+            """
+            开启 WLAN 信令源 (Turn on the AP)。
+            Ref: CMW WLAN User Manual - SOURce:WLAN:SIGNaling:STATe
+            """
+            self.logger.info("开启 WLAN 信令源 (AP 启动)...")
+            self.parent.write("SOURce:WLAN:SIGNaling:STATe ON")
+            
+            # 等待直到状态变为 ON
+            timeout = 10
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                state = self.parent.query("SOURce:WLAN:SIGNaling:STATe?")
+                if "ON" in state.upper():
+                    self.logger.info("WLAN 信令源已成功开启。")
+                    return True
+                time.sleep(0.5)
+            
+            self.logger.error("开启 WLAN 信令源超时！")
+            return False
+
+        def stop_signaling(self):
+            """
+            关闭 WLAN 信令源。
+            Ref: CMW WLAN User Manual - SOURce:WLAN:SIGNaling:STATe
+            """
+            self.logger.info("关闭 WLAN 信令源 (AP 停止)...")
+            self.parent.write("SOURce:WLAN:SIGNaling:STATe OFF")
+
+        def get_connection_state(self) -> str:
+            """
+            查询当前 DUT 的连接状态。
+            Ref: CMW WLAN User Manual - FETCh:WLAN:SIGNaling:CSState?
+            
+            返回示例: "OFF", "ON", "ASSOCIATED"
+            """
+            state = self.parent.query("FETCh:WLAN:SIGNaling:CSState?")
+            self.logger.debug(f"当前 WLAN 连接状态: {state}")
+            return state
+
+        def wait_for_connection(self, timeout: float = 30.0) -> bool:
+            """
+            等待终端 (DUT) 成功关联 (ASSOCIATED) 到 CMW500。
+            """
+            self.logger.info(f"等待终端连接，最大超时时间: {timeout} 秒...")
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                state = self.get_connection_state()
+                if "ASS" in state.upper():
+                    self.logger.info("终端已成功连接 (ASSOCIATED)！")
+                    return True
+                time.sleep(1.0)
+            
+            self.logger.warning("等待终端连接超时。")
+            return False
+
+        # --- Measurements (EVM, Power) ---
+
+        def start_measurement(self) -> bool:
+            """
+            启动 WLAN 多项评估测量 (Multi Evaluation Measurement)。
+            Ref: CMW WLAN User Manual - INITiate:WLAN:MEAS:MEValuation
+            """
+            self.logger.info("启动 WLAN 测量 (Multi Evaluation)...")
+            self.parent.write("INITiate:WLAN:MEAS:MEValuation")
+            
+            # 等待测量 Ready
+            timeout = 10
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                state = self.parent.query("FETCh:WLAN:MEAS:MEValuation:STATe?")
+                if "RDY" in state.upper():
+                    self.logger.info("WLAN 测量已就绪 (READY)。")
+                    return True
+                time.sleep(0.5)
+                
+            self.logger.error("WLAN 测量就绪超时！")
+            return False
+
+        def stop_measurement(self):
+            """
+            停止 WLAN 测量。
+            Ref: CMW WLAN User Manual - STOP:WLAN:MEAS:MEValuation
+            """
+            self.logger.info("停止 WLAN 测量...")
+            self.parent.write("STOP:WLAN:MEAS:MEValuation")
+
+        def fetch_evm(self) -> Dict[str, float]:
+            """
+            获取 WLAN EVM 测量结果。
+            Ref: CMW WLAN User Manual - FETCh:WLAN:MEAS:MEValuation:EVM:ALL?
+            
+            :return: 包含 EVM 均值、最大值等参数的字典
+            """
+            self.logger.info("读取 WLAN EVM 测量结果...")
+            res = self.parent.query("FETCh:WLAN:MEAS:MEValuation:EVM:ALL?")
+            
+            if self.parent.simulation_mode:
+                return {"evm_avg_db": -35.2, "evm_max_db": -31.4}
+                
+            # 解析返回的逗号分隔字符串
+            # 示例响应: Reliability, EVM_Current, EVM_Min, EVM_Max, EVM_Avg ...
+            try:
+                parts = [float(x) for x in res.split(",")]
+                reliability = parts[0]
+                if reliability != 0:
+                    self.logger.warning(f"测量可能无效，Reliability Indicator: {reliability}")
+                
+                # 根据 CMW500 返回格式，一般情况下 4 是 Avg, 3 是 Max
+                return {
+                    "reliability": reliability,
+                    "evm_avg_db": parts[4] if len(parts) > 4 else float('nan'),
+                    "evm_max_db": parts[3] if len(parts) > 3 else float('nan')
+                }
+            except Exception as e:
+                self.logger.error(f"解析 EVM 结果失败: {e} (Raw: {res})")
+                return {}
+
+        def fetch_tx_power(self) -> Dict[str, float]:
+            """
+            获取 WLAN 发射功率 (TX Power) 测量结果。
+            Ref: CMW WLAN User Manual - FETCh:WLAN:MEAS:MEValuation:POWer:ALL?
+            """
+            self.logger.info("读取 WLAN TX Power 测量结果...")
+            res = self.parent.query("FETCh:WLAN:MEAS:MEValuation:POWer:ALL?")
+            
+            if self.parent.simulation_mode:
+                return {"power_avg_dbm": 15.4, "power_max_dbm": 16.1}
+                
+            try:
+                parts = [float(x) for x in res.split(",")]
+                reliability = parts[0]
+                if reliability != 0:
+                    self.logger.warning(f"测量可能无效，Reliability Indicator: {reliability}")
+                
+                return {
+                    "reliability": reliability,
+                    "power_avg_dbm": parts[4] if len(parts) > 4 else float('nan'),
+                    "power_max_dbm": parts[3] if len(parts) > 3 else float('nan')
+                }
+            except Exception as e:
+                self.logger.error(f"解析 TX Power 结果失败: {e} (Raw: {res})")
+                return {}
