@@ -1,38 +1,77 @@
-from drivers.common.generic_sa import GenericSA
+"""
+Rohde & Schwarz FSW Signal and Spectrum Analyzer Driver.
+
+Ref: FSW_UserManual.htm
+"""
+
+from typing import List, Tuple
+
+from unicon.instruments.base_instrument import BaseInstrument
 
 
-class FSW_Driver(GenericSA):
+class FSW(BaseInstrument):
     """
-    Rohde & Schwarz FSW 频谱仪专用驱动。
+    R&S FSW 信号与频谱分析仪驱动。
+    侧重于通用频谱扫描 (Spectrum) 以及 IQ 数据抓取。
     """
 
-    def __init__(self, resource_name: str, name: str = "RS_FSW", simulation_mode: bool = False):
-        super().__init__(resource_name, name, simulation_mode)
+    def __init__(self, resource_name: str, name: str = "FSW", simulation_mode: bool = False, reset_on_connect: bool = True):
+        super().__init__(resource_name, name=name, simulation_mode=simulation_mode, reset_on_connect=reset_on_connect)
 
-    def get_trace_data(self) -> list:
+    def set_frequency_center(self, freq_hz: float):
         """
-        [重写] 读取 Trace 1 的幅度数据 (dBm)。
+        设置频谱仪的中心频率 (Hz)。
+        Ref: FSW User Manual - [SENSe:]FREQuency:CENTer
         """
-        # R&S 格式: TRACe:DATA? TRACE1 -> 返回逗号分隔的 ASCII 字符串
-        try:
-            # 确保数据格式为 ASCII
-            self.write("FORM:DATA ASC")
-            raw_data = self.query("TRAC:DATA? TRACE1")
+        self.logger.info(f"设置中心频率: {freq_hz} Hz")
+        self.write(f"SENSe:FREQuency:CENTer {freq_hz}")
 
-            if not raw_data:
-                return []
-
-            # 解析数据
-            points = [float(x) for x in raw_data.split(',')]
-            self.logger.info(f"成功读取 Trace 1，共 {len(points)} 个点")
-            return points
-        except Exception as e:
-            self.logger.error(f"读取 Trace 失败: {e}")
-            return []
-
-    def set_display_update(self, enable: bool):
+    def set_span(self, span_hz: float):
         """
-        [扩展] 控制屏幕刷新以提高速度。
+        设置频谱仪的扫频宽度 (Hz)。
+        Ref: FSW User Manual - [SENSe:]FREQuency:SPAN
         """
-        state = "ON" if enable else "OFF"
-        self.write(f"SYST:DISP:UPD {state}")
+        self.logger.info(f"设置 Span: {span_hz} Hz")
+        self.write(f"SENSe:FREQuency:SPAN {span_hz}")
+
+    def set_reference_level(self, level_dbm: float):
+        """
+        设置参考电平 (Reference Level)。
+        Ref: FSW User Manual - DISPlay[:WINDow<n>][:SUBWindow<w>]:TRACe<t>:Y[:SCALe]:RLEVel
+        """
+        self.logger.info(f"设置参考电平: {level_dbm} dBm")
+        self.write(f"DISPlay:WINDow:TRACe:Y:SCALe:RLEVel {level_dbm}")
+
+    def run_single_sweep(self):
+        """
+        执行单次扫描并等待完成 (阻塞式)。
+        Ref: FSW User Manual - INITiate:IMMediate
+        """
+        self.logger.info("执行单次扫描...")
+        # 取消连续扫描
+        self.write("INITiate:CONTinuous OFF")
+        # 触发单次扫描并发送 *WAI 等待完成
+        self.write("INITiate:IMMediate; *WAI")
+        self.logger.info("单次扫描完成。")
+
+    def perform_peak_search(self) -> Tuple[float, float]:
+        """
+        执行 Peak Search (最大峰值搜索) 并读取 Marker 1 的 X(Hz) 和 Y(dBm)。
+        Ref: FSW User Manual - CALCulate<n>:MARKer<m>:MAXimum[:PEAK]
+        
+        :return: (频率 Hz, 功率 dBm)
+        """
+        self.logger.info("执行 Peak Search (Marker 1)...")
+        if self.simulation_mode:
+            return (2.4e9, -15.2)
+
+        # 移动 Marker1 到峰值
+        self.write("CALCulate:MARKer1:MAXimum:PEAK")
+        
+        # 读取 X (频率)
+        x_val = float(self.query("CALCulate:MARKer1:X?"))
+        # 读取 Y (幅度)
+        y_val = float(self.query("CALCulate:MARKer1:Y?"))
+        
+        self.logger.info(f"Peak 结果 -> Freq: {x_val} Hz, Power: {y_val} dBm")
+        return (x_val, y_val)
