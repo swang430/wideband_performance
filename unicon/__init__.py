@@ -1,5 +1,5 @@
 """
-Wideband Performance Library
+UniCon (Universal Control) Library
 A high-performance hardware abstraction layer and testing framework for RF instruments.
 """
 
