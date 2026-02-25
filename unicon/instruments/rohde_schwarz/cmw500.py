@@ -222,3 +222,53 @@ class CMW500(BaseInstrument):
             except Exception as e:
                 self.logger.error(f"解析 TX Power 结果失败: {e} (Raw: {res})")
                 return {}
+
+        # --- RX / Throughput / PER Tests ---
+
+        def configure_rx_test(self, num_packets: int = 1000, payload_length_bytes: int = 1000):
+            """
+            配置 WLAN RX 测试 (例如 PER 测试) 的发包参数。
+            Ref: CMW WLAN User Manual - CONFigure:WLAN:SIGNaling:TX:MAC:PAYLoad...
+            """
+            self.logger.info(f"配置 RX 测试: 包数={num_packets}, Payload大小={payload_length_bytes} Bytes")
+            # 设置下行 MAC Payload 的包数 (Number of packets to send)
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:TX:MAC:PACKets {num_packets}")
+            # 设置每个 Payload 的长度
+            self.parent.write(f"CONFigure:WLAN:SIGNaling:TX:MAC:PAYLoad:LENGth {payload_length_bytes}")
+
+        def start_rx_test(self):
+            """
+            开始向终端发送下行数据包 (Start Downlink Packet Transmission)。
+            Ref: CMW WLAN User Manual - INITiate:WLAN:SIGNaling:TX:MAC:PACKets
+            """
+            self.logger.info("启动 RX 数据包发送...")
+            self.parent.write("INITiate:WLAN:SIGNaling:TX:MAC:PACKets")
+
+        def fetch_per(self) -> Dict[str, float]:
+            """
+            获取由 CMW500 统计的 WLAN PER (Packet Error Rate) / 吞吐量。
+            注意：部分高级统计可能需要特殊的信令配置或外部 iPerf。
+            Ref: CMW WLAN User Manual - FETCh:WLAN:SIGNaling:RX:MAC:PER?
+            """
+            self.logger.info("获取 RX PER 结果...")
+            res = self.parent.query("FETCh:WLAN:SIGNaling:RX:MAC:PER?")
+            
+            if self.parent.simulation_mode:
+                return {"per_percent": 0.5, "packets_sent": 1000, "packets_acked": 995}
+
+            try:
+                parts = [float(x) for x in res.split(",")]
+                reliability = parts[0]
+                if reliability != 0:
+                    self.logger.warning(f"测量可能无效，Reliability Indicator: {reliability}")
+                
+                # CMW500 PER 返回通常包含: Reliability, PER, Sent, Acked 等
+                return {
+                    "reliability": reliability,
+                    "per_percent": parts[1] if len(parts) > 1 else float('nan'),
+                    "packets_sent": parts[2] if len(parts) > 2 else float('nan'),
+                    "packets_acked": parts[3] if len(parts) > 3 else float('nan')
+                }
+            except Exception as e:
+                self.logger.error(f"解析 PER 结果失败: {e} (Raw: {res})")
+                return {}
