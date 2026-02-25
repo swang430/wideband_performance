@@ -4,11 +4,11 @@ import traceback
 from datetime import datetime
 from typing import Any, Callable, Dict, Optional
 
-from drivers.channel_emulator import ChannelEmulator
-from drivers.integrated_tester import IntegratedTester
-from drivers.spectrum_analyzer import SpectrumAnalyzer
-from drivers.vna import VNA
-from drivers.vsg import VSG
+from unicon.instruments.channel_emulator import ChannelEmulator
+from unicon.instruments.integrated_tester import IntegratedTester
+from unicon.instruments.spectrum_analyzer import SpectrumAnalyzer
+from unicon.instruments.vna import VNA
+from unicon.instruments.vsg import VSG
 from dut.android_controller import AndroidController
 
 

@@ -1,4 +1,4 @@
-from drivers.common.generic_vna import GenericVNA
+from unicon.instruments.common.generic_vna import GenericVNA
 
 
 class ZNA_Driver(GenericVNA):

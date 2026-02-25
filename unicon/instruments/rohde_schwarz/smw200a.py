@@ -1,4 +1,4 @@
-from drivers.common.generic_vsg import GenericVSG
+from unicon.instruments.common.generic_vsg import GenericVSG
 
 
 class SMW200A_Driver(GenericVSG):

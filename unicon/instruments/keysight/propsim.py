@@ -1,4 +1,4 @@
-from drivers.common.generic_ce import GenericChannelEmulator
+from unicon.instruments.common.generic_ce import GenericChannelEmulator
 
 
 class PROPSIM_Driver(GenericChannelEmulator):
