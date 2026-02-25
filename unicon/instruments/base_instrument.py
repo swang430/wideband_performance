@@ -77,6 +77,11 @@ class BaseInstrument:
         """
         断开与仪器的连接。
         """
+        if self.simulation_mode:
+            self._connected = False
+            self.logger.info(f"[模拟] 已断开与 {self.name} 的连接")
+            return
+            
         if self.instrument:
             try:
                 self.instrument.close()
@@ -107,8 +112,18 @@ class BaseInstrument:
         写入指令并读取响应。
         """
         if self.simulation_mode:
-            self.logger.debug(f"[模拟] 查询 {self.name}: {command} -> SIM_DATA")
-            return "SIM_DATA"
+            if "STATe?" in command:
+                response = "ON"
+            elif "CSState?" in command:
+                response = "ASSOCIATED"
+            elif "*IDN?" in command:
+                response = "Simulated Instrument"
+            elif "RDY" in command or "STATe?" in command:
+                response = "RDY"
+            else:
+                response = "SIM_DATA"
+            self.logger.debug(f"[模拟] 查询 {self.name}: {command} -> {response}")
+            return response
 
         if not self._connected or not self.instrument:
             raise ConnectionError(f"{self.name} 未连接。")
