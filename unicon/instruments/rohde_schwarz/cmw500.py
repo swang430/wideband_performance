@@ -20,6 +20,92 @@ class CMW500(BaseInstrument):
     def __init__(self, resource_name: str, name: str = "CMW500", simulation_mode: bool = False, reset_on_connect: bool = True):
         super().__init__(resource_name, name=name, simulation_mode=simulation_mode, reset_on_connect=reset_on_connect)
         self.wlan = self.WlanSubsystem(self)
+        self.lte = self.LteSubsystem(self)
+
+    class LteSubsystem:
+        """LTE Signaling Subsystem"""
+        def __init__(self, parent: 'CMW500'):
+            self.parent = parent
+            self.logger = parent.logger
+
+        def set_routing(self, scenario: str = "STANdard", rf_in: str = "RF1C", rf_out: str = "RF1C"):
+            """
+            配置 LTE 信令的射频路由和场景模式。
+            Ref: CMW LTE UE User Manual - ROUTe:LTE:SIGNaling...
+            """
+            self.logger.info(f"配置 LTE 路由: 场景={scenario}, RF_IN={rf_in}, RF_OUT={rf_out}")
+            self.parent.write(f"ROUTe:LTE:SIGNaling:SCENario:MODe {scenario}")
+            self.parent.write(f"ROUTe:LTE:SIGNaling:TX {rf_out}")
+            self.parent.write(f"ROUTe:LTE:SIGNaling:RX {rf_in}")
+
+        def configure_rf(self, band: str = "OB1", dl_channel: int = 300, tx_power_dbm: float = -40.0, ext_att_in: float = 0.0, ext_att_out: float = 0.0):
+            """
+            配置 LTE 射频参数。
+            Ref: CMW LTE UE User Manual - CONFigure:LTE:SIGNaling:BAND...
+            """
+            self.logger.info(f"配置 LTE 射频: 频段={band}, DL_CH={dl_channel}, 功率={tx_power_dbm} dBm")
+            self.parent.write(f"CONFigure:LTE:SIGNaling:BAND {band}")
+            self.parent.write(f"CONFigure:LTE:SIGNaling:RFSettings:CHANnel:DL {dl_channel}")
+            
+            self.parent.write(f"CONFigure:LTE:SIGNaling:RFSettings:EATTenuation:INPut {ext_att_in}")
+            self.parent.write(f"CONFigure:LTE:SIGNaling:RFSettings:EATTenuation:OUTPut {ext_att_out}")
+            self.parent.write(f"CONFigure:LTE:SIGNaling:RFSettings:LEVel:RSEPre {tx_power_dbm}")
+
+        def configure_network(self, bandwidth: str = "B050", cell_id: int = 1):
+            """
+            配置 LTE 小区网络参数。
+            Ref: CMW LTE UE User Manual - CONFigure:LTE:SIGNaling:CELL...
+            
+            :param bandwidth: 信道带宽 (B014=1.4MHz, B030=3MHz, B050=5MHz, B100=10MHz, B150=15MHz, B200=20MHz)
+            """
+            self.logger.info(f"配置 LTE 网络: Bandwidth={bandwidth}, Cell ID={cell_id}")
+            self.parent.write(f"CONFigure:LTE:SIGNaling:CELL:BANDwidth:DL {bandwidth}")
+            self.parent.write(f"CONFigure:LTE:SIGNaling:CELL:PCID {cell_id}")
+
+        def start_signaling(self) -> bool:
+            """
+            开启 LTE 信令小区 (Cell ON)。
+            Ref: CMW LTE UE User Manual - SOURce:LTE:SIGNaling:CELL:STATe
+            """
+            self.logger.info("开启 LTE 小区 (Cell ON)...")
+            self.parent.write("SOURce:LTE:SIGNaling:CELL:STATe ON")
+            
+            timeout = 10
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                state = self.parent.query("SOURce:LTE:SIGNaling:CELL:STATe?")
+                if "ON" in state.upper():
+                    self.logger.info("LTE 小区已成功开启。")
+                    return True
+                time.sleep(0.5)
+            
+            self.logger.error("开启 LTE 小区超时！")
+            return False
+
+        def get_connection_state(self) -> str:
+            """
+            查询当前 DUT 的分组交换连接状态。
+            Ref: CMW LTE UE User Manual - FETCh:LTE:SIGNaling:PSWitched:STATe?
+            """
+            state = self.parent.query("FETCh:LTE:SIGNaling:PSWitched:STATe?")
+            self.logger.debug(f"当前 LTE PS 连接状态: {state}")
+            return state
+
+        def wait_for_connection(self, timeout: float = 30.0) -> bool:
+            """
+            等待终端成功附着 (ATTACHED) 到 LTE 小区。
+            """
+            self.logger.info(f"等待终端附着到 LTE 网络，最大超时时间: {timeout} 秒...")
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                state = self.get_connection_state()
+                if "ATT" in state.upper():
+                    self.logger.info("终端已成功附着 (ATTACHED)！")
+                    return True
+                time.sleep(1.0)
+            
+            self.logger.warning("等待终端附着超时。")
+            return False
 
     class WlanSubsystem:
         """WLAN Signaling & Measurement Subsystem"""

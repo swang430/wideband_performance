@@ -1,28 +1,36 @@
 import logging
 import sys
 
+# 自定义 TRACE 级别 (低于 DEBUG 的 10)
+TRACE_LEVEL_NUM = 5
+logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
+
+def trace(self, message, *args, **kws):
+    if self.isEnabledFor(TRACE_LEVEL_NUM):
+        self._log(TRACE_LEVEL_NUM, message, args, **kws)
+
+logging.Logger.trace = trace
 
 def setup_logger(name: str = "TestSystem", log_file: str = "test_system.log", level: int = logging.INFO):
     """
     配置集中式日志记录器。
     """
-    # 创建 Logger
     logger = logging.getLogger()
+    if logger.hasHandlers():
+        logger.handlers.clear()
+        
     logger.setLevel(level)
 
-    # 格式化
     formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        '%(asctime)s - [%(name)s] %(levelname)s - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
-    # 文件处理器
     file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(level)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
-    # 控制台处理器
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(level)
     console_handler.setFormatter(formatter)

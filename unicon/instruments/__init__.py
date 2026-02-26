@@ -7,6 +7,7 @@ from .rohde_schwarz.cmw500 import CMW500
 
 # 信号发生器 (VSG)
 from .keysight.mxg import KeysightMXG
+from .rohde_schwarz.smw200a import SMW200A
 
 # 频谱/信号分析仪 (VSA/SA)
 from .rohde_schwarz.fsw import FSW
@@ -21,6 +22,7 @@ __all__ = [
     "BaseInstrument",
     "CMW500",
     "KeysightMXG",
+    "SMW200A",
     "FSW",
     "ENA",
     "Vertex",

@@ -1,45 +1,88 @@
-from unicon.instruments.common.generic_vsg import GenericVSG
+"""
+Rohde & Schwarz SMW200A Vector Signal Generator Driver.
+
+Ref: SMW200A Vector Signal Generator User Manual
+"""
+
+from typing import Optional
+
+from unicon.instruments.base_instrument import BaseInstrument
 
 
-class SMW200A_Driver(GenericVSG):
+class SMW200A(BaseInstrument):
     """
-    Rohde & Schwarz SMW200A 专用驱动。
-    继承自 GenericVSG，重写了部分差异化指令。
+    R&S SMW200A 矢量信号发生器驱动程序。
+    支持双通道 (Path A / Path B) 控制和 AWGN 噪声注入。
     """
 
-    def __init__(self, resource_name: str, name: str = "RS_SMW200A", simulation_mode: bool = False):
-        super().__init__(resource_name, name, simulation_mode)
+    def __init__(self, resource_name: str, name: str = "SMW200A", simulation_mode: bool = False, reset_on_connect: bool = True):
+        super().__init__(resource_name, name=name, simulation_mode=simulation_mode, reset_on_connect=reset_on_connect)
 
-    def load_waveform(self, waveform_name: str):
+    def set_frequency(self, freq_hz: float, channel: int = 1):
         """
-        [重写] 加载波形文件，适配 R&S 文件系统路径。
+        设置特定通道的射频频率。
+        Ref: SMW User Manual - [SOURce<hw>:]FREQuency:CW
+        
+        :param channel: 1 对应 Path A, 2 对应 Path B
         """
-        # R&S SMW200A 需要先选择波形文件到 ARB 生成器
-        # 假设文件位于默认的用户目录 /var/user/
-        base_path = "/var/user/"
-        if not waveform_name.startswith("/"):
-             full_path = f"{base_path}{waveform_name}"
-        else:
-             full_path = waveform_name
+        self.logger.info(f"设置通道 {channel} 频率: {freq_hz} Hz")
+        self.write(f"SOURce{channel}:FREQuency:CW {freq_hz}")
 
-        if not full_path.endswith(".wv"):
-            full_path += ".wv"
-
-        self.logger.info(f"SMW200A 加载波形: {full_path}")
-        # 指令: SOURce:BB:ARBitrary:WAVeform:SELect <Path>
-        self.write(f"SOUR:BB:ARB:WAV:SEL '{full_path}'")
-
-        # 加载后通常需要自动打开 ARB 状态
-        self.write("SOUR:BB:ARB:STAT ON")
-
-    def set_rf_frequency(self, freq: float):
+    def set_power(self, power_dbm: float, channel: int = 1):
         """
-        [扩展] R&S 习惯用语别名，底层仍调用父类标准指令。
+        设置特定通道的输出功率。
+        Ref: SMW User Manual - [SOURce<hw>:]POWer:POWer
         """
-        self.set_frequency(freq)
+        self.logger.info(f"设置通道 {channel} 功率: {power_dbm} dBm")
+        self.write(f"SOURce{channel}:POWer:POWer {power_dbm}")
 
-    def get_errors(self):
+    def set_rf_output(self, state: bool, channel: int = 1):
         """
-        [扩展] 读取系统错误队列。
+        开启或关闭特定通道的射频输出。
+        Ref: SMW User Manual - OUTPut<hw>:STATe
         """
-        return self.query("SYST:ERR?")
+        state_str = "ON" if state else "OFF"
+        self.logger.info(f"设置通道 {channel} 射频输出: {state_str}")
+        self.write(f"OUTPut{channel}:STATe {state_str}")
+
+    def load_arb_waveform(self, waveform_path: str, channel: int = 1):
+        """
+        在特定通道的 ARB 基带中加载波形文件。
+        Ref: SMW User Manual - [SOURce<hw>:]BB:ARBitrary:WAVeform:SELect
+        """
+        # 如果不是绝对路径，默认指向 /var/user/
+        if not waveform_path.startswith("/"):
+            waveform_path = f"/var/user/{waveform_path}"
+        if not waveform_path.endswith(".wv"):
+            waveform_path += ".wv"
+            
+        self.logger.info(f"通道 {channel} 加载 ARB 波形: {waveform_path}")
+        self.write(f"SOURce{channel}:BB:ARBitrary:WAVeform:SELect '{waveform_path}'")
+
+    def set_arb_state(self, state: bool, channel: int = 1):
+        """
+        开启或关闭特定通道的 ARB。
+        Ref: SMW User Manual - [SOURce<hw>:]BB:ARBitrary:STATe
+        """
+        state_str = "ON" if state else "OFF"
+        self.logger.info(f"设置通道 {channel} ARB 状态: {state_str}")
+        self.write(f"SOURce{channel}:BB:ARBitrary:STATe {state_str}")
+
+    def set_awgn_state(self, state: bool, channel: int = 1):
+        """
+        开启或关闭 AWGN 噪声发生器。
+        Ref: SMW User Manual - [SOURce<hw>:]AWGN:STATe
+        """
+        state_str = "ON" if state else "OFF"
+        self.logger.info(f"设置通道 {channel} AWGN 状态: {state_str}")
+        self.write(f"SOURce{channel}:AWGN:STATe {state_str}")
+
+    def set_awgn_snr(self, snr_db: float, channel: int = 1):
+        """
+        配置 AWGN 发生器的信噪比 (SNR)。
+        Ref: SMW User Manual - [SOURce<hw>:]AWGN:SNR
+        """
+        self.logger.info(f"设置通道 {channel} AWGN SNR: {snr_db} dB")
+        # 必须先将模式设为 ADD (即信号 + 噪声)
+        self.write(f"SOURce{channel}:AWGN:MODE ADD")
+        self.write(f"SOURce{channel}:AWGN:SNR {snr_db}")
