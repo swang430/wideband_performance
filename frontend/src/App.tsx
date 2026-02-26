@@ -1,129 +1,101 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Box, CssBaseline, IconButton, Tooltip } from '@mui/material';
+import React, { useState } from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './theme';
 import {
-  Dashboard as DashboardIcon,
-  LibraryBooks as LibraryIcon,
-  History as HistoryIcon,
-  Settings as SettingsIcon,
-  Brightness4 as DarkModeIcon,
-  Brightness7 as LightModeIcon,
-  Router as RouterIcon
-} from '@mui/icons-material';
-
-import Dashboard from './pages/Dashboard';
+  Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText,
+  Typography, AppBar, Toolbar, IconButton, Container
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import TerminalIcon from '@mui/icons-material/Terminal';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import Manuals from './pages/Manuals';
-import History from './pages/History';
-import ConfigEditor from './pages/ConfigEditor';
-import ChannelModels from './pages/ChannelModels';
-import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import Playground from './pages/Playground';
 
-/**
- * 导航栏组件 - 提取出来以便使用 useTheme hook
- */
-function NavigationBar() {
-  const { mode, toggleTheme } = useTheme();
+const drawerWidth = 240;
 
-  return (
-    <AppBar position="static" color="default" elevation={2} sx={{ mb: 2 }}>
-      <Toolbar>
-        {/* 系统标题 */}
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-          终端宽带标准信道验证系统
-        </Typography>
-
-        {/* 导航菜单区域 */}
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <Button
-            color="inherit"
-            component={Link}
-            to="/"
-            startIcon={<DashboardIcon />}
-          >
-            仪表监控
-          </Button>
-          <Button
-            color="inherit"
-            component={Link}
-            to="/history"
-            startIcon={<HistoryIcon />}
-          >
-            历史记录
-          </Button>
-          <Button
-            color="inherit"
-            component={Link}
-            to="/config"
-            startIcon={<SettingsIcon />}
-          >
-            配置
-          </Button>
-          <Button
-            color="inherit"
-            component={Link}
-            to="/channel-models"
-            startIcon={<RouterIcon />}
-          >
-            信道模型
-          </Button>
-          <Button
-            color="inherit"
-            component={Link}
-            to="/manuals"
-            startIcon={<LibraryIcon />}
-          >
-            手册库
-          </Button>
-
-          {/* 主题切换按钮 */}
-          <Tooltip title={mode === 'dark' ? '切换到亮色模式' : '切换到深色模式'}>
-            <IconButton color="inherit" onClick={toggleTheme}>
-              {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Toolbar>
-    </AppBar>
-  );
-}
-
-/**
- * 应用主体组件
- */
-function AppContent() {
-  return (
-    <BrowserRouter>
-      <Box sx={{ flexGrow: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        {/* 顶部导航栏 */}
-        <NavigationBar />
-
-        {/* 页面路由配置区域 */}
-        <Routes>
-          {/* 默认首页: 仪表状态监控仪表盘 */}
-          <Route path="/" element={<Dashboard />} />
-          {/* 测试历史记录页面 */}
-          <Route path="/history" element={<History />} />
-          {/* 配置编辑器页面 */}
-          <Route path="/config" element={<ConfigEditor />} />
-          {/* 信道模型页面 */}
-          <Route path="/channel-models" element={<ChannelModels />} />
-          {/* 仪表手册库页面 */}
-          <Route path="/manuals" element={<Manuals />} />
-        </Routes>
-      </Box>
-    </BrowserRouter>
-  );
-}
-
-/**
- * 应用程序根组件
- * 负责路由配置、全局主题应用以及顶部导航栏的渲染
- */
 function App() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [currentTab, setCurrentTab] = useState('Playground');
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const menuItems = [
+    { text: 'SCPI Playground', icon: <TerminalIcon />, id: 'Playground' },
+    { text: 'Manual Library', icon: <LibraryBooksIcon />, id: 'Manuals' }
+  ];
+
+  const renderContent = () => {
+    switch (currentTab) {
+      case 'Playground':
+        return <Playground />;
+      case 'Manuals':
+        return <Manuals />;
+      default:
+        return <Playground />;
+    }
+  };
+
+  const drawer = (
+    <Box sx={{ height: '100%', bgcolor: 'background.paper', borderRight: '1px solid', borderColor: 'divider' }}>
+      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Typography variant="h6" fontWeight="bold" color="primary">
+          UniCon Debug
+        </Typography>
+      </Box>
+      <List>
+        {menuItems.map((item) => (
+          <ListItem key={item.id} disablePadding>
+            <ListItemButton
+              selected={currentTab === item.id}
+              onClick={() => { setCurrentTab(item.id); setMobileOpen(false); }}
+              sx={{
+                mx: 1, borderRadius: 1, mb: 0.5,
+                '&.Mui-selected': { bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.dark' }, '& .MuiListItemIcon-root': { color: 'inherit' } }
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
   return (
-    <ThemeProvider>
-      {/* 规范化 CSS，移除浏览器默认样式差异 */}
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppContent />
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <AppBar position="fixed" sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, ml: { sm: `${drawerWidth}px` }, bgcolor: 'background.paper', color: 'text.primary', boxShadow: 1 }}>
+          <Toolbar>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: 'none' } }}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div" fontWeight="medium">
+              {menuItems.find(i => i.id === currentTab)?.text}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        
+        <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
+          <Drawer variant="temporary" open={mobileOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }} sx={{ display: { xs: 'block', sm: 'none' }, '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth } }}>
+            {drawer}
+          </Drawer>
+          <Drawer variant="permanent" sx={{ display: { xs: 'none', sm: 'block' }, '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth } }} open>
+            {drawer}
+          </Drawer>
+        </Box>
+
+        <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` }, bgcolor: 'background.default' }}>
+          <Toolbar />
+          <Container maxWidth="xl" sx={{ mt: 2 }}>
+            {renderContent()}
+          </Container>
+        </Box>
+      </Box>
     </ThemeProvider>
   );
 }
