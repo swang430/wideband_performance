@@ -76,3 +76,21 @@ class ENA(BaseInstrument):
         except Exception as e:
             self.logger.error(f"解析网络分析仪数据失败: {e} (Raw: {res[:50]}...)")
             return []
+
+    def set_calibration_state(self, state: bool, channel: int = 1):
+        """
+        开启或关闭错误校正 (Calibration Correction)。
+        Ref: ENA Programmer's Guide - :SENSe{[1]-36}:CORRection:STATe
+        """
+        state_str = "ON" if state else "OFF"
+        self.logger.info(f"设置通道 {channel} 校正状态: {state_str}")
+        self.write(f":SENSe{channel}:CORRection:STATe {state_str}")
+
+    def load_state_file(self, file_path: str):
+        """
+        加载包含校准数据和测试设置的状态文件 (.sta 或 .csa)。
+        Ref: ENA Programmer's Guide - :MMEMory:LOAD:STATe
+        """
+        self.logger.info(f"加载 ENA 状态文件: {file_path}")
+        self.write(f':MMEMory:LOAD:STATe "{file_path}"')
+        self.query("*OPC?")

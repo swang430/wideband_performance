@@ -75,3 +75,31 @@ class FSW(BaseInstrument):
         
         self.logger.info(f"Peak 结果 -> Freq: {x_val} Hz, Power: {y_val} dBm")
         return (x_val, y_val)
+
+    def fetch_trace_data_binary(self, trace: int = 1) -> bytes:
+        """
+        以 IEEE 488.2 明确定义的二进制块 (REAL,32) 格式获取 Trace 数据，速度比 ASCII 快。
+        Ref: FSW User Manual - FORMat[:DATA] REAL,32
+        """
+        self.logger.info(f"读取 Trace {trace} 二进制数据...")
+        if self.simulation_mode:
+            return b'#41600' + b'\x00'*1600  # 模拟二进制块头部和数据
+            
+        # 设置传输格式为 REAL,32 (32-bit 浮点数)
+        self.write("FORMat:DATA REAL,32")
+        # 针对特定的 Trace 抓取数据
+        self.write(f"TRACe:DATA? TRACE{trace}")
+        
+        if not self.instrument:
+            raise ConnectionError("FSW 未连接")
+            
+        # 因为是二进制数据，这里必须绕过 query，使用底层的 read_raw
+        try:
+            raw_data = self.instrument.read_raw()
+            return raw_data
+        except Exception as e:
+            self.logger.error(f"读取二进制 Trace 失败: {e}")
+            raise
+        finally:
+            # 读取完毕后恢复为 ASCII 以免影响其他常用指令
+            self.write("FORMat:DATA ASCii")

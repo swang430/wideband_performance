@@ -192,3 +192,22 @@ class BaseInstrument:
         self.write("*RST")
         self.write("*CLS")
 
+    def check_system_errors(self) -> list[str]:
+        """
+        抽干并返回仪器内部的系统错误队列 (System Error Queue)。
+        """
+        errors = []
+        if self.simulation_mode:
+            return errors
+            
+        while True:
+            # 标准的 SCPI 错误查询命令
+            err = self.query("SYSTem:ERRor?", retry=False)
+            if not err or '0,"No error"' in err or '0,"NO ERROR"' in err or '+0,"No error"' in err:
+                break
+            errors.append(err)
+            
+        if errors:
+            self.logger.error(f"检测到系统错误: {errors}")
+        return errors
+

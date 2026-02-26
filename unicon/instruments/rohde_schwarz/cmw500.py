@@ -51,16 +51,42 @@ class CMW500(BaseInstrument):
             self.parent.write(f"CONFigure:LTE:SIGNaling:RFSettings:EATTenuation:OUTPut {ext_att_out}")
             self.parent.write(f"CONFigure:LTE:SIGNaling:RFSettings:LEVel:RSEPre {tx_power_dbm}")
 
-        def configure_network(self, bandwidth: str = "B050", cell_id: int = 1):
+        def configure_network(self, bandwidth: str = "B050", cell_id: int = 1, mimo_mode: str = "SISO"):
             """
             配置 LTE 小区网络参数。
             Ref: CMW LTE UE User Manual - CONFigure:LTE:SIGNaling:CELL...
             
             :param bandwidth: 信道带宽 (B014=1.4MHz, B030=3MHz, B050=5MHz, B100=10MHz, B150=15MHz, B200=20MHz)
+            :param mimo_mode: 传输模式 (SISO, TXD2, TXM2, TXM4)
             """
-            self.logger.info(f"配置 LTE 网络: Bandwidth={bandwidth}, Cell ID={cell_id}")
+            self.logger.info(f"配置 LTE 网络: Bandwidth={bandwidth}, Cell ID={cell_id}, MIMO={mimo_mode}")
             self.parent.write(f"CONFigure:LTE:SIGNaling:CELL:BANDwidth:DL {bandwidth}")
             self.parent.write(f"CONFigure:LTE:SIGNaling:CELL:PCID {cell_id}")
+            # 设置下行天线和 MIMO 模式
+            # Ref: CONFigure:LTE:SIGNaling:CONNection:TMMode
+            if mimo_mode == "SISO":
+                self.parent.write("CONFigure:LTE:SIGNaling:CONNection:TMMode TM1")
+                self.parent.write("ROUTe:LTE:SIGNaling:SCENario:MODe STANdard")
+            elif mimo_mode in ["TXD2", "TXM2"]:
+                self.parent.write("ROUTe:LTE:SIGNaling:SCENario:MODe MIMO22")
+                self.parent.write("CONFigure:LTE:SIGNaling:CONNection:TMMode TM3")
+            elif mimo_mode == "TXM4":
+                self.parent.write("ROUTe:LTE:SIGNaling:SCENario:MODe MIMO44")
+                self.parent.write("CONFigure:LTE:SIGNaling:CONNection:TMMode TM3")
+
+        def configure_resource_blocks(self, num_rb: int, start_rb: int = 0, link_dir: str = "DL"):
+            """
+            强制配置物理资源块 (RB) 的分配。
+            Ref: CMW LTE UE User Manual - CONFigure:LTE:SIGNaling:CONNection:DL/UL:RMC...
+            """
+            self.logger.info(f"配置 LTE {link_dir} 资源块: Num_RB={num_rb}, Start_RB={start_rb}")
+            # CMW 通常使用 RMC (Reference Measurement Channel) 来固定 RB 分配
+            if link_dir.upper() == "DL":
+                self.parent.write(f"CONFigure:LTE:SIGNaling:CONNection:DL:RMC:NRB {num_rb}")
+                self.parent.write(f"CONFigure:LTE:SIGNaling:CONNection:DL:RMC:RBPosition {start_rb}")
+            elif link_dir.upper() == "UL":
+                self.parent.write(f"CONFigure:LTE:SIGNaling:CONNection:UL:RMC:NRB {num_rb}")
+                self.parent.write(f"CONFigure:LTE:SIGNaling:CONNection:UL:RMC:RBPosition {start_rb}")
 
         def start_signaling(self) -> bool:
             """

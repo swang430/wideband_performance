@@ -1,109 +1,53 @@
-from unicon.instruments.common.generic_ce import GenericChannelEmulator
+"""
+Keysight PROPSIM F64 Channel Emulator Driver.
+
+Ref: Propsim User Reference.pdf / Propsim ATE environment and practices AN.pdf
+"""
+
+from typing import List
+
+from unicon.instruments.base_instrument import BaseInstrument
 
 
-class PROPSIM_Driver(GenericChannelEmulator):
+class Propsim(BaseInstrument):
     """
-    Keysight (Anite) PROPSIM F64 信道模拟器驱动。
-    已根据 Propsim User Reference (ATE 章节) 验证。
+    Keysight PROPSIM 信道仿真器驱动。
+    侧重于 ATE 模式下的场景加载和基础仿真控制。
     """
 
-    def __init__(self, resource_name: str, name: str = "Keysight_PROPSIM", simulation_mode: bool = False):
-        super().__init__(resource_name, name, simulation_mode)
+    def __init__(self, resource_name: str, name: str = "PROPSIM", simulation_mode: bool = False, reset_on_connect: bool = True):
+        super().__init__(resource_name, name=name, simulation_mode=simulation_mode, reset_on_connect=reset_on_connect)
 
-    def load_channel_model(self, model: str):
+    def load_scenario(self, scenario_path: str):
         """
-        加载仿真模型。
+        加载预先在 Channel Studio 生成的 GCM 场景文件。
+        Ref: Propsim User Reference - :SYSTem:CONFigure:LOAD
         """
-        self.logger.info(f"PROPSIM 加载模型: {model}")
-        # 根据 PROPSIM ATE 语法，参数间空格，字符串通常不带引号
-        self.write(f"CALCulate:FILTer:FILE {model}")
+        self.logger.info(f"加载 PROPSIM 场景文件: {scenario_path}")
+        self.write(f':SYSTem:CONFigure:LOAD "{scenario_path}"')
+        self.query("*OPC?")
 
-        # 检查错误
-        err = self.query("SYSTem:ERRor?")
-        if "0," not in err:
-            self.logger.error(f"PROPSIM 加载模型报错: {err}")
+    def start_emulation(self):
+        """
+        启动信道仿真引擎。
+        Ref: Propsim User Reference - :SYSTem:SIMulation:RUN
+        """
+        self.logger.info("启动 PROPSIM 信道仿真...")
+        self.write(":SYSTem:SIMulation:RUN")
 
-    def set_velocity(self, kmh: float):
+    def stop_emulation(self):
         """
-        设置移动速度 (km/h)。
-        Ref: Propsim User Reference (ATE Commands)
-        Command: DIAGnostic:SIMUlation:MOBilespeed:MANual:CH <ch>, <speed>
+        停止信道仿真引擎。
+        Ref: Propsim User Reference - :SYSTem:SIMulation:STOP
         """
-        self.logger.info(f"PROPSIM 设置速度: {kmh} km/h")
-        # 对通道 1 设置速度
-        self.write(f"DIAGnostic:SIMUlation:MOBilespeed:MANual:CH 1,{kmh}")
+        self.logger.info("停止 PROPSIM 信道仿真...")
+        self.write(":SYSTem:SIMulation:STOP")
 
-    def rf_on(self):
+    def set_awgn_snr(self, link_index: int, snr_db: float):
         """
-        开始仿真并开启发射。
+        为特定链路设置 AWGN 的信噪比 (SNR)。
+        Ref: Propsim User Reference - :CONFigure:LINK<n>:AWGN:SNR
         """
-        self.write("SIMulation:STARt")
-        self.logger.info("PROPSIM: 仿真已启动")
-
-    def rf_off(self):
-        """
-        停止所有发射。
-        """
-        self.write("SYSTem:TRANSmitter:OFF")
-        self.logger.info("PROPSIM: 所有射频输出已关闭")
-
-    # === 场景测试扩展方法 ===
-    # Ref: manual_library/channel_emulator/Keysight_PROPSIM/Propsim ATE environment and practices AN.pdf
-
-    def set_path_loss(self, db: float):
-        """
-        设置路径损耗/增益 (dB)。
-        Ref: Propsim User Reference, 'Remote Control, ATE' chapter
-
-        PROPSIM 通过调整通道增益来实现路损变化。
-        """
-        # 增益设置 (负值表示衰减)
-        # DIAG:SIMU:GAIN:CH <channel>,<gain_dB>
-        attenuation = -abs(db)  # 路损为负增益
-        self.write(f"DIAG:SIMU:GAIN:CH 1,{attenuation}")
-        self.logger.info(f"PROPSIM 设置路径损耗: {db} dB (通道 1)")
-
-    def set_distance(self, km: float):
-        """
-        设置模拟距离 (km)。
-        PROPSIM 通过调整增益模拟距离效应。
-        """
-        # 使用自由空间路损公式近似 (假设 3.5GHz)
-        # FSPL = 20*log10(d) + 20*log10(f) + 32.44
-        import math
-        fspl = 20 * math.log10(max(km, 0.1)) + 20 * math.log10(3500) + 32.44
-        self.set_path_loss(fspl)
-        self.logger.info(f"PROPSIM 模拟距离: {km} km (FSPL: {fspl:.1f} dB)")
-
-    def set_fading_profile(self, profile: str, duration_ms: int = 0):
-        """
-        切换衰落配置。
-        Ref: Propsim ATE AN, p.12 (Fading Channels)
-
-        PROPSIM 主要通过加载不同仿真文件来切换衰落配置。
-        运行时可调整的参数有限。
-        """
-        if profile == "deep_fade":
-            # 临时增加通道衰减模拟深衰落
-            self.write("DIAG:SIMU:GAIN:CH 1,-30")
-            self.logger.info(f"PROPSIM 模拟深衰落事件 ({duration_ms}ms)")
-        elif profile == "bypass":
-            # 校准旁路模式
-            self.write("DIAG:SIMU:GAIN:CH 1,-10")
-            self.logger.info("PROPSIM 切换到旁路模式")
-        else:
-            self.logger.warning(f"PROPSIM 不支持运行时衰落配置: {profile}，建议通过仿真文件预定义")
-
-    def trigger_handover(self, target_cell: int):
-        """
-        触发小区切换模拟。
-        Ref: Propsim User Reference, p.23 (Handover)
-
-        PROPSIM 通过 Shadowing 编辑器配置切换触发，此处调整增益模拟切换效果。
-        """
-        self.logger.info(f"PROPSIM 模拟切换到小区 {target_cell}")
-        # 模拟切换过程中的信号变化
-        # 1. 源小区信号减弱
-        self.write("DIAG:SIMU:GAIN:CH 1,-20")
-        # 2. 目标小区信号增强 (假设通道 2)
-        self.write("DIAG:SIMU:GAIN:CH 2,0")
+        self.logger.info(f"配置链路 {link_index} 的 AWGN SNR: {snr_db} dB")
+        self.write(f":CONFigure:LINK{link_index}:AWGN:SNR {snr_db}")
+        self.write(f":CONFigure:LINK{link_index}:AWGN:STATe ON")

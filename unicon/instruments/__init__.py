@@ -11,12 +11,14 @@ from .rohde_schwarz.smw200a import SMW200A
 
 # 频谱/信号分析仪 (VSA/SA)
 from .rohde_schwarz.fsw import FSW
+from .keysight.vsa import KeysightVSA
 
 # 矢量网络分析仪 (VNA)
 from .keysight.ena import ENA
 
 # 信道仿真器 (Channel Emulators)
 from .spirent.vertex import Vertex
+from .keysight.propsim import Propsim
 
 __all__ = [
     "BaseInstrument",
@@ -24,6 +26,8 @@ __all__ = [
     "KeysightMXG",
     "SMW200A",
     "FSW",
+    "KeysightVSA",
     "ENA",
     "Vertex",
+    "Propsim",
 ]
