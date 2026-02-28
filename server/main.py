@@ -25,14 +25,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 适配 PyInstaller 运行时的路径
+def get_base_path():
+    if getattr(sys, 'frozen', False):
+        # 运行在 PyInstaller 打包后的环境中
+        return sys._MEIPASS
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+base_path = get_base_path()
+
 # 挂载手册静态文件目录
-manual_lib_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs", "manuals")
-app.mount("/manuals_static", StaticFiles(directory=manual_lib_path), name="manuals")
+manual_lib_path = os.path.join(base_path, "docs", "manuals")
+if os.path.exists(manual_lib_path):
+    app.mount("/manuals_static", StaticFiles(directory=manual_lib_path), name="manuals")
 
 app.include_router(endpoints.router, prefix="/api/v1")
 
 # 桌面版或生产版：挂载前端静态文件
-frontend_dist_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "dist")
+frontend_dist_path = os.path.join(base_path, "frontend", "dist")
 if os.path.exists(frontend_dist_path):
     app.mount("/", StaticFiles(directory=frontend_dist_path, html=True), name="frontend")
 else:
