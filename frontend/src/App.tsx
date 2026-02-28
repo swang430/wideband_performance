@@ -87,6 +87,8 @@ export default function App() {
             <ListItemButton
               component="a"
               href="https://swang430.github.io/wideband_performance/"
+              target="_blank"
+              rel="noopener noreferrer"
               sx={{
                 mx: 1,
                 borderRadius: 1,
