@@ -145,16 +145,20 @@ class BaseInstrument:
         写入指令并读取响应，支持重试。
         """
         if self.simulation_mode:
-            if "STATe?" in command:
-                response = "ON"
-            elif "CSState?" in command:
-                response = "ASSOCIATED"
-            elif "PSWitched:STATe?" in command:
-                response = "ATT"
-            elif "*IDN?" in command:
+            # 注意：匹配顺序很重要，避免被更通用的子串（如 STATe?）提前截获。
+            if "*IDN?" in command:
                 response = "Simulated Instrument"
-            elif "RDY" in command or "STATe?" in command:
+            elif "PSWitched:STATe?" in command:
+                # LTE PS attach state
+                response = "ATT"
+            elif "CSState?" in command:
+                # WLAN association state
+                response = "ASSOCIATED"
+            elif "MEValuation:STATe?" in command:
+                # WLAN MEvaluation measurement state
                 response = "RDY"
+            elif "STATe?" in command:
+                response = "ON"
             else:
                 response = "SIM_DATA"
             if hasattr(self.logger, "trace"):
