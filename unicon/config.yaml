@@ -1,24 +1,23 @@
 instruments:
   vna:
+    driver_class: "ENA"
     address: "TCPIP0::192.168.1.100::inst0::INSTR"
+    name: "Keysight_ENA"
     timeout: 5000
     reset: true
   vsg:
+    driver_class: "KeysightMXG"
     address: "TCPIP0::192.168.1.101::inst0::INSTR"
+    name: "MXG_SigGen"
   channel_emulator:
+    driver_class: "Vertex"
     address: "TCPIP0::192.168.1.102::inst0::INSTR"
+    name: "Spirent_Vertex"
   integrated_tester:
+    driver_class: "CMW500"
     address: "TCPIP0::192.168.1.103::inst0::INSTR"
+    name: "CMW500_Tester"
   spectrum_analyzer:
+    driver_class: "FSW"
     address: "TCPIP0::192.168.1.104::inst0::INSTR"
-
-dut:
-  device_id: null # 自动检测
-  wifi_interface: "wlan0"
-
-test_cases:
-  - name: "throughput_test_5g"
-    type: "throughput"
-    duration: 2
-    frequencies: [2400e6, 5000e6]
-    channel_model: "Urban_Macro.scn"
+    name: "RS_FSW"

@@ -1,0 +1,1563 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A high-performance hardware abstraction layer and testing framework for RF instruments.">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>终端宽带标准信道验证系统 - 设计方案 - UniCon (Universal Control)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#-" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="UniCon (Universal Control)" class="md-header__button md-logo" aria-label="UniCon (Universal Control)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            UniCon (Universal Control)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              终端宽带标准信道验证系统 - 设计方案
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="UniCon (Universal Control)" class="md-nav__button md-logo" aria-label="UniCon (Universal Control)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    UniCon (Universal Control)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/base_instrument/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base Instrument
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/cmw500/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    R&S CMW500
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/smw200a/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    R&S SMW200A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/fsw/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    R&S FSW
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/mxg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keysight MXG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/vsa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keysight VSA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ena/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keysight ENA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/vertex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spirent Vertex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/propsim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keysight Propsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 系统概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 系统概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 核心架构
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 现有模块详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 现有模块详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-sequencer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 编排器 (Sequencer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 编排器 (Sequencer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211-timeline-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1.1 时间轴调度引擎 (Timeline Engine)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-hybrid-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1.2 混合编排架构 (Hybrid Orchestration)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-hal-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 硬件抽象层 (HAL) - 驱动架构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 硬件抽象层 (HAL) - 驱动架构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.1 架构分层
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-manual-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 手册库 (Manual Library)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-hal-specs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 仪表能力描述 (HAL Specs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-development-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 开发规范 (Development Standards)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-standardized-instrument-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 仪表接口标准化规范 (Standardized Instrument Interfaces)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6 仪表接口标准化规范 (Standardized Instrument Interfaces)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#261-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6.1 标准生命周期 (Lifecycle)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#262-channel-emulator-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6.2 信道模拟器标准方法 (Channel Emulator API)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#263-vsg-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6.3 信号发生器标准方法 (VSG API)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. GUI 设计方案 (已实施)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. GUI 设计方案 (已实施)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 技术栈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 已实现功能
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 开发路线图 (Roadmap)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 开发路线图 (Roadmap)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-phase-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Phase 1: 实时数据可视化 ✅ 已完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-phase-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Phase 2: 测试结果存储 ✅ 已完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-phase-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Phase 3: 报告生成引擎 ✅ 已完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-phase-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Phase 4: 配置编辑器 ✅ 已完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-phase-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Phase 5: 单元测试完善 ✅ 已完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-phase-6-dut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Phase 6: DUT 深度集成 ✅ 已完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-phase-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Phase 7: 前端界面增强 ✅ 已完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-core-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 核心业务场景 (Core Use Cases)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 核心业务场景 (Core Use Cases)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-sensitivity-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 灵敏度测试 (Sensitivity Search)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-blocking-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 阻塞干扰分析 (Blocking Analysis)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-dynamic-fading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 动态衰落场景 (Dynamic Fading)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 质量保证与 CI/CD 流水线
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 质量保证与 CI/CD 流水线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 持续集成架构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 持续集成架构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        工作流程配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 代码质量检查工具
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 代码质量检查工具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-python-lint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        后端 - Python Lint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-typescriptreact-lint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前端 - TypeScript/React Lint
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 CI 运行环境
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 CI 运行环境">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#github-actions-runner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub Actions Runner 规格
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行成本
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-lint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Lint 错误修复记录
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 最佳实践
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.5 最佳实践">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本地开发工作流
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        团队协作规范
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 总结与未来规划
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="-">终端宽带标准信道验证系统 - 设计方案</h1>
+<h2 id="1">1. 系统概述</h2>
+<p>本项目旨在提供一个自动化框架，用于编排和执行涉及多种射频仪表（VNA, VSG, 信道模拟器, 综合综测仪, 频谱仪）和被测件（DUT, 如 Android 终端）的宽带信道验证测试。系统支持灵活的测试流程定义、硬件抽象控制以及全链路模拟模式。</p>
+<h3 id="11">1.1 核心架构</h3>
+<p>系统采用 <strong>分层架构 (Layered Architecture)</strong>，自下而上分为：</p>
+<ol>
+<li><strong>基础设施层</strong>: 日志、配置加载、通用工具。</li>
+<li><strong>硬件抽象层 (HAL)</strong>: 封装 PyVISA 和 ADB，屏蔽不同厂商仪表的指令差异，提供统一的 Python API。支持“模拟模式”以脱离硬件开发。</li>
+<li><strong>业务逻辑层</strong>: <code>TestSequencer</code> 负责解析测试用例，协调各仪表和 DUT 的动作，执行测试流程。</li>
+<li><strong>接口层 (B/S架构)</strong>: <ul>
+<li><strong>Backend</strong>: 基于 <strong>FastAPI</strong> 的 RESTful API 服务，负责硬件控制和数据分发。</li>
+<li><strong>Frontend</strong>: 基于 <strong>React + Material UI</strong> 的单页应用 (SPA)，提供可视化监控和控制。</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-mermaid">graph TD
+    User[用户] --&gt; Frontend[前端 (React)]
+    Frontend --&gt;|REST API / WebSocket| Backend[后端 (FastAPI)]
+
+    Backend --&gt; Core[业务逻辑层 (Sequencer)]
+    Backend --&gt; Manuals[手册库服务]
+
+    Core --&gt; HAL[硬件抽象层 (Drivers)]
+    Core --&gt; DUT_Mgr[DUT 管理 (ADB)]
+
+    HAL --&gt; VNA[矢量网络分析仪]
+    HAL --&gt; VSG[矢量信号发生器]
+    HAL --&gt; CE[信道模拟器]
+    HAL --&gt; SA[频谱仪]
+
+    DUT_Mgr --&gt; Android[Android 终端]
+
+    Config[config.yaml] --&gt; Core
+</code></pre>
+<h2 id="2">2. 现有模块详解</h2>
+<h3 id="21-sequencer">2.1 编排器 (Sequencer)</h3>
+<ul>
+<li><strong>位置</strong>: <code>backend/core/sequencer.py</code></li>
+<li><strong>职责</strong>: 系统的“大脑”。负责加载配置，按顺序初始化仪表，执行场景。</li>
+</ul>
+<h4 id="211-timeline-engine">2.1.1 时间轴调度引擎 (Timeline Engine)</h4>
+<p>系统采用<strong>基于时间偏移 (Time-Offset)</strong> 的调度机制，以模拟真实的动态电磁环境。
+1.  <strong>事件调度 (Event Dispatcher)</strong>: 在测试启动 (T=0) 后，根据场景定义在特定的时间偏移点向 HAL 发送控制指令。
+2.  <strong>并发采样 (Continuous Monitor)</strong>: 后台任务以固定频率（如 10Hz）轮询性能指标。
+3.  <strong>时间同步</strong>: 所有日志和采样数据挂载统一的“场景相对时间戳”。</p>
+<h4 id="212-hybrid-orchestration">2.1.2 混合编排架构 (Hybrid Orchestration)</h4>
+<p>为了兼顾“动态仿真”与“参数扫描”两类截然不同的测试需求，Sequencer 实现了策略分发模式：
+1.  <strong>Timeline Strategy (时间轴策略)</strong>: 适用于动态场景。开环控制，强调动作的准时性。
+2.  <strong>Algorithm Strategy (算法策略)</strong>: 适用于灵敏度/阻塞搜索。闭环反馈，强调结果的收敛性。</p>
+<h3 id="22-hal-">2.2 硬件抽象层 (HAL) - 驱动架构</h3>
+<p>系统采用 <strong>驱动工厂模式 (Driver Factory Pattern)</strong> 来实现“上层指令单一，底层自动适配”的设计目标。</p>
+<h4 id="221">2.2.1 架构分层</h4>
+<ol>
+<li><strong>统一接口层 (Proxy)</strong>: 业务逻辑调用的对象 (如 <code>VSG</code>)。负责维护连接并转发调用。</li>
+<li><strong>驱动工厂 (Factory)</strong>: 执行 <code>connect</code> -&gt; <code>query(*IDN?)</code> -&gt; 匹配并实例化对应的驱动类。</li>
+<li><strong>具体实现层 (Implementation)</strong>: 继承自 <code>Generic</code> 基类，实现标准接口。</li>
+</ol>
+<h3 id="23-manual-library">2.3 手册库 (Manual Library)</h3>
+<ul>
+<li><strong>位置</strong>: <code>backend/manual_library/</code></li>
+<li><strong>职责</strong>: 集中管理所有硬件的编程手册。</li>
+<li><strong>设计原则</strong>: Catalog-Driven 扫描，严格级联上传，智能过滤展示。</li>
+</ul>
+<h3 id="24-hal-specs">2.4 仪表能力描述 (HAL Specs)</h3>
+<ul>
+<li><strong>位置</strong>: <code>backend/drivers/hal_specs/</code></li>
+<li><strong>用途</strong>: 运行时能力校验 (Capability Check)、GUI 边界限制、驱动元数据定义。</li>
+</ul>
+<h3 id="25-development-standards">2.5 开发规范 (Development Standards)</h3>
+<p>为了避免运行时环境错误和集成问题，所有代码开发需遵循以下硬性标准：
+1.  <strong>绝对导入 (Absolute Imports)</strong>: 必须使用基于根包的绝对导入。
+2.  <strong>API 路由与前缀</strong>: 所有后端接口必须挂载在版本号前缀下 (如 <code>/api/v1/...</code>)。
+3.  <strong>环境隔离</strong>: 所有手动 CLI 操作前，必须先验证虚拟环境 (<code>venv</code>) 是否激活。</p>
+<h3 id="26-standardized-instrument-interfaces">2.6 仪表接口标准化规范 (Standardized Instrument Interfaces)</h3>
+<p>为了实现“硬件无关”的编排逻辑，HAL 层必须遵循严格的接口契约和生命周期流程。</p>
+<h4 id="261-lifecycle">2.6.1 标准生命周期 (Lifecycle)</h4>
+<p>所有驱动在 <code>connect()</code> 和 <code>disconnect()</code> 时必须执行以下标准动作：
+*   <strong>连接 (Connect)</strong>:
+    1.  <code>OPEN</code>: 建立物理层 VISA 连接。
+    2.  <code>IDENTIFY</code>: 发送 <code>*IDN?</code> 并缓存。
+    3.  <code>RESET</code>: 发送 <code>*RST</code> 恢复默认（可选）。
+    4.  <code>CLEAN</code>: 发送 <code>*CLS</code> 清除错误。
+*   <strong>断开 (Disconnect)</strong>:
+    1.  <code>STOP</code>: 停止射频发射。
+    2.  <code>CLOSE</code>: 释放资源。</p>
+<h4 id="262-channel-emulator-api">2.6.2 信道模拟器标准方法 (Channel Emulator API)</h4>
+<p>每个驱动必须实现：
+*   <code>load_channel_model(name)</code>: 加载场景模型。
+*   <code>rf_on() / rf_off()</code>: 射频开关。
+*   <code>set_velocity(kmh)</code>: 设置多普勒速度。
+*   <code>set_input_power(dbm)</code>: 设置输入期望电平。</p>
+<h4 id="263-vsg-api">2.6.3 信号发生器标准方法 (VSG API)</h4>
+<ul>
+<li><code>set_frequency(hz)</code>: 设置中心频率。</li>
+<li><code>set_power(dbm)</code>: 设置幅度。</li>
+<li><code>enable_output(bool)</code>: RF 开关。</li>
+<li><code>load_waveform(filename)</code>: 加载 ARB 波形。</li>
+</ul>
+<h2 id="3-gui">3. GUI 设计方案 (已实施)</h2>
+<h3 id="31">3.1 技术栈</h3>
+<ul>
+<li><strong>前端</strong>: React (TypeScript) + Vite + Material UI (MUI)。</li>
+<li><strong>后端</strong>: FastAPI (Python 3.13) + Uvicorn。</li>
+</ul>
+<h3 id="32">3.2 已实现功能</h3>
+<ol>
+<li><strong>仪表盘 (Dashboard)</strong>: 状态卡片、实时日志、场景选择执行。</li>
+<li><strong>手册库 (Manuals)</strong>: 手册浏览、在线预览、级联上传。</li>
+</ol>
+<h2 id="4-roadmap">4. 开发路线图 (Roadmap)</h2>
+<p>本项目采用分阶段迭代开发。Phase 1-6 已完成，Phase 7 正在规划中。</p>
+<h3 id="41-phase-1">4.1 Phase 1: 实时数据可视化 ✅ 已完成</h3>
+<ul>
+<li><strong>目标</strong>: Dashboard 实时展示测试过程中的吞吐量和 BLER 数据。</li>
+<li><strong>技术方案</strong>:<ul>
+<li>扩展 WebSocket 增加 <code>metrics</code> 消息类型</li>
+<li>前端集成 <code>recharts</code> 折线图，维护60秒滑动窗口</li>
+</ul>
+</li>
+<li><strong>涉及文件</strong>: <code>endpoints.py</code>, <code>sequencer.py</code>, <code>Dashboard.tsx</code>, <code>log_manager.py</code></li>
+</ul>
+<h3 id="42-phase-2">4.2 Phase 2: 测试结果存储 ✅ 已完成</h3>
+<ul>
+<li><strong>目标</strong>: 持久化测试结果，支持历史查询。</li>
+<li><strong>技术方案</strong>:<ul>
+<li>SQLite 数据库，表: <code>test_runs</code>, <code>metrics_samples</code></li>
+<li>新增 <code>/api/v1/history</code> 查询接口</li>
+</ul>
+</li>
+<li><strong>涉及文件</strong>: <code>database.py</code>, <code>History.tsx</code></li>
+</ul>
+<h3 id="43-phase-3">4.3 Phase 3: 报告生成引擎 ✅ 已完成</h3>
+<ul>
+<li><strong>目标</strong>: 测试完成后自动生成 PDF 报告。</li>
+<li><strong>技术方案</strong>:<ul>
+<li>Jinja2 HTML 模板 + weasyprint 渲染 PDF</li>
+<li>新增 <code>/api/v1/report/{run_id}/html</code> 和 <code>/api/v1/report/{run_id}/pdf</code> 接口</li>
+</ul>
+</li>
+<li><strong>涉及文件</strong>: <code>report_generator.py</code>, <code>templates/report.html</code></li>
+</ul>
+<h3 id="44-phase-4">4.4 Phase 4: 配置编辑器 ✅ 已完成</h3>
+<ul>
+<li><strong>目标</strong>: 前端可视化编辑 <code>config.yaml</code> 和场景文件。</li>
+<li><strong>技术方案</strong>:<ul>
+<li>后端 <code>/api/v1/config</code> 读写接口</li>
+<li>前端代码编辑器 (YAML 语法高亮)</li>
+</ul>
+</li>
+<li><strong>涉及文件</strong>: <code>endpoints.py</code>, <code>ConfigEditor.tsx</code></li>
+</ul>
+<h3 id="45-phase-5">4.5 Phase 5: 单元测试完善 ✅ 已完成</h3>
+<ul>
+<li><strong>目标</strong>: pytest 覆盖率 &gt; 70%。</li>
+<li><strong>涉及文件</strong>: <code>tests/test_sequencer.py</code>, <code>tests/test_drivers.py</code>, <code>tests/test_api.py</code>, <code>tests/test_database.py</code>, <code>tests/test_report_generator.py</code></li>
+</ul>
+<h3 id="46-phase-6-dut">4.6 Phase 6: DUT 深度集成 ✅ 已完成</h3>
+<ul>
+<li><strong>目标</strong>: 抓取 Android Modem 内部参数 (RSRP/RSRQ/SINR/CQI)。</li>
+<li><strong>技术方案</strong>: 解析 <code>dumpsys telephony.registry</code> 输出</li>
+<li><strong>新增 API</strong>:<ul>
+<li><code>GET /api/v1/dut/status</code> - DUT 连接状态</li>
+<li><code>GET /api/v1/dut/modem</code> - Modem 详细参数</li>
+<li><code>GET /api/v1/dut/signal</code> - 信号质量摘要</li>
+<li><code>POST /api/v1/dut/airplane-mode</code> - 飞行模式控制</li>
+</ul>
+</li>
+<li><strong>涉及文件</strong>: <code>android_controller.py</code>, <code>endpoints.py</code></li>
+</ul>
+<h3 id="47-phase-7">4.7 Phase 7: 前端界面增强 ✅ 已完成</h3>
+<ul>
+<li><strong>目标</strong>: 增强前端可视化能力，完善 DUT 监控及用户体验。</li>
+<li><strong>子任务</strong>:<ol>
+<li><strong>DUT 状态面板</strong>: 在 Dashboard 展示 Android 终端的 Modem 参数 (RSRP/RSRQ/SINR/CQI) 和飞行模式控制。</li>
+<li><strong>测试进度可视化</strong>: 实时展示测试执行进度条和事件时间轴。</li>
+<li><strong>主题切换</strong>: Support Light/Dark mode.</li>
+<li><strong>ConfigEditor 升级</strong>: 集成 Monaco Editor，支持 YAML Schema 自动补全和校验。✅ 已完成亮色主题切换，并持久化用户偏好。</li>
+</ol>
+</li>
+<li><strong>技术方案</strong>:<ul>
+<li>新建 <code>DutPanel.tsx</code>, <code>TestProgress.tsx</code> 组件</li>
+<li>新建 <code>ThemeContext.tsx</code> 管理主题状态</li>
+<li>后端新增 <code>/api/v1/scenarios/{id}/timeline</code> 接口</li>
+</ul>
+</li>
+<li><strong>涉及文件</strong>: <code>Dashboard.tsx</code>, <code>App.tsx</code>, <code>theme.ts</code>, <code>endpoints.py</code></li>
+</ul>
+<h2 id="5-core-use-cases">5. 核心业务场景 (Core Use Cases)</h2>
+<h3 id="51-sensitivity-search">5.1 灵敏度测试 (Sensitivity Search)</h3>
+<ul>
+<li><strong>实现</strong>: 算法策略。闭环扫描下行功率，通过 BLER 反馈寻找临界点。</li>
+</ul>
+<h3 id="52-blocking-analysis">5.2 阻塞干扰分析 (Blocking Analysis)</h3>
+<ul>
+<li><strong>实现</strong>: 混合策略。VSG 扫描干扰频点和功率，监测吞吐量损失。</li>
+</ul>
+<h3 id="53-dynamic-fading">5.3 动态衰落场景 (Dynamic Fading)</h3>
+<ul>
+<li><strong>实现</strong>: 时间轴策略。动态模拟高铁速度变化和场景切换。</li>
+</ul>
+<hr />
+<h2 id="6-cicd">6. 质量保证与 CI/CD 流水线</h2>
+<h3 id="61">6.1 持续集成架构</h3>
+<p>项目采用 <strong>GitHub Actions</strong> 作为 CI/CD 平台，在每次代码推送时自动执行质量检查和测试。</p>
+<h4 id="_1">工作流程配置</h4>
+<pre><code class="language-yaml"># .github/workflows/ci.yml
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint → test-backend → test-frontend
+</code></pre>
+<p><strong>分阶段策略</strong>：
+1. <strong>Lint 阶段</strong>：快速代码质量检查（1分钟）
+2. <strong>测试阶段</strong>：运行单元测试和集成测试（5分钟）
+3. <strong>构建阶段</strong>：验证代码可正确编译/打包（2分钟）</p>
+<h3 id="62">6.2 代码质量检查工具</h3>
+<h4 id="-python-lint">后端 - Python Lint</h4>
+<p><strong>工具栈</strong>：
+- <strong>Ruff</strong> (主 Linter)：基于 Rust 的超快速 Python Linter
+- <strong>MyPy</strong> (类型检查)：静态类型分析，可选检查</p>
+<p><strong>Ruff 配置策略</strong> (<code>.ruff.toml</code>)：</p>
+<pre><code class="language-toml">[lint]
+ignore = [
+    &quot;E402&quot;,  # Module import not at top
+    &quot;E501&quot;,  # Line too long - 允许合理的长行
+    &quot;E701&quot;,  # Multiple statements (colon) - 紧凑代码风格
+    &quot;E702&quot;,  # Multiple statements (semicolon)
+    &quot;E722&quot;,  # Bare except - 清理代码允许捕获所有异常
+    &quot;F841&quot;,  # Unused variable - 占位符变量
+]
+</code></pre>
+<p><strong>设计理念 - 务实平衡</strong>：</p>
+<pre><code>严格检查 ←────[ 我们的位置 ]────→ 宽松检查
+│                  ↑                    │
+银行/医疗/航天  测试自动化工具    个人原型项目
+</code></pre>
+<p><strong>权衡决策</strong>：
+- ✅ <strong>保留</strong>：未使用导入、类型错误、导入排序
+- ❌ <strong>忽略</strong>：行长度限制、一行多语句
+- 🎯 <strong>目标</strong>：在代码质量与开发速度间找到平衡</p>
+<h4 id="-typescriptreact-lint">前端 - TypeScript/React Lint</h4>
+<p><strong>工具栈</strong>：
+- <strong>ESLint</strong>：JavaScript/TypeScript 代码质量检查
+- <strong>TypeScript Compiler</strong> (<code>tsc --noEmit</code>)：严格类型检查</p>
+<p><strong>ESLint 配置</strong>：</p>
+<pre><code class="language-javascript">{
+  &quot;rules&quot;: {
+    &quot;@typescript-eslint/no-explicit-any&quot;: &quot;error&quot;,
+    &quot;@typescript-eslint/no-unused-vars&quot;: &quot;error&quot;,
+    &quot;react-refresh/only-export-components&quot;: &quot;warn&quot;
+  }
+}
+</code></pre>
+<h3 id="63-ci">6.3 CI 运行环境</h3>
+<h4 id="github-actions-runner">GitHub Actions Runner 规格</h4>
+<pre><code class="language-yaml">runs-on: ubuntu-latest
+# - CPU: 2核
+# - 内存: 7 GB
+# - 存储: 14 GB SSD
+</code></pre>
+<h4 id="_2">运行成本</h4>
+<p><strong>GitHub Actions 免费额度</strong>：
+- 公开仓库：✅ <strong>无限制免费</strong>
+- 私有仓库：2000 分钟/月</p>
+<p><strong>我们的使用</strong>：
+- 单次运行：约 3 分钟
+- 每天推送：10 次 × 3 分钟 = 30 分钟
+- 每月消耗：约 900 分钟（远低于 2000 分钟限制）</p>
+<h3 id="64-lint">6.4 Lint 错误修复记录</h3>
+<p><strong>历史遗留问题（2026-01-16 修复）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>检测错误数</th>
+<th>自动修复</th>
+<th>配置忽略</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ESLint</td>
+<td>7</td>
+<td>0</td>
+<td>7</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Ruff</td>
+<td>336</td>
+<td>243</td>
+<td>93</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>总计</strong></td>
+<td><strong>343</strong></td>
+<td><strong>243</strong></td>
+<td><strong>100</strong></td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p><strong>修复策略</strong>：
+1. <strong>自动修复优先</strong>：使用 <code>--fix</code> 修复格式问题
+2. <strong>手动修复核心</strong>：修复类型错误、未使用导入
+3. <strong>配置忽略合理规则</strong>：对不影响功能的风格问题添加豁免</p>
+<p><strong>典型修复示例</strong>：</p>
+<pre><code class="language-python"># ❌ 修复前：未使用的导入
+import tempfile  # Ruff F401 错误
+
+# ✅ 修复后：移除
+# (已删除)
+</code></pre>
+<pre><code class="language-typescript">// ❌ 修复前：使用 any 类型
+catch (err: any) {
+    setError(err.response?.data?.detail);
+}
+
+// ✅ 修复后：使用类型断言
+catch (err) {
+    const detail = (err as {response?: {data?: {detail?: string}}})?.response?.data?.detail;
+    setError(detail || '错误');
+}
+</code></pre>
+<h3 id="65">6.5 最佳实践</h3>
+<h4 id="_3">本地开发工作流</h4>
+<pre><code class="language-bash"># 1. 编写代码
+vim backend/drivers/new_feature.py
+
+# 2. 本地检查（推送前）
+ruff check backend/
+npm run lint
+
+# 3. 自动修复格式问题
+ruff check backend/ --fix
+npm run lint -- --fix
+
+# 4. 推送代码
+git push
+
+# 5. 等待 CI 验证
+# GitHub Actions 自动运行检查
+</code></pre>
+<h4 id="_4">团队协作规范</h4>
+<ol>
+<li><strong>PR 必须通过 CI</strong>：所有 Pull Request 必须通过 Lint 和测试</li>
+<li><strong>本地先检查</strong>：推送前在本地运行 Lint</li>
+<li><strong>配置变更需讨论</strong>：修改 <code>.ruff.toml</code> 需团队同意</li>
+<li><strong>定期审查规则</strong>：每季度评估规则严格程度</li>
+</ol>
+<hr />
+<h2 id="7">7. 总结与未来规划</h2>
+<p>本系统通过严格的质量保证体系和自动化 CI/CD 流水线，确保代码质量的同时保持高效的开发节奏。</p>
+<p><strong>核心设计原则</strong>：
+1. <strong>分层架构</strong>：清晰的职责分离，便于维护和扩展
+2. <strong>模拟优先</strong>：支持全链路模拟模式，脱离硬件开发
+3. <strong>自动化质量保证</strong>：GitHub Actions + Lint 工具确保代码规范
+4. <strong>务实平衡</strong>：在严格检查与开发速度间找到最优平衡点</p>
+<p><strong>未来规划</strong>：
+- 增加单元测试覆盖率（目标 80%）
+- 集成代码覆盖率报告（Codecov）
+- 添加性能回归测试
+- 探索容器化部署（Docker）</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

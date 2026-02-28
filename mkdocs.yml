@@ -1,0 +1,29 @@
+site_name: UniCon (Universal Control)
+site_description: A high-performance hardware abstraction layer and testing framework for RF instruments.
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: deep orange
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [.]
+          options:
+            docstring_style: google
+
+nav:
+  - Home: index.md
+  - API Reference:
+    - Base Instrument: api/base_instrument.md
+    - R&S CMW500: api/cmw500.md
+    - R&S SMW200A: api/smw200a.md
+    - R&S FSW: api/fsw.md
+    - Keysight MXG: api/mxg.md
+    - Keysight VSA: api/vsa.md
+    - Keysight ENA: api/ena.md
+    - Spirent Vertex: api/vertex.md
+    - Keysight Propsim: api/propsim.md

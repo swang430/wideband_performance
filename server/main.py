@@ -31,6 +31,11 @@ app.mount("/manuals_static", StaticFiles(directory=manual_lib_path), name="manua
 
 app.include_router(endpoints.router, prefix="/api/v1")
 
-@app.get("/")
-async def root():
-    return {"message": "Welcome to UniCon Debug Console API"}
+# 桌面版或生产版：挂载前端静态文件
+frontend_dist_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "dist")
+if os.path.exists(frontend_dist_path):
+    app.mount("/", StaticFiles(directory=frontend_dist_path, html=True), name="frontend")
+else:
+    @app.get("/")
+    async def root():
+        return {"message": "Welcome to UniCon Debug Console API. (Frontend dist not found, run npm run build)"}

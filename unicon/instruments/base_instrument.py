@@ -1,5 +1,6 @@
 import logging
 import time
+import asyncio
 from typing import Optional
 
 import pyvisa
@@ -184,6 +185,18 @@ class BaseInstrument:
             except Exception as e:
                 self.logger.error(f"查询 {self.name} 时发生未知错误: {e}")
                 raise
+
+    async def async_write(self, command: str, retry: bool = True):
+        """
+        异步写入 SCPI 指令。内部使用 asyncio.to_thread 避免阻塞事件循环。
+        """
+        return await asyncio.to_thread(self.write, command, retry)
+
+    async def async_query(self, command: str, retry: bool = True) -> str:
+        """
+        异步写入指令并读取响应。内部使用 asyncio.to_thread 避免阻塞事件循环。
+        """
+        return await asyncio.to_thread(self.query, command, retry)
 
     def reset(self):
         """
