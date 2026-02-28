@@ -19,6 +19,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 import Manuals from './pages/Manuals';
 import Playground from './pages/Playground';
@@ -80,6 +81,22 @@ export default function App() {
             </ListItemButton>
           </ListItem>
         ))}
+        
+        {/* Link back to API Docs */}
+        <ListItem disablePadding sx={{ mt: 2 }}>
+            <ListItemButton
+              component="a"
+              href="https://swang430.github.io/wideband_performance/"
+              sx={{
+                mx: 1,
+                borderRadius: 1,
+                color: 'info.main'
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, color: 'info.main' }}><MenuBookIcon /></ListItemIcon>
+              <ListItemText primary="API Docs" />
+            </ListItemButton>
+          </ListItem>
       </List>
     </Box>
   );
