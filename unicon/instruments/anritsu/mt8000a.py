@@ -24,9 +24,11 @@ class MT8000A(BaseInstrument):
         Ref: MT8000A SCPI Reference - [SOURce:]FREQuency:CENTer
         """
         self.logger.info(f"设置 5G NR 频率: {freq_hz} Hz, 频段: {band}")
-        # Anritsu 指令通常针对特定的系统模块 (例如 SYSTem:NR5G)
-        self.write(f"CONFigure:NR5G:BAND {band}")
-        self.write(f"CONFigure:NR5G:FREQuency:CENTer {freq_hz}")
+        if self.simulation_mode:
+            return
+        # ⚠️ 真实 SCPI 命令需要以 MT8000A 的官方 SCPI/Remote Control 手册为准。
+        # 目前手册库仅包含概览手册，避免凭空猜测指令。
+        raise NotImplementedError("MT8000A SCPI reference manual not available in manual library yet. Please provide SCPI/remote control guide.")
 
     def set_output_power(self, power_dbm: float):
         """
@@ -34,7 +36,9 @@ class MT8000A(BaseInstrument):
         Ref: MT8000A SCPI Reference - CONFigure:NR5G:DL:POWer
         """
         self.logger.info(f"设置 5G NR 下行功率: {power_dbm} dBm")
-        self.write(f"CONFigure:NR5G:DL:POWer {power_dbm}")
+        if self.simulation_mode:
+            return
+        raise NotImplementedError("MT8000A SCPI reference manual not available in manual library yet. Please provide SCPI/remote control guide.")
 
     def start_call(self) -> bool:
         """
@@ -42,19 +46,9 @@ class MT8000A(BaseInstrument):
         Ref: MT8000A SCPI Reference - CALL:NR5G:SIGNaling:STARt
         """
         self.logger.info("启动 MT8000A 5G 信令连接...")
-        self.write("CALL:NR5G:SIGNaling:STARt")
-        
-        timeout = 20
-        start_time = time.time()
-        while time.time() - start_time < timeout:
-            state = self.query("CALL:NR5G:SIGNaling:STATe?")
-            if "CONN" in state.upper() or "IDLE" not in state.upper():
-                self.logger.info("5G 信令状态就绪。")
-                return True
-            time.sleep(1.0)
-            
-        self.logger.error("启动信令超时！")
-        return False
+        if self.simulation_mode:
+            return True
+        raise NotImplementedError("MT8000A SCPI reference manual not available in manual library yet. Please provide SCPI/remote control guide.")
 
     def fetch_throughput(self) -> Dict[str, float]:
         """
@@ -65,13 +59,4 @@ class MT8000A(BaseInstrument):
         if self.simulation_mode:
             return {"dl_mbps": 850.5, "ul_mbps": 120.2}
 
-        res = self.query("FETCh:NR5G:THRoughput:IP?")
-        try:
-            parts = res.split(",")
-            return {
-                "dl_mbps": float(parts[0]) / 1e6 if len(parts) > 0 else 0.0,
-                "ul_mbps": float(parts[1]) / 1e6 if len(parts) > 1 else 0.0
-            }
-        except Exception as e:
-            self.logger.error(f"解析 MT8000A 吞吐量数据失败: {e} (Raw: {res})")
-            return {}
+        raise NotImplementedError("MT8000A SCPI reference manual not available in manual library yet. Please provide SCPI/remote control guide.")
