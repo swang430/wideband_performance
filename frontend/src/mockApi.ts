@@ -5,10 +5,15 @@ let globalConnectedState = false;
 
 const getMockInstruments = () => [
   { id: 'vna', name: 'Keysight_ENA', address: 'TCPIP0::192.168.1.100::inst0::INSTR', connected: globalConnectedState, driver_class: 'ENA' },
+  { id: 'vna2', name: 'Keysight_PNA', address: 'TCPIP0::192.168.1.105::inst0::INSTR', connected: globalConnectedState, driver_class: 'PNA' },
+  { id: 'vna3', name: 'RS_ZNA', address: 'TCPIP0::192.168.1.106::inst0::INSTR', connected: globalConnectedState, driver_class: 'ZNA' },
   { id: 'vsg', name: 'MXG_SigGen', address: 'TCPIP0::192.168.1.101::inst0::INSTR', connected: globalConnectedState, driver_class: 'KeysightMXG' },
   { id: 'channel_emulator', name: 'Spirent_Vertex', address: 'TCPIP0::192.168.1.102::inst0::INSTR', connected: globalConnectedState, driver_class: 'Vertex' },
+  { id: 'channel_emulator2', name: 'Keysight_PROPSIM', address: 'TCPIP0::192.168.1.107::inst0::INSTR', connected: globalConnectedState, driver_class: 'Propsim' },
   { id: 'integrated_tester', name: 'CMW500_Tester', address: 'TCPIP0::192.168.1.103::inst0::INSTR', connected: globalConnectedState, driver_class: 'CMW500' },
-  { id: 'spectrum_analyzer', name: 'RS_FSW', address: 'TCPIP0::192.168.1.104::inst0::INSTR', connected: globalConnectedState, driver_class: 'FSW' }
+  { id: 'integrated_tester2', name: 'Anritsu_MT8000A', address: 'TCPIP0::192.168.1.108::inst0::INSTR', connected: globalConnectedState, driver_class: 'MT8000A' },
+  { id: 'spectrum_analyzer', name: 'RS_FSW', address: 'TCPIP0::192.168.1.104::inst0::INSTR', connected: globalConnectedState, driver_class: 'FSW' },
+  { id: 'spectrum_analyzer2', name: 'Keysight_VSA', address: 'TCPIP0::192.168.1.109::inst0::INSTR', connected: globalConnectedState, driver_class: 'KeysightVSA' }
 ];
 
 export const mockFetch = async (url: string, options?: any) => {

@@ -21,10 +21,13 @@ nav:
   - API Reference:
     - Base Instrument: api/base_instrument.md
     - R&S CMW500: api/cmw500.md
+    - Anritsu MT8000A: api/mt8000a.md
     - R&S SMW200A: api/smw200a.md
     - R&S FSW: api/fsw.md
     - Keysight MXG: api/mxg.md
     - Keysight VSA: api/vsa.md
     - Keysight ENA: api/ena.md
+    - Keysight PNA: api/pna.md
+    - R&S ZNA: api/zna.md
     - Spirent Vertex: api/vertex.md
     - Keysight Propsim: api/propsim.md
