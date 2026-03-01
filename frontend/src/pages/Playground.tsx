@@ -51,7 +51,7 @@ export default function Playground() {
   const [manualProbeAddr, setManualProbeAddr] = useState<string>('');
   const [probing, setProbing] = useState(false);
 
-  const api = (path: string) => `http://localhost:8000${path}`;
+  const api = (path: string) => import.meta.env.DEV ? `http://localhost:8000${path}` : path;
 
   const fetchStatus = async () => {
     try {
