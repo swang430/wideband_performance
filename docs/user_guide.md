@@ -8,9 +8,21 @@
 
 UniCon 提供了开箱即用的**独立桌面版应用程序**，无需在现场繁琐地配置 Python 环境或启动后台服务。
 
-1. 进入项目的 `dist/` 目录。
-2. 双击运行 **`UniCon_Desktop.app`**（Mac）或相应的可执行文件。
-3. 等待几秒钟，系统将自动拉起内置服务并弹出“SCPI Playground & Validation”图形化调试控制台。
+### 跨平台分发与安装指南
+
+这套桌面软件的便携性极其强大，但您需要根据目标电脑的操作系统选择正确的启动方式：
+
+*   🍎 **在 Mac（苹果系统）之间拷贝**：
+    **直接 Copy！不需要 Clone 代码！**
+    如果您想把本软件发给实验室的另一台 Mac，只需将编译好的 `UniCon_Desktop.app` 打成 `.zip` 压缩包（以防止 macOS 破坏执行权限），然后用 U盘 或微信发过去。在另一台 Mac 上解压后**双击即可运行**。目标电脑上**完全不需要安装 Python、Node.js 或是任何代码环境**。
+    
+*   🪟 **在 Windows 或 Linux 上运行**：
+    **必须从 GitHub Clone 代码进行本地编译。**
+    因为在 Mac 上打包出来的 `.app` 二进制文件无法在 Windows 上运行。如果目标机器是 Windows 系统，您需要：
+    1. 在目标 Windows 电脑上从 GitHub clone 本项目的代码。
+    2. 安装并激活 Python 虚拟环境 (`pip install -r requirements.txt`，详见代码库)。
+    3. 在命令行执行 `pyinstaller desktop_app.py ...` (参考仓库中的打包脚本)。
+    4. 系统会自动为您编译出一个纯正的 `UniCon_Desktop.exe`。之后，在 Windows 上只需拷这个 `.exe` 文件就能独立运行了。
 
 ---
 
