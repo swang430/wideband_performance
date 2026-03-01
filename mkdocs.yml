@@ -17,6 +17,7 @@ plugins:
 
 nav:
   - Home: index.md
+  - User Guide: user_guide.md
   - Live Demo: https://swang430.github.io/wideband_performance/demo/
   - API Reference:
     - Base Instrument: api/base_instrument.md

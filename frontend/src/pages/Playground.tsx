@@ -80,7 +80,10 @@ export default function Playground() {
       const res = await universalFetch(api('/api/v1/instruments/status'));
       const data = await res.json();
       setInstruments(data);
-      if (data.length > 0 && !selectedInst) setSelectedInst(data[0].id);
+      setSelectedInst(prev => {
+        if (!prev && data.length > 0) return data[0].id;
+        return prev;
+      });
     } catch (e) {
       // ignore
       console.error(e);
