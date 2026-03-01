@@ -122,13 +122,25 @@ async def probe_instruments(req: ProbeRequest):
         pass
 
     try:
-        rm = pyvisa.ResourceManager()
-        # Find automatically discoverable resources
-        resources = list(rm.list_resources())
+        # 强制使用纯 Python 后端，避免 NI-VISA C 库导致的各种玄学闪退
+        rm = pyvisa.ResourceManager('@py')
+        resources = []
         
-        # If user provided a manual address, add it to the list to check
+        # 现在已经通过 hidden-imports 解决了依赖问题，可以安全地在所有环境执行广播嗅探
+        try:
+            # list_resources 会触发 mDNS 和 VXI-11 发现机制
+            resources = list(rm.list_resources())
+        except Exception as e:
+            print(f"[Probe] Auto-discovery failed: {e}")
+                
+        # 如果用户提供了手动地址，且不在扫描结果中，则加入探测列表
         if req.manual_address and req.manual_address not in resources:
             resources.append(req.manual_address)
+            
+        # 如果 config.yaml 里配置了地址，也加入探测列表做对比验证
+        for addr in configured_addresses.keys():
+            if addr not in resources:
+                resources.append(addr)
             
         for addr in resources:
             # We skip ASRL/COM ports usually unless specifically requested, but let's test all TCPIP or GPIB

@@ -44,6 +44,7 @@ export default function Playground() {
   const [batchResults, setBatchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   // Probe states
   const [probeOpen, setProbeOpen] = useState(false);
@@ -107,6 +108,11 @@ export default function Playground() {
       });
       const data = await res.json();
       setProbeResults(data || []);
+      if (data && data.length > 0) {
+        setSuccessMsg(`Probe completed: Found ${data.length} device(s).`);
+      } else {
+        setSuccessMsg(`Probe completed: No VISA devices found on the network.`);
+      }
     } catch (e: any) {
       setError(`Probe Error: ${e?.message ?? String(e)}`);
     } finally {
@@ -398,6 +404,11 @@ export default function Playground() {
       <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError(null)}>
         <Alert severity="error" onClose={() => setError(null)}>
           {error}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={!!successMsg} autoHideDuration={6000} onClose={() => setSuccessMsg(null)}>
+        <Alert severity="success" onClose={() => setSuccessMsg(null)}>
+          {successMsg}
         </Alert>
       </Snackbar>
     </Box>
