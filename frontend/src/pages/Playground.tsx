@@ -14,11 +14,16 @@ import {
   TableRow,
   TextField,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import BoltIcon from '@mui/icons-material/Bolt';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { universalFetch } from '../mockApi';
 
@@ -39,6 +44,12 @@ export default function Playground() {
   const [batchResults, setBatchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Probe states
+  const [probeOpen, setProbeOpen] = useState(false);
+  const [probeResults, setProbeResults] = useState<any[]>([]);
+  const [manualProbeAddr, setManualProbeAddr] = useState<string>('');
+  const [probing, setProbing] = useState(false);
 
   const api = (path: string) => `http://localhost:8000${path}`;
 
@@ -82,6 +93,24 @@ export default function Playground() {
       setError(e?.message ?? String(e));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleProbe = async () => {
+    setProbing(true);
+    setProbeResults([]);
+    try {
+      const res = await universalFetch(api('/api/v1/instruments/probe'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ manual_address: manualProbeAddr || null })
+      });
+      const data = await res.json();
+      setProbeResults(data || []);
+    } catch (e: any) {
+      setError(`Probe Error: ${e?.message ?? String(e)}`);
+    } finally {
+      setProbing(false);
     }
   };
 
@@ -135,6 +164,15 @@ export default function Playground() {
           SCPI Playground & Validation
         </Typography>
         <Box gap={2} display="flex">
+          <Button
+            variant="outlined"
+            color="info"
+            startIcon={<SearchIcon />}
+            onClick={() => setProbeOpen(true)}
+            disabled={loading}
+          >
+            Probe
+          </Button>
           <Button
             variant="outlined"
             color="primary"
@@ -302,6 +340,60 @@ export default function Playground() {
           </Paper>
         </Box>
       </Box>
+
+      <Dialog open={probeOpen} onClose={() => setProbeOpen(false)} maxWidth="md" fullWidth>
+        <DialogTitle>Instrument Probe & Discovery</DialogTitle>
+        <DialogContent dividers>
+          <Typography variant="body2" mb={2}>
+            Scan the local network for available VISA resources (e.g. TCPIP, GPIB). You can also provide a specific IP/address to verify manually.
+          </Typography>
+          <Box display="flex" gap={2} mb={3}>
+            <TextField 
+              label="Manual Address (e.g. TCPIP0::192.168.1.100::INSTR)" 
+              variant="outlined" 
+              size="small"
+              fullWidth
+              value={manualProbeAddr}
+              onChange={(e) => setManualProbeAddr(e.target.value)}
+            />
+            <Button variant="contained" onClick={handleProbe} disabled={probing}>
+              {probing ? 'Probing...' : 'Run Probe'}
+            </Button>
+          </Box>
+          
+          {probeResults.length > 0 && (
+            <TableContainer component={Paper} variant="outlined">
+              <Table size="small">
+                <TableHead>
+                  <TableRow sx={{ bgcolor: 'action.hover' }}>
+                    <TableCell>Address</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>IDN Response</TableCell>
+                    <TableCell>Configured As</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {probeResults.map((r, i) => (
+                    <TableRow key={i}>
+                      <TableCell sx={{ fontFamily: 'monospace' }}>{r.address}</TableCell>
+                      <TableCell>
+                        <Chip size="small" color={r.status === 'success' ? 'success' : 'error'} label={String(r.status).toUpperCase()} />
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: 'monospace' }}>{r.idn}</TableCell>
+                      <TableCell>
+                        {r.configured_as ? <Chip size="small" label={r.configured_as} color="primary" /> : <Typography variant="body2" color="textSecondary">Unconfigured</Typography>}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setProbeOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
 
       <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError(null)}>
         <Alert severity="error" onClose={() => setError(null)}>

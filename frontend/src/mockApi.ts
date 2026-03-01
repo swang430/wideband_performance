@@ -33,6 +33,20 @@ export const mockFetch = async (url: string, options?: any) => {
     return { ok: true, json: async () => ({ message: "Disconnected (Mock)" }) };
   }
   
+  if (url.includes('/api/v1/instruments/probe')) {
+    const body = options.body ? JSON.parse(options.body) : {};
+    const results = [
+      { address: 'TCPIP0::192.168.1.100::inst0::INSTR', idn: 'Simulated Keysight, E5071C', status: 'success', configured_as: 'vna' },
+      { address: 'TCPIP0::192.168.1.101::inst0::INSTR', idn: 'Simulated Keysight, N5182B', status: 'success', configured_as: 'vsg' },
+      { address: 'TCPIP0::192.168.1.102::inst0::INSTR', idn: 'Simulated Spirent, Vertex', status: 'success', configured_as: 'channel_emulator' },
+      { address: 'TCPIP0::192.168.1.254::inst0::INSTR', idn: 'Unknown Device (Not Configured)', status: 'success', configured_as: null }
+    ];
+    if (body.manual_address) {
+      results.push({ address: body.manual_address, idn: 'Manual Probe Success (Mock)', status: 'success', configured_as: null });
+    }
+    return { ok: true, json: async () => results };
+  }
+  
   if (url.includes('/api/v1/scpi/execute')) {
     const body = JSON.parse(options.body);
     const cmd = body.command.toUpperCase();

@@ -85,11 +85,78 @@ class BatchScpiResponse(BaseModel):
     instrument_id: str
     results: List[Dict[str, Any]]
 
+class ProbeRequest(BaseModel):
+    manual_address: Optional[str] = None
+
+class ProbeResult(BaseModel):
+    address: str
+    idn: str
+    status: str
+    configured_as: Optional[str] = None
+
 # --- API Endpoints ---
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check():
     return {"status": "ok", "version": "0.2.0"}
+
+@router.post("/instruments/probe", response_model=List[ProbeResult])
+async def probe_instruments(req: ProbeRequest):
+    """
+    扫描局域网 VISA 资源，支持补充手动地址验证。
+    """
+    import pyvisa
+    
+    results = []
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    config_path = os.path.join(base_dir, "unicon", "config.yaml")
+    
+    configured_addresses = {}
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            cfg = yaml.safe_load(f) or {}
+            for k, v in cfg.get('instruments', {}).items():
+                if 'address' in v:
+                    configured_addresses[v['address']] = k
+    except:
+        pass
+
+    try:
+        rm = pyvisa.ResourceManager()
+        # Find automatically discoverable resources
+        resources = list(rm.list_resources())
+        
+        # If user provided a manual address, add it to the list to check
+        if req.manual_address and req.manual_address not in resources:
+            resources.append(req.manual_address)
+            
+        for addr in resources:
+            # We skip ASRL/COM ports usually unless specifically requested, but let's test all TCPIP or GPIB
+            if not addr.startswith("TCPIP") and not addr.startswith("GPIB") and addr != req.manual_address:
+                continue
+                
+            res_info = ProbeResult(address=addr, idn="Unknown", status="timeout")
+            if addr in configured_addresses:
+                res_info.configured_as = configured_addresses[addr]
+                
+            try:
+                # Set a short timeout for probing to avoid long hangs
+                inst = rm.open_resource(addr, open_timeout=2000)
+                inst.timeout = 2000
+                idn = inst.query("*IDN?")
+                res_info.idn = idn.strip()
+                res_info.status = "success"
+                inst.close()
+            except Exception as e:
+                res_info.status = "error"
+                res_info.idn = str(e)
+            
+            results.append(res_info)
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+        
+    return results
 
 @router.post("/instruments/connect")
 async def connect_instruments(simulation_mode: bool = True):
@@ -112,16 +179,40 @@ async def disconnect_instruments():
 
 @router.get("/instruments/status", response_model=List[InstrumentStatus])
 async def get_instruments_status():
-    """获取当前连接池中的仪器状态"""
+    """获取仪器状态：合并 config.yaml 配置与当前连接池状态"""
     results = []
-    for inst_id, inst in pool.instruments.items():
-        results.append(InstrumentStatus(
-            id=inst_id,
-            name=inst.name,
-            address=inst.resource_name,
-            connected=inst._connected,
-            driver_class=inst.__class__.__name__
-        ))
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    config_path = os.path.join(base_dir, "unicon", "config.yaml")
+    
+    config = {}
+    if os.path.exists(config_path):
+        # 避免频繁刷新的日志轰炸，可以直接静默加载
+        try:
+            with open(config_path, 'r', encoding='utf-8') as f:
+                config = yaml.safe_load(f) or {}
+        except:
+            pass
+            
+    inst_config = config.get('instruments', {})
+    
+    for key, cfg in inst_config.items():
+        if key in pool.instruments:
+            inst = pool.instruments[key]
+            results.append(InstrumentStatus(
+                id=key,
+                name=inst.name,
+                address=inst.resource_name,
+                connected=inst._connected,
+                driver_class=inst.__class__.__name__
+            ))
+        else:
+            results.append(InstrumentStatus(
+                id=key,
+                name=cfg.get('name', key),
+                address=cfg.get('address', 'Unknown'),
+                connected=False,
+                driver_class=cfg.get('driver_class', 'Unknown')
+            ))
     return results
 
 @router.post("/scpi/execute", response_model=ScpiResponse)
