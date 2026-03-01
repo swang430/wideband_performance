@@ -94,6 +94,19 @@ class ProbeResult(BaseModel):
     status: str
     configured_as: Optional[str] = None
 
+class InstrumentConfigItem(BaseModel):
+    id: str
+    address: str
+    driver_class: str
+    name: str
+
+class UpdateConfigRequest(BaseModel):
+    instruments: List[InstrumentConfigItem]
+
+class MethodExecutionRequest(BaseModel):
+    method_name: str
+    kwargs: Dict[str, Any]
+
 # --- API Endpoints ---
 
 @router.get("/health", response_model=HealthResponse)
@@ -169,6 +182,38 @@ async def probe_instruments(req: ProbeRequest):
         raise HTTPException(status_code=500, detail=str(e))
         
     return results
+
+@router.post("/config/instruments")
+async def update_instrument_config(req: UpdateConfigRequest):
+    """
+    更新 config.yaml 中的仪器配置，实现根据 Probe 结果对图纸的真实修正
+    """
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    config_path = os.path.join(base_dir, "unicon", "config.yaml")
+    
+    cfg = {}
+    if os.path.exists(config_path):
+        with open(config_path, 'r', encoding='utf-8') as f:
+            cfg = yaml.safe_load(f) or {}
+            
+    if 'instruments' not in cfg:
+        cfg['instruments'] = {}
+        
+    # 根据提交的列表全量替换或更新
+    new_instruments = {}
+    for item in req.instruments:
+        new_instruments[item.id] = {
+            "name": item.name,
+            "address": item.address,
+            "driver_class": item.driver_class
+        }
+        
+    cfg['instruments'] = new_instruments
+    
+    with open(config_path, 'w', encoding='utf-8') as f:
+        yaml.dump(cfg, f, allow_unicode=True, sort_keys=False)
+        
+    return {"message": "Config updated successfully"}
 
 @router.post("/instruments/connect")
 async def connect_instruments(simulation_mode: bool = True):
@@ -290,3 +335,78 @@ async def execute_batch_scpi(req: BatchScpiRequest):
         await asyncio.sleep(0.1)
         
     return BatchScpiResponse(instrument_id=req.instrument_id, results=results)
+
+@router.get("/instruments/{inst_id}/methods")
+async def get_instrument_methods(inst_id: str):
+    """
+    获取指定仪器驱动封装的所有公共方法（用于验证驱动）
+    """
+    inst = pool.get_instrument(inst_id)
+    methods = []
+    
+    # 遍历仪器类的所有公共方法 (包括子系统如 lte, wlan)
+    def scan_obj(obj, prefix=""):
+        for attr_name in dir(obj):
+            if attr_name.startswith('_'):
+                continue
+            attr = getattr(obj, attr_name)
+            if callable(attr):
+                doc = attr.__doc__ or "No documentation."
+                import inspect
+                try:
+                    sig = str(inspect.signature(attr))
+                except ValueError:
+                    sig = "(...)"
+                methods.append({
+                    "name": f"{prefix}{attr_name}",
+                    "signature": sig,
+                    "doc": doc.strip()
+                })
+            elif hasattr(attr, '__class__') and "Subsystem" in attr.__class__.__name__:
+                # 递归扫描子系统
+                scan_obj(attr, prefix=f"{attr_name}.")
+                
+    scan_obj(inst)
+    return {"instrument_id": inst_id, "methods": methods}
+
+@router.post("/instruments/{inst_id}/methods/execute")
+async def execute_instrument_method(inst_id: str, req: MethodExecutionRequest):
+    """
+    执行仪器的 Python 驱动层封装方法，并抓取系统底层错误
+    """
+    inst = pool.get_instrument(inst_id)
+    import traceback
+    
+    try:
+        # 递归解析方法 (如 wlan.configure_rf)
+        obj = inst
+        parts = req.method_name.split('.')
+        for part in parts[:-1]:
+            obj = getattr(obj, part)
+        func = getattr(obj, parts[-1])
+        
+        # 执行
+        if asyncio.iscoroutinefunction(func):
+            res = await func(**req.kwargs)
+        else:
+            res = await asyncio.to_thread(func, **req.kwargs)
+            
+        # 主动轮询检查硬件级系统错误队列
+        # 这要求 BaseInstrument 实现了 check_system_errors
+        sys_errors = []
+        if hasattr(inst, "check_system_errors"):
+            sys_errors = await asyncio.to_thread(inst.check_system_errors)
+            
+        return {
+            "status": "success", 
+            "result": res, 
+            "system_errors": sys_errors,
+            "traceback": None
+        }
+    except Exception as e:
+        return {
+            "status": "error", 
+            "error": str(e), 
+            "system_errors": [],
+            "traceback": traceback.format_exc()
+        }

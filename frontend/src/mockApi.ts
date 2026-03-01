@@ -47,6 +47,26 @@ export const mockFetch = async (url: string, options?: any) => {
     return { ok: true, json: async () => results };
   }
   
+  if (url.includes('/api/v1/config/instruments')) {
+    return { ok: true, json: async () => ({ message: "Config updated successfully (Mock)" }) };
+  }
+  
+  if (url.match(/\/api\/v1\/instruments\/[^\/]+\/methods$/)) {
+    const methods = [
+      { name: 'connect', signature: '()', doc: '连接到仪器' },
+      { name: 'disconnect', signature: '()', doc: '断开与仪器的连接' },
+      { name: 'reset', signature: '()', doc: '重置仪器' },
+      { name: 'set_frequency', signature: '(freq_hz: float)', doc: '设置中心频率 (Hz)' },
+      { name: 'check_system_errors', signature: '() -> list[str]', doc: '检查系统错误队列' }
+    ];
+    return { ok: true, json: async () => ({ instrument_id: 'mock_inst', methods }) };
+  }
+  
+  if (url.match(/\/api\/v1\/instruments\/[^\/]+\/methods\/execute$/)) {
+    const body = JSON.parse(options.body);
+    return { ok: true, json: async () => ({ status: 'success', result: `Mock execution of ${body.method_name}`, system_errors: [] }) };
+  }
+  
   if (url.includes('/api/v1/scpi/execute')) {
     const body = JSON.parse(options.body);
     const cmd = body.command.toUpperCase();

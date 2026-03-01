@@ -18,12 +18,21 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import BoltIcon from '@mui/icons-material/Bolt';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import SearchIcon from '@mui/icons-material/Search';
+import CodeIcon from '@mui/icons-material/Code';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { universalFetch } from '../mockApi';
 
@@ -33,6 +42,12 @@ interface Instrument {
   address: string;
   connected: boolean;
   driver_class: string;
+}
+
+interface DriverMethod {
+  name: string;
+  signature: string;
+  doc: string;
 }
 
 export default function Playground() {
@@ -51,6 +66,12 @@ export default function Playground() {
   const [probeResults, setProbeResults] = useState<any[]>([]);
   const [manualProbeAddr, setManualProbeAddr] = useState<string>('');
   const [probing, setProbing] = useState(false);
+
+  // Driver Verification states
+  const [driverMethods, setDriverMethods] = useState<DriverMethod[]>([]);
+  const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [methodArgs, setMethodArgs] = useState<string>('{}');
+  const [methodResult, setMethodResult] = useState<any>(null);
 
   const api = (path: string) => import.meta.env.DEV ? `http://localhost:8000${path}` : path;
 
@@ -72,6 +93,25 @@ export default function Playground() {
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (selectedInst) {
+      // Fetch available methods when an instrument is selected
+      const fetchMethods = async () => {
+        try {
+          const res = await universalFetch(api(`/api/v1/instruments/${selectedInst}/methods`));
+          const data = await res.json();
+          setDriverMethods(data.methods || []);
+          setSelectedMethod('');
+          setMethodResult(null);
+        } catch (e) {
+          console.error(e);
+          setDriverMethods([]);
+        }
+      };
+      fetchMethods();
+    }
+  }, [selectedInst]);
 
   const handleConnect = async (simulation: boolean) => {
     setLoading(true);
@@ -160,6 +200,74 @@ export default function Playground() {
       setError(`Batch Error: ${e?.message ?? String(e)}`);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleExecuteMethod = async () => {
+    if (!selectedInst || !selectedMethod) return;
+    setLoading(true);
+    setMethodResult(null);
+    try {
+      let kwargs = {};
+      try {
+        kwargs = JSON.parse(methodArgs);
+      } catch (err) {
+        throw new Error("Invalid JSON arguments format");
+      }
+
+      const res = await universalFetch(api(`/api/v1/instruments/${selectedInst}/methods/execute`), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ method_name: selectedMethod, kwargs }),
+      });
+      const data = await res.json();
+      setMethodResult(data);
+    } catch (e: any) {
+      setMethodResult({ status: 'error', error: e?.message ?? String(e), system_errors: [], traceback: '' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSyncToConfig = async () => {
+    if (!probeResults || probeResults.length === 0) return;
+    
+    // Auto-map found devices to default roles based on IDN heuristic
+    const mappedInstruments = probeResults.filter(r => r.status === 'success').map((r, i) => {
+      let role = r.configured_as || `instrument_${i}`;
+      let dclass = 'BaseInstrument';
+      
+      const idn = r.idn.toUpperCase();
+      if (idn.includes('CMW')) { role = 'integrated_tester'; dclass = 'CMW500'; }
+      else if (idn.includes('FSW')) { role = 'spectrum_analyzer'; dclass = 'FSW'; }
+      else if (idn.includes('MXG') || idn.includes('N5182B')) { role = 'vsg'; dclass = 'KeysightMXG'; }
+      else if (idn.includes('SMW')) { role = 'vsg'; dclass = 'SMW200A'; }
+      else if (idn.includes('ENA') || idn.includes('E5071C')) { role = 'vna'; dclass = 'ENA'; }
+      else if (idn.includes('VERTEX')) { role = 'channel_emulator'; dclass = 'Vertex'; }
+      
+      return {
+        id: role,
+        address: r.address,
+        driver_class: dclass,
+        name: `${dclass}_${i}`
+      };
+    });
+
+    try {
+      const res = await universalFetch(api('/api/v1/config/instruments'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ instruments: mappedInstruments })
+      });
+      if (res.ok) {
+        setSuccessMsg("Synced successfully to config.yaml!");
+        fetchStatus();
+      } else {
+        const errData = await res.json();
+        setError(`Sync Failed: ${errData.detail || 'Unknown error'}`);
+      }
+    } catch (e: any) {
+      setError(`Sync Error: ${e?.message ?? String(e)}`);
     }
   };
 
@@ -282,6 +390,97 @@ export default function Playground() {
             )}
           </Paper>
 
+          {/* Driver Verification */}
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6" mb={2}>
+              Driver API Verification
+            </Typography>
+            <Typography variant="body2" color="textSecondary" mb={2}>
+              Test high-level Python driver methods directly. Exceptions and system errors are captured for driver debugging.
+            </Typography>
+            <Box display="flex" gap={2} mb={2}>
+              <FormControl fullWidth size="small">
+                <InputLabel>Select Driver Method</InputLabel>
+                <Select
+                  value={selectedMethod}
+                  label="Select Driver Method"
+                  onChange={(e) => setSelectedMethod(e.target.value)}
+                  disabled={!selectedInst || driverMethods.length === 0}
+                >
+                  {driverMethods.map((m) => (
+                    <MenuItem key={m.name} value={m.name}>
+                      {m.name} {m.signature}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            
+            <Box display="flex" gap={2} mb={2}>
+              <TextField
+                fullWidth
+                label='Arguments (JSON format, e.g. {"freq_hz": 2.4e9})'
+                variant="outlined"
+                size="small"
+                value={methodArgs}
+                onChange={(e) => setMethodArgs(e.target.value)}
+                disabled={!selectedMethod}
+                sx={{ fontFamily: 'monospace' }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<CodeIcon />}
+                onClick={handleExecuteMethod}
+                disabled={!selectedMethod || loading}
+                sx={{ whiteSpace: 'nowrap' }}
+              >
+                Execute Method
+              </Button>
+            </Box>
+
+            {methodResult && (
+              <Box mt={2}>
+                <Alert severity={methodResult.status === 'success' ? 'success' : 'error'} sx={{ mb: 1 }}>
+                  Status: {methodResult.status.toUpperCase()}
+                  {methodResult.error && ` - ${methodResult.error}`}
+                </Alert>
+                
+                {methodResult.result !== undefined && methodResult.result !== null && (
+                  <Box p={2} bgcolor="grey.900" color="success.main" borderRadius={1} fontFamily="monospace" mb={1} overflow="auto">
+                    {typeof methodResult.result === 'object' ? JSON.stringify(methodResult.result, null, 2) : String(methodResult.result)}
+                  </Box>
+                )}
+
+                {(methodResult.system_errors?.length > 0 || methodResult.traceback) && (
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography color="error.main">View Debug Details (Traceback & Hardware Errors)</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {methodResult.system_errors?.length > 0 && (
+                        <Box mb={2}>
+                          <Typography variant="subtitle2" color="error">Hardware System Errors (SYST:ERR?):</Typography>
+                          <Box p={1} bgcolor="#2b0000" color="#ffb3b3" borderRadius={1} fontFamily="monospace" fontSize="0.85rem">
+                            {methodResult.system_errors.map((e: string, i: number) => <div key={i}>{e}</div>)}
+                          </Box>
+                        </Box>
+                      )}
+                      {methodResult.traceback && (
+                        <Box>
+                          <Typography variant="subtitle2" color="error">Python Traceback:</Typography>
+                          <Box p={1} bgcolor="#2b0000" color="#ffb3b3" borderRadius={1} fontFamily="monospace" fontSize="0.85rem" whiteSpace="pre-wrap">
+                            {methodResult.traceback}
+                          </Box>
+                        </Box>
+                      )}
+                    </AccordionDetails>
+                  </Accordion>
+                )}
+              </Box>
+            )}
+          </Paper>
+
           <Paper sx={{ p: 2 }}>
             <Typography variant="h6" mb={2}>
               Batch Interoperability Test
@@ -398,6 +597,9 @@ export default function Playground() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setProbeOpen(false)}>Close</Button>
+          <Button variant="contained" color="success" onClick={handleSyncToConfig} disabled={probeResults.length === 0}>
+            Sync to config.yaml
+          </Button>
         </DialogActions>
       </Dialog>
 
